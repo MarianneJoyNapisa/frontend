@@ -12,9 +12,13 @@ namespace HomeownersMS.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-
+            if(HttpContext.User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Dashboard/Index");
+            }
+            return Page();
         }
     }
 }

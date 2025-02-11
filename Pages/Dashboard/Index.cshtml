@@ -1,0 +1,9 @@
+﻿@page
+@model HomeownersMS.Pages.Dashboard.IndexModel
+@{
+	var username = HttpContext.User.Identity.Name;
+}
+
+<h1>Dashboard</h1>
+<p>Welcome, @username!</p>
+<a asp-page="/Account/Logout">Logout</a>

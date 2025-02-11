@@ -1,12 +1,12 @@
 ﻿@page
-@model HomeownersMS.Pages.Users.EditModel
-@using HomeownersMS.Models
+@model HomeownersMS.Pages.Account.RegisterModel
+@using HomeownersMS.Models;
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Register";
 }
 
-<h1>Edit</h1>
+<h1>Register</h1>
 
 <h4>User</h4>
 <hr />
@@ -14,35 +14,38 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="User.UserId" />
             <div class="form-group">
                 <span class="text-danger">*</span>
                 <label asp-for="User.Username" class="control-label"></label>
-                <input asp-for="User.Username" class="form-control" for-value="User.Username" readonly/>
+                <input asp-for="User.Username" class="form-control" />
                 <span asp-validation-for="User.Username" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <span class="text-danger">*</span>
-                <label class="control-label">Change Password</label>
-                <input type="password" asp-for="User.PasswordHash" value="" class="form-control" />
+                <label for="User.PasswordHash" class="control-label">Password</label>
+                <input asp-for="User.PasswordHash"  type="password" class="form-control" />
                 <span asp-validation-for="User.PasswordHash" class="text-danger"></span>
             </div>
-            @* Confirm password *@
             <div class="form-group">
                 <span class="text-danger">*</span>
-                <label class="control-label">Confirm Password</label>
-                <input type="password" asp-for="ConfirmPassword" class="form-control" />
+                <label for="ConfirmPassword" class="control-label">Confirm Password</label>
+                <input asp-for="ConfirmPassword" type="password" class="form-control" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="User.Privilege">Role</label>
+                <select asp-for="User.Privilege" asp-items="Html.GetEnumSelectList<Privileges>()" class="form-control"></select>
+            </div>
+            <p>Go back to <a asp-page="/Account/Login">Login</a> page.</p>
             <div class="form-group mt-4">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="/Index">Back to List</a>
 </div>
 
 @section Scripts {

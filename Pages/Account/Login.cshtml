@@ -1,0 +1,42 @@
+﻿@page
+@model HomeownersMS.Pages.Account.LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1>Login</h1>
+
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="LoginInput.Username" class="control-label"></label>
+                <input asp-for="LoginInput.Username" class="form-control" />
+                <span asp-validation-for="LoginInput.Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="LoginInput.Password" class="control-label"></label>
+                <input asp-for="LoginInput.Password" type="password" class="form-control" />
+                <span asp-validation-for="LoginInput.Password" class="text-danger"></span>
+            </div>
+            <p>New user? <a asp-page="/Account/Register">Register</a> now.</p>
+            <div class="form-group mt-4">
+                <input type="submit" value="Login" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

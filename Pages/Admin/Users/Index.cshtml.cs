@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using HomeownersMS.Data;
 using HomeownersMS.Models;
+using Microsoft.AspNetCore.Authorization;
 
-namespace HomeownersMS.Pages.Users
+namespace HomeownersMS.Pages.Admin.Users
 {
+    [Authorize(Roles = "admin")]
     public class IndexModel : PageModel
     {
         private readonly HomeownersMS.Data.HomeownersContext _context;
@@ -21,12 +23,19 @@ namespace HomeownersMS.Pages.Users
 
         public IList<User> User { get;set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
+            if (!HttpContext.User.Identity.IsAuthenticated || !HttpContext.User.IsInRole("admin"))
+            {
+                return RedirectToPage("/Account/AccessDenied");
+            }
+
             User = await _context.User
                 .Include(u => u.Admin)
                 .Include(u => u.Resident)
                 .Include(u => u.Staff).ToListAsync();
+
+            return Page();
         }
     }
 }

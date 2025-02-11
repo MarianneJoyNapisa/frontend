@@ -9,7 +9,7 @@ using HomeownersMS.Data;
 using HomeownersMS.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace HomeownersMS.Pages.Users
+namespace HomeownersMS.Pages.Admin.Users
 {
     public class CreateModel : PageModel
     {
@@ -25,7 +25,7 @@ namespace HomeownersMS.Pages.Users
 
         public IActionResult OnGet()
         {
-        ViewData["AdminId"] = new SelectList(_context.Set<Admin>(), "AdminId", "FName");
+        ViewData["AdminId"] = new SelectList(_context.Set<HomeownersMS.Models.Admin>(), "AdminId", "FName");
         ViewData["ResidentId"] = new SelectList(_context.Set<Resident>(), "ResidentId", "FName");
         ViewData["StaffId"] = new SelectList(_context.Set<Staff>(), "StaffId", "FName");
             return Page();

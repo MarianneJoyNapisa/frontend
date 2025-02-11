@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using HomeownersMS.Data;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using HomeownersMS.Services;
 namespace HomeownersMS
 {
@@ -22,7 +23,24 @@ namespace HomeownersMS
             builder.Services.AddDbContext<HomeownersContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("HomeownersContext")));
 
+            // Authentication
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Index";
+                    options.LogoutPath = "/Account/Logout";
+                    options.AccessDeniedPath = "/Account/AccessDenied";
+                });
+
+            builder.Services.AddAuthorization();
+
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+            // Redirect unauthorized users to AccessDenied page
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = "/Account/AccessDenied";
+            });
 
             var app = builder.Build();
 

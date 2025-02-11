@@ -267,3 +267,4 @@ D:\User Folder\Magus Files\RRA Personal Folder\HelloWorld\C#\HomeownersMS\obj\De
 D:\User Folder\Magus Files\RRA Personal Folder\HelloWorld\C#\HomeownersMS\obj\Debug\net8.0\HomeownersMS.genruntimeconfig.cache
 D:\User Folder\Magus Files\RRA Personal Folder\HelloWorld\C#\HomeownersMS\obj\Debug\net8.0\ref\HomeownersMS.dll
 D:\User Folder\Magus Files\RRA Personal Folder\HelloWorld\C#\HomeownersMS\bin\Debug\net8.0\Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
+D:\User Folder\Magus Files\RRA Personal Folder\HelloWorld\C#\HomeownersMS\obj\Debug\net8.0\HomeownersMS.sourcelink.json

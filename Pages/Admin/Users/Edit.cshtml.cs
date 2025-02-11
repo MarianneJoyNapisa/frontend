@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HomeownersMS.Data;
 using HomeownersMS.Models;
+using Microsoft.AspNetCore.Authorization;
 
-namespace HomeownersMS.Pages.Users
+namespace HomeownersMS.Pages.Admin.Users
 {
+    [Authorize(Roles = "admin")]
     public class EditModel : PageModel
     {
         private readonly HomeownersMS.Data.HomeownersContext _context;
@@ -28,6 +30,11 @@ namespace HomeownersMS.Pages.Users
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            if (!HttpContext.User.Identity.IsAuthenticated || !HttpContext.User.IsInRole("admin"))
+            {
+                return RedirectToPage("/Account/AccessDenied");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -39,7 +46,7 @@ namespace HomeownersMS.Pages.Users
                 return NotFound();
             }
             User = user;
-            ViewData["AdminId"] = new SelectList(_context.Set<Admin>(), "AdminId", "FName");
+            ViewData["AdminId"] = new SelectList(_context.Set<HomeownersMS.Models.Admin>(), "AdminId", "FName");
             ViewData["ResidentId"] = new SelectList(_context.Set<Resident>(), "ResidentId", "FName");
             ViewData["StaffId"] = new SelectList(_context.Set<Staff>(), "StaffId", "FName");
             return Page();
