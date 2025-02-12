@@ -24,3 +24,6 @@ Like nausab ang Development branch (e.g. naay lain ni push ug changes)
 1. Go to root directory sa current folder
 2. `git checkout development`
 3. `git pull origin development`
+
+### Take Note:
+ 1. If naa kay usbon sa local repo nimo (sa imo computer), you have to always remember to `git pull origin development`. This pulls changes from remote repo (sa Github). This ensures nga smooth imo work inig `git push`.
