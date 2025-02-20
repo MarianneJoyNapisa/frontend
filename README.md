@@ -25,5 +25,45 @@ Like nausab ang Development branch (e.g. naay lain ni push ug changes)
 2. `git checkout development`
 3. `git pull origin development`
 
+## How to Push to "frontend"
+1. Clone the Repository
+If you haven’t cloned the repository yet, run:
+```sh
+git clone https://github.com/VulpritProoze/ELNET_HomeownersMS.git
+cd ELNET_HomeownersMS
+```
+
+2. Switch to the `frontend` Branch
+```sh
+git checkout frontend
+```
+Or using:
+```sh
+git switch frontend
+```
+
+3. Make Your Changes
+Modify the necessary files as required.
+
+4. Stage the Changes
+To stage all modified files:
+```sh
+git add .
+```
+Or stage specific files:
+```sh
+git add filename.ext
+```
+
+5. Commit the Changes
+```sh
+git commit -m "Your commit message describing the changes"
+```
+
+6. Push the Changes to the Remote `frontend` Branch
+```sh
+git push origin frontend
+```
+
 ### Take Note:
  1. If naa kay usbon sa local repo nimo (sa imo computer), you have to always remember to `git pull origin development`. This pulls changes from remote repo (sa Github). This ensures nga smooth imo work inig `git push`.
