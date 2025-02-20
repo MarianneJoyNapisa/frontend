@@ -60,7 +60,12 @@ git add filename.ext
 git commit -m "Your commit message describing the changes"
 ```
 
-6. Push the Changes to the Remote `frontend` Branch
+6. Add remote repository
+```
+git remote add origin https://github.com/VulpritProoze/ELNET_HomeownersMS.git
+```
+
+7. Push the Changes to the Remote `frontend` Branch
 ```sh
 git push origin frontend
 ```
