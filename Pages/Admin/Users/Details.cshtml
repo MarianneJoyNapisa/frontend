@@ -12,44 +12,44 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.Username)
+            @Html.DisplayNameFor(model => model.UserList.Username)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Username)
+            @Html.DisplayFor(model => model.UserList.Username)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.PasswordHash)
+            @Html.DisplayNameFor(model => model.UserList.PasswordHash)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.PasswordHash)
+            @Html.DisplayFor(model => model.UserList.PasswordHash)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.Privilege)
+            @Html.DisplayNameFor(model => model.UserList.Privilege)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Privilege)
+            @Html.DisplayFor(model => model.UserList.Privilege)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.Resident)
+            @Html.DisplayNameFor(model => model.UserList.Resident)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Resident.FName)
+            @(Model.UserList.Resident != null ? Model.UserList.Resident.FName : "Not Assigned")
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.Staff)
+            @Html.DisplayNameFor(model => model.UserList.Staff)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Staff.FName)
+            @(Model.UserList.Staff != null ? Model.UserList.Staff.FName : "Not Assigned")
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.Admin)
+            @Html.DisplayNameFor(model => model.UserList.Admin)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Admin.FName)
+            @(Model.UserList.Admin != null ? Model.UserList.Admin.FName : "Not Assigned")
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.User.UserId">Edit</a> |
+    <a asp-page="./Edit" asp-route-id="@Model.UserList.UserId">Edit</a> |
     <a asp-page="./Index">Back to List</a>
 </div>

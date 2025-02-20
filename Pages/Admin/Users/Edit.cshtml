@@ -14,18 +14,18 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="User.UserId" />
+            <input type="hidden" asp-for="UserList.UserId" />
             <div class="form-group">
                 <span class="text-danger">*</span>
-                <label asp-for="User.Username" class="control-label"></label>
-                <input asp-for="User.Username" class="form-control" for-value="User.Username" readonly/>
-                <span asp-validation-for="User.Username" class="text-danger"></span>
+                <label asp-for="UserList.Username" class="control-label"></label>
+                <input asp-for="UserList.Username" class="form-control" for-value="UserList.Username" readonly/>
+                <span asp-validation-for="UserList.Username" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <span class="text-danger">*</span>
                 <label class="control-label">Change Password</label>
-                <input type="password" asp-for="User.PasswordHash" value="" class="form-control" />
-                <span asp-validation-for="User.PasswordHash" class="text-danger"></span>
+                <input type="password" asp-for="UserList.PasswordHash" value="" class="form-control" />
+                <span asp-validation-for="UserList.PasswordHash" class="text-danger"></span>
             </div>
             @* Confirm password *@
             <div class="form-group">

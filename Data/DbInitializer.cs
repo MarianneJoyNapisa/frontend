@@ -6,7 +6,7 @@ namespace HomeownersMS.Data
     {
         public static void Initialize(HomeownersContext context) 
         {
-            if(context.User.Any())
+            if(context.Users.Any())
             {
                 return;
             }
@@ -41,9 +41,9 @@ namespace HomeownersMS.Data
                 MoveInDate= DateTime.Now
             };
 
-            context.Admin.AddRange(admin);
-            context.Staff.AddRange(staff);
-            context.Resident.AddRange(resident);
+            context.Admins.AddRange(admin);
+            context.Staffs.AddRange(staff);
+            context.Residents.AddRange(resident);
 
             context.SaveChanges();
 
@@ -85,7 +85,7 @@ namespace HomeownersMS.Data
                 }
             }
 
-            context.User.AddRange(users);
+            context.Users.AddRange(users);
             context.SaveChanges();
         }
     }

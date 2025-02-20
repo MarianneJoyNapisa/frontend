@@ -23,14 +23,17 @@ namespace HomeownersMS.Pages.Admin.Users
         }
 
         [BindProperty]
-        public User User { get; set; } = default!;
+        public User UserList { get; set; } = default!;
 
         [BindProperty]
         public string ConfirmPassword { get; set; } = string.Empty;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (!HttpContext.User.Identity.IsAuthenticated || !HttpContext.User.IsInRole("admin"))
+            var userIdentity = HttpContext.User.Identity;
+
+            // Fix: Ensure Identity is not null before accessing its properties
+            if (userIdentity == null || !userIdentity.IsAuthenticated || !HttpContext.User.IsInRole("admin"))
             {
                 return RedirectToPage("/Account/AccessDenied");
             }
@@ -40,12 +43,12 @@ namespace HomeownersMS.Pages.Admin.Users
                 return NotFound();
             }
 
-            var user =  await _context.User.FirstOrDefaultAsync(m => m.UserId == id);
+            var user =  await _context.Users.FirstOrDefaultAsync(m => m.UserId == id);
             if (user == null)
             {
                 return NotFound();
             }
-            User = user;
+            UserList = user;
             ViewData["AdminId"] = new SelectList(_context.Set<HomeownersMS.Models.Admin>(), "AdminId", "FName");
             ViewData["ResidentId"] = new SelectList(_context.Set<Resident>(), "ResidentId", "FName");
             ViewData["StaffId"] = new SelectList(_context.Set<Staff>(), "StaffId", "FName");
@@ -61,18 +64,18 @@ namespace HomeownersMS.Pages.Admin.Users
                 return Page();
             }
 
-            if (User.PasswordHash != ConfirmPassword)
+            if (UserList.PasswordHash != ConfirmPassword)
             {
                 ModelState.AddModelError("ConfirmPassword", "Password and Confirm Password do not match.");
                 return Page();
             }
 
-            if (!string.IsNullOrEmpty(User.PasswordHash))
+            if (!string.IsNullOrEmpty(UserList.PasswordHash))
             {
-                User.SetPassword(User.PasswordHash);
+                UserList.SetPassword(UserList.PasswordHash);
             }
 
-            _context.Attach(User).State = EntityState.Modified;
+            _context.Attach(UserList).State = EntityState.Modified;
 
             try
             {
@@ -80,7 +83,7 @@ namespace HomeownersMS.Pages.Admin.Users
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(User.UserId))
+                if (!UserExists(UserList.UserId))
                 {
                     return NotFound();
                 }
@@ -95,7 +98,7 @@ namespace HomeownersMS.Pages.Admin.Users
 
         private bool UserExists(int id)
         {
-            return _context.User.Any(e => e.UserId == id);
+            return _context.Users.Any(e => e.UserId == id);
         }
     }
 }

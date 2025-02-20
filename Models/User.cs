@@ -8,6 +8,7 @@ namespace HomeownersMS.Models
     {
         resident, staff, admin
     }
+
     public class User
     {
         [Key]
@@ -19,7 +20,7 @@ namespace HomeownersMS.Models
 
         [Required]
         [MaxLength(255)]
-        public string PasswordHash {  get; set; } = string.Empty;
+        public string PasswordHash { get; set; } = string.Empty;
 
         [Required]
         public Privileges Privilege { get; set; } = Privileges.resident;

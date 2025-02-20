@@ -45,7 +45,7 @@ namespace HomeownersMS.Pages.Account
                 return Page();
             }
 
-            var user = await _context.User
+            var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Username == LoginInput.Username);
 
             if (user == null || !user.VerifyPassword(LoginInput.Password))

@@ -22,7 +22,7 @@ namespace HomeownersMS.Pages.Admin.Users
         }
 
         [BindProperty]
-        public User User { get; set; } = default!;
+        public User UserList { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -31,7 +31,7 @@ namespace HomeownersMS.Pages.Admin.Users
                 return NotFound();
             }
 
-            var user = await _context.User.FirstOrDefaultAsync(m => m.UserId == id);
+            var user = await _context.Users.FirstOrDefaultAsync(m => m.UserId == id);
 
             if (user == null)
             {
@@ -39,14 +39,17 @@ namespace HomeownersMS.Pages.Admin.Users
             }
             else
             {
-                User = user;
+                UserList = user;
             }
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (!HttpContext.User.Identity.IsAuthenticated || !HttpContext.User.IsInRole("admin"))
+            var userIdentity = HttpContext.User.Identity;
+
+            // Fix: Ensure Identity is not null before accessing its properties
+            if (userIdentity == null || !userIdentity.IsAuthenticated || !HttpContext.User.IsInRole("admin"))
             {
                 return RedirectToPage("/Account/AccessDenied");
             }
@@ -56,11 +59,11 @@ namespace HomeownersMS.Pages.Admin.Users
                 return NotFound();
             }
 
-            var user = await _context.User.FindAsync(id);
+            var user = await _context.Users.FindAsync(id);
             if (user != null)
             {
-                User = user;
-                _context.User.Remove(User);
+                UserList = user;
+                _context.Users.Remove(UserList);
                 await _context.SaveChangesAsync();
             }
 

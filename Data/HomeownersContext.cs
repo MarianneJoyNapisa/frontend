@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using HomeownersMS.Models;
 
@@ -9,42 +7,48 @@ namespace HomeownersMS.Data
 {
     public class HomeownersContext : DbContext
     {
-        public HomeownersContext (DbContextOptions<HomeownersContext> options)
+        public HomeownersContext(DbContextOptions<HomeownersContext> options)
             : base(options)
         {
         }
 
-        public DbSet<HomeownersMS.Models.User> User { get; set; } = default!;
-        public DbSet<HomeownersMS.Models.Resident>Resident { get; set; } = default!;
-        public DbSet<HomeownersMS.Models.Staff>Staff { get; set; } = default!;
-        public DbSet<HomeownersMS.Models.Admin>Admin { get; set; } = default!;
+        public DbSet<User> Users { get; set; } = default!;
+        public DbSet<Resident> Residents { get; set; } = default!;
+        public DbSet<Staff> Staffs { get; set; } = default!;
+        public DbSet<Admin> Admins { get; set; } = default!;
+        public DbSet<Service> Services { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
-                .HasIndex(u => u.Username)
-                .IsUnique();
+            Admin.IsSeeding = true; // Enable seeding mode
 
-            modelBuilder.Entity<User>()
-                .HasOne(u => u.Resident)
-                .WithOne()
-                .HasForeignKey<User>(u => u.ResidentId)
-                .OnDelete(DeleteBehavior.SetNull);
-            modelBuilder.Entity<User>()
-                .HasOne(u => u.Staff)
-                .WithOne()
-                .HasForeignKey<User>(u => u.StaffId)
-                .OnDelete(DeleteBehavior.SetNull);
-            modelBuilder.Entity<User>()
-                .HasOne(u => u.Admin)
-                .WithOne()
-                .HasForeignKey<User>(u => u.AdminId)
-                .OnDelete(DeleteBehavior.SetNull);
+            var passwordHasher = new PasswordHasher<User>();
 
-            modelBuilder.Entity<User>().ToTable("User");
-            modelBuilder.Entity<Resident>().ToTable("Resident");
-            modelBuilder.Entity<Staff>().ToTable("Staff");
-            modelBuilder.Entity<Admin>().ToTable("Admin");
+            var admin = new Admin
+            {
+                AdminId = 1,
+                LName = "Smith",
+                FName = "John",
+                Email = "admin@example.com",
+                ContactNo = "1234567890",
+                Job = "System Administrator",
+                HireDate = DateTime.Now
+            };
+
+            var adminUser = new User
+            {
+                UserId = 1,
+                Username = "admin",
+                PasswordHash = passwordHasher.HashPassword(new User(), "Admin123!"),
+                Privilege = Privileges.admin,
+                AdminId = admin.AdminId  // ✅ Only set foreign key
+            };
+
+            modelBuilder.Entity<Admin>().HasData(admin);
+            modelBuilder.Entity<User>().HasData(adminUser);
+
+            Admin.IsSeeding = false; // Disable seeding mode
         }
+
     }
 }

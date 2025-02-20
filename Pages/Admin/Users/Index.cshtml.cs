@@ -21,16 +21,19 @@ namespace HomeownersMS.Pages.Admin.Users
             _context = context;
         }
 
-        public IList<User> User { get;set; } = default!;
+        public IList<User> UserList { get;set; } = default!;
 
         public async Task<IActionResult> OnGetAsync()
         {
-            if (!HttpContext.User.Identity.IsAuthenticated || !HttpContext.User.IsInRole("admin"))
+            var userIdentity = HttpContext.User.Identity;
+
+            // Fix: Ensure Identity is not null before accessing its properties
+            if (userIdentity == null || !userIdentity.IsAuthenticated || !HttpContext.User.IsInRole("admin"))
             {
                 return RedirectToPage("/Account/AccessDenied");
             }
 
-            User = await _context.User
+            UserList = await _context.Users
                 .Include(u => u.Admin)
                 .Include(u => u.Resident)
                 .Include(u => u.Staff).ToListAsync();

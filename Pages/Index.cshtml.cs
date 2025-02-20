@@ -14,7 +14,10 @@ namespace HomeownersMS.Pages
 
         public IActionResult OnGet()
         {
-            if(HttpContext.User.Identity.IsAuthenticated)
+            var userIdentity = HttpContext.User.Identity;
+
+            // Fix: Ensure Identity is not null before accessing its properties
+            if (userIdentity == null || userIdentity.IsAuthenticated)
             {
                 return RedirectToPage("/Dashboard/Index");
             }

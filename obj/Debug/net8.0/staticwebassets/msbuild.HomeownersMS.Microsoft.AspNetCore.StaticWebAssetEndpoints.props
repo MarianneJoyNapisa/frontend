@@ -28,13 +28,13 @@
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\HomeownersMS.4wenblwj1i.bundle.scp.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"4wenblwj1i"},{"Name":"integrity","Value":"sha256-3DX8H5L7wXvYzxej3uFFZM4Z\u002Br6lCZd/8oi9pqmxIAA="},{"Name":"label","Value":"_content/HomeownersMS/HomeownersMS.bundle.scp.css"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1130"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u00223DX8H5L7wXvYzxej3uFFZM4Z\u002Br6lCZd/8oi9pqmxIAA=\u0022"},{"Name":"Last-Modified","Value":"Mon, 10 Feb 2025 06:04:26 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1130"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u00223DX8H5L7wXvYzxej3uFFZM4Z\u002Br6lCZd/8oi9pqmxIAA=\u0022"},{"Name":"Last-Modified","Value":"Thu, 20 Feb 2025 12:09:13 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/HomeownersMS/HomeownersMS.bundle.scp.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\HomeownersMS.4wenblwj1i.bundle.scp.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-3DX8H5L7wXvYzxej3uFFZM4Z\u002Br6lCZd/8oi9pqmxIAA="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1130"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u00223DX8H5L7wXvYzxej3uFFZM4Z\u002Br6lCZd/8oi9pqmxIAA=\u0022"},{"Name":"Last-Modified","Value":"Mon, 10 Feb 2025 06:04:26 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1130"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u00223DX8H5L7wXvYzxej3uFFZM4Z\u002Br6lCZd/8oi9pqmxIAA=\u0022"},{"Name":"Last-Modified","Value":"Thu, 20 Feb 2025 12:09:13 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/HomeownersMS/js/site.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\site.js'))</AssetFile>

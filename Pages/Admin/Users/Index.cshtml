@@ -14,22 +14,28 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.User[0].UserId)
+                @Html.DisplayNameFor(model => model.UserList[0].UserId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.User[0].Username)
+                @Html.DisplayNameFor(model => model.UserList[0].Username)
             </th>
-            @* <th>
-                @Html.DisplayNameFor(model => model.User[0].PasswordHash)
-            </th> *@
             <th>
-                @Html.DisplayNameFor(model => model.User[0].Privilege)
+                @Html.DisplayNameFor(model => model.UserList[0].Privilege)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserList[0].StaffId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserList[0].AdminId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserList[0].ResidentId)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.User) {
+@foreach (var item in Model.UserList) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.UserId)
@@ -37,12 +43,17 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Username)
             </td>
-            @* <td>
-                @Html.DisplayFor(modelItem => item.PasswordHash)
-            </td> *@
             <td>
-                @Html.DisplayFor(modelItem =>
-                    item.Privilege)
+                @Html.DisplayFor(modelItem => item.Privilege)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StaffId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AdminId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ResidentId)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.UserId">Edit</a> |

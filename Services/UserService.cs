@@ -16,7 +16,7 @@ namespace HomeownersMS.Services
 
         public async Task ChangeUserPrivilege(int userId, Privileges newPrivilege)
         {
-            var user = await _context.User
+            var user = await _context.Users
                 .Include(u => u.Resident)
                 .Include(u => u.Staff)
                 .Include(u => u.Admin)

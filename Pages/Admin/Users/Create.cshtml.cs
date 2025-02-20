@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using HomeownersMS.Data;
 using HomeownersMS.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HomeownersMS.Pages.Admin.Users
 {
+    [Authorize(Roles = "admin")]
     public class CreateModel : PageModel
     {
         private readonly HomeownersMS.Data.HomeownersContext _context;
@@ -32,7 +34,7 @@ namespace HomeownersMS.Pages.Admin.Users
         }
 
         [BindProperty]
-        public User User { get; set; } = default!;
+        public User UserList { get; set; } = default!;
 
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
@@ -42,27 +44,27 @@ namespace HomeownersMS.Pages.Admin.Users
                 return Page();
             }
 
-            var existingUser = await _context.User
-                .FirstOrDefaultAsync(u => u.Username == User.Username);
+            var existingUser = await _context.Users
+                .FirstOrDefaultAsync(u => u.Username == UserList.Username);
 
             if (existingUser != null)
             {
-                ModelState.AddModelError("User.Username", "Username is already taken.");
+                ModelState.AddModelError("UserList.Username", "Username is already taken.");
                 return Page();
             }
 
-            if (User.PasswordHash != ConfirmPassword)
+            if (UserList.PasswordHash != ConfirmPassword)
             {
                 ModelState.AddModelError("ConfirmPassword", "Password and Confirm Password do not match.");
                 return Page();
             }
 
-            if (!string.IsNullOrEmpty(User.PasswordHash))
+            if (!string.IsNullOrEmpty(UserList.PasswordHash))
             {
-                User.SetPassword(User.PasswordHash);
+                UserList.SetPassword(UserList.PasswordHash);
             }
 
-            _context.User.Add(User);
+            _context.Users.Add(UserList);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
