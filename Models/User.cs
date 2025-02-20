@@ -15,14 +15,14 @@ namespace HomeownersMS.Models
 
         [Required]
         [MaxLength(20)]
-        public string Username { get; set; }
+        public string Username { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(255)]
-        public string PasswordHash {  get; set; }
+        public string PasswordHash {  get; set; } = string.Empty;
 
         [Required]
-        public Privileges Privilege { get; set; }
+        public Privileges Privilege { get; set; } = Privileges.resident;
 
         public int? ResidentId { get; set; }
         public int? StaffId { get; set; }

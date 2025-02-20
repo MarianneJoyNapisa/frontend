@@ -11,23 +11,23 @@ namespace HomeownersMS.Models
 
         [Required]
         [MaxLength(50)]
-        public string LName { get; set; }
+        public string LName { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(50)]
-        public string FName { get; set; }
+        public string FName { get; set; } = string.Empty;
 
         [AllowNull]
         [MaxLength(50)]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         [AllowNull]
         [MaxLength(50)]
-        public string ContactNo { get; set; }
+        public string ContactNo { get; set; } = string.Empty;
 
         [AllowNull]
         [MaxLength(50)]
-        public string Job { get; set; }
+        public string Job { get; set; } = string.Empty;
 
         [AllowNull]
         public DateTime? HireDate { get; set; }
