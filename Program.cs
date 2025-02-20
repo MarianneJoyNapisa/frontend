@@ -23,13 +23,18 @@ namespace HomeownersMS
             builder.Services.AddDbContext<HomeownersContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("HomeownersContext")));
 
+            builder.Services.AddHttpContextAccessor();
+            
             // Authentication
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.LoginPath = "/Index";
+                    options.LoginPath = "/Account/Login";
                     options.LogoutPath = "/Account/Logout";
                     options.AccessDeniedPath = "/Account/AccessDenied";
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
                 });
 
             builder.Services.AddAuthorization();
@@ -71,6 +76,7 @@ namespace HomeownersMS
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapRazorPages();

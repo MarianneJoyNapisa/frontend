@@ -259,7 +259,6 @@ D:\User Folder\Magus Files\RRA Personal Folder\HelloWorld\C#\HomeownersMS\obj\De
 D:\User Folder\Magus Files\RRA Personal Folder\HelloWorld\C#\HomeownersMS\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HomeownersMS.props
 D:\User Folder\Magus Files\RRA Personal Folder\HelloWorld\C#\HomeownersMS\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HomeownersMS.props
 D:\User Folder\Magus Files\RRA Personal Folder\HelloWorld\C#\HomeownersMS\obj\Debug\net8.0\staticwebassets.pack.json
-D:\User Folder\Magus Files\RRA Personal Folder\HelloWorld\C#\HomeownersMS\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\User Folder\Magus Files\RRA Personal Folder\HelloWorld\C#\HomeownersMS\obj\Debug\net8.0\Homeowne.24184601.Up2Date
 D:\User Folder\Magus Files\RRA Personal Folder\HelloWorld\C#\HomeownersMS\obj\Debug\net8.0\HomeownersMS.dll
 D:\User Folder\Magus Files\RRA Personal Folder\HelloWorld\C#\HomeownersMS\obj\Debug\net8.0\refint\HomeownersMS.dll
