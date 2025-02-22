@@ -1,14 +1,13 @@
 // emptyusing System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.CodeAnalysis;
 
 namespace HomeownersMS.Models
 {
-    public class Announcement
+    public class Resource
     {
         [Key]
-        public int AnnouncementId { get; set; }
+        public int ResourceId { get; set; }
 
         public string? Title { get; set; } 
 

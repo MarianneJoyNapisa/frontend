@@ -1,40 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HomeownersMS.Models
 {
     public class Staff
     {
-        [Key]
-        public int StaffId { get; set; }
-
-        [AllowNull]
-        [MaxLength(50)]
-        public string? LName { get; set; } = string.Empty;
-
-        [AllowNull]        
-        [MaxLength(50)]
-        public string? FName { get; set; } = string.Empty;
-
-        [AllowNull]
-        [MaxLength(50)]
-        public string? Email { get; set; } = string.Empty;
-
-        [AllowNull]
-        [MaxLength(50)]
-        public string? ContactNo { get; set; } = string.Empty;
-
-        [AllowNull]
-        [MaxLength(50)]
-        public string? Job { get; set; } = string.Empty;
-
-        [AllowNull]
+        [Key, ForeignKey("User")]
+        public int UserId { get; set; }
+        public string? LName { get; set; }
+        public string? FName { get; set; }
+        public string? Email { get; set; }
+        public string? ContactNo { get; set; }
+        public string? Job { get; set; }
         public DateTime? HireDate { get; set; }
-
         public virtual User User { get; set; }
-        public virtual ICollection<Service> Services { get; set; } = new List<Service>();
+
+        public ICollection<Service> Services { get; set; } = new List<Service>();
 
         public Staff()
         {

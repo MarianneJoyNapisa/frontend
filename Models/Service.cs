@@ -15,10 +15,12 @@ namespace HomeownersMS.Models
 
         public string Description { get; set; } = string.Empty;
 
+        [ForeignKey("Staff")]
         public int? StaffId { get; set; }
 
-        [ForeignKey("StaffId")]
-        public virtual Staff Staff { get; set; } = null!;
+        public virtual Staff? Staff { get; set; }
+
+        public virtual ICollection<ServiceRequest> ServiceRequests { get; set; } = new List<ServiceRequest>();
     }
 }
 

@@ -58,14 +58,14 @@ namespace HomeownersMS
                 app.UseMigrationsEndPoint();
             }
 
-            // Database Initialization (Use Migrate() instead of EnsureCreated() if using Migrations)
-            using (var scope = app.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                var context = services.GetRequiredService<HomeownersContext>();
-                context.Database.Migrate(); // Apply pending migrations automatically
-                DbInitializer.Initialize(context);
-            }
+            // // Database Initialization (Use Migrate() instead of EnsureCreated() if using Migrations)
+            // using (var scope = app.Services.CreateScope())
+            // {
+            //     var services = scope.ServiceProvider;
+            //     var context = services.GetRequiredService<HomeownersContext>();
+            //     context.Database.Migrate(); // Apply pending migrations automatically
+            //     DbInitializer.Initialize(context);
+            // }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -81,3 +81,33 @@ namespace HomeownersMS
         }
     }
 }
+
+
+/*
+Scaffold CRUD pages:
+dotnet aspnet-codegenerator razorpage -m Staff -dc HomeownersContext -udl -outDir Pages/Admin/Staffs
+                                    -> Model      -> DbContext                     -> Pages Route
+
+Query Database:
+sqlcmd -S "(localdb)\MSSQLLocalDB" -E
+USE [HomeownersContext-e71be176-bc2e-4bde-b917-685163f5749a];
+            -> Database name
+SELECT * FROM [Staffs];
+GO
+
+SELECT TABLE_NAME 
+FROM INFORMATION_SCHEMA.TABLES 
+WHERE TABLE_TYPE = 'BASE TABLE';
+
+INSERT INTO [User] (Username, PasswordHash, Privilege)        
+VALUES ('admin', 'qwerty', 2);      
+go
+
+
+dotnet ef migrations add MigrationName
+dotnet ef database update
+
+dotnet ef database drop --force
+dotnet ef migrations remove
+dotnet ef migrations list
+*/

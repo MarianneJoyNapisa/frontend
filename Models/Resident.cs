@@ -1,38 +1,23 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HomeownersMS.Models
 {
     public class Resident
     {
-        [Key]
-        public int ResidentId { get; set; }
-
-        [AllowNull]
-        [MaxLength(50)]
-        public string? LName { get; set; } = string.Empty;
-
-        [AllowNull]
-        [MaxLength(50)]
-        public string? FName { get; set; } = string.Empty;
-
-        [AllowNull]
-        [MaxLength(50)]
-        public string? Email { get; set; } = string.Empty;
-
-        [AllowNull]
-        [MaxLength(50)]
-        public string? ContactNo { get; set; } = string.Empty;
-
-        [AllowNull]
-        [MaxLength(255)]
-        public string? Address { get; set; } = string.Empty;
-
-        [AllowNull]
+        [Key, ForeignKey("User")]
+        public int UserId { get; set; }
+        public string? LName { get; set; } 
+        public string? FName { get; set; } 
+        public string? Email { get; set; } 
+        public string? ContactNo { get; set; } 
+        public string? Address { get; set; } 
         public DateTime? MoveInDate { get; set; }
 
         public virtual User User { get; set; }
+
+        public virtual ICollection<ServiceRequest> ServiceRequests { get; set; } = new List<ServiceRequest>();
 
         public Resident()
         {

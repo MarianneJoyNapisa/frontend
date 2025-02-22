@@ -13,30 +13,13 @@ namespace HomeownersMS.Models
     {
         [Key]
         public int UserId { get; set; }
+        public string? Username { get; set; }
+        public string? PasswordHash { get; set; }
+        public Privileges? Privilege { get; set; }
 
-        [Required]
-        [MaxLength(20)]
-        public string Username { get; set; } = string.Empty;
-
-        [Required]
-        [MaxLength(255)]
-        public string PasswordHash { get; set; } = string.Empty;
-
-        [Required]
-        public Privileges Privilege { get; set; } = Privileges.resident;
-
-        public int? ResidentId { get; set; }
-        public int? StaffId { get; set; }
-        public int? AdminId { get; set; }
-
-        [ForeignKey("ResidentId")]
-        public virtual Resident? Resident { get; set; }
-
-        [ForeignKey("StaffId")]
-        public virtual Staff? Staff { get; set; }
-
-        [ForeignKey("AdminId")]
         public virtual Admin? Admin { get; set; }
+        public virtual Staff? Staff { get; set; }
+        public virtual Resident? Resident { get; set; }
 
         public void SetPassword(string password)
         {
@@ -46,9 +29,13 @@ namespace HomeownersMS.Models
 
         public bool VerifyPassword(string password)
         {
-            var passwordHasher = new PasswordHasher<User>();
-            var result = passwordHasher.VerifyHashedPassword(this, PasswordHash, password);
-            return result == PasswordVerificationResult.Success;
+            if (PasswordHash != null)
+            {
+                var passwordHasher = new PasswordHasher<User>();
+                var result = passwordHasher.VerifyHashedPassword(this, PasswordHash, password);
+                return result == PasswordVerificationResult.Success;
+            }
+            return false;
         }
     }
 }

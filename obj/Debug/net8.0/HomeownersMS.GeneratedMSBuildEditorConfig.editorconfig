@@ -60,50 +60,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudFxfUmVnaXN0ZXJGb3JtLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/Services/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU2VydmljZXNcQ3JlYXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/Services/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU2VydmljZXNcRGVsZXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/Services/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU2VydmljZXNcRGV0YWlscy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/Services/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU2VydmljZXNcRWRpdC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/Services/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU2VydmljZXNcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/Users/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cVXNlcnNcQ3JlYXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/Users/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cVXNlcnNcRGVsZXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/Users/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cVXNlcnNcRGV0YWlscy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/Users/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cVXNlcnNcRWRpdC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/Users/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cVXNlcnNcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Community/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbXVuaXR5XEluZGV4LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Dashboard/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -116,36 +72,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Payment/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF5bWVudFxJbmRleC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Request/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVxdWVzdFxJbmRleC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Reservation/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVzZXJ2YXRpb25cSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Resources/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVzb3VyY2VzXEluZGV4LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Security/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VjdXJpdHlcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Service/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VydmljZVxJbmRleC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Settings/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ3NcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Shared/_ValidationScriptsPartial.cshtml]
