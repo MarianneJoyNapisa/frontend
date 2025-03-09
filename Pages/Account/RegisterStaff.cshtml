@@ -3,6 +3,85 @@
 @{
     ViewData["Title"] = "Register Staff";
 }
+
 <h1>Register Staff</h1>
-<hr />
-<partial name="_RegisterForm" model="Model.UserInput" />
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <!-- Username -->
+    <div class="form-group">
+        <label asp-for="UserInput.Username" class="control-label"></label>
+        <input asp-for="UserInput.Username" class="form-control" />
+        <span asp-validation-for="UserInput.Username" class="text-danger"></span>
+    </div>
+
+    <!-- Password -->
+    <div class="form-group">
+        <label asp-for="UserInput.Password" class="control-label"></label>
+        <input asp-for="UserInput.Password" type="password" class="form-control" />
+        <span asp-validation-for="UserInput.Password" class="text-danger"></span>
+    </div>
+
+    <!-- Confirm Password -->
+    <div class="form-group">
+        <label asp-for="UserInput.ConfirmPassword" class="control-label"></label>
+        <input asp-for="UserInput.ConfirmPassword" type="password" class="form-control" />
+        <span asp-validation-for="UserInput.ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <!-- Last Name -->
+    <div class="form-group">
+        <label asp-for="UserInput.LName" class="control-label"></label>
+        <input asp-for="UserInput.LName" class="form-control" />
+        <span asp-validation-for="UserInput.LName" class="text-danger"></span>
+    </div>
+
+    <!-- First Name -->
+    <div class="form-group">
+        <label asp-for="UserInput.FName" class="control-label"></label>
+        <input asp-for="UserInput.FName" class="form-control" />
+        <span asp-validation-for="UserInput.FName" class="text-danger"></span>
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+        <label asp-for="UserInput.Email" class="control-label"></label>
+        <input asp-for="UserInput.Email" class="form-control" />
+        <span asp-validation-for="UserInput.Email" class="text-danger"></span>
+    </div>
+
+    <!-- Contact Number -->
+    <div class="form-group">
+        <label asp-for="UserInput.ContactNo" class="control-label"></label>
+        <input asp-for="UserInput.ContactNo" class="form-control" />
+        <span asp-validation-for="UserInput.ContactNo" class="text-danger"></span>
+    </div>
+
+    <!-- Job -->
+    <div class="form-group">
+        <label asp-for="UserInput.Job" class="control-label"></label>
+        <input asp-for="UserInput.Job" class="form-control" />
+        <span asp-validation-for="UserInput.Job" class="text-danger"></span>
+    </div>
+
+    <!-- Hire Date -->
+    <div class="form-group">
+        <label asp-for="UserInput.HireDate" class="control-label"></label>
+        <input asp-for="UserInput.HireDate" type="date" class="form-control" />
+        <span asp-validation-for="UserInput.HireDate" class="text-danger"></span>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="form-group">
+        <input type="submit" value="Register" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>
+    <a asp-page="/Admin/Users/Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

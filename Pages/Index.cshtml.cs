@@ -17,11 +17,14 @@ namespace HomeownersMS.Pages
             var userIdentity = HttpContext.User.Identity;
 
             // Fix: Ensure Identity is not null before accessing its properties
-            if (userIdentity == null || userIdentity.IsAuthenticated)
+            if (userIdentity == null || !userIdentity.IsAuthenticated)
             {
-                return RedirectToPage("/Dashboard/Index");
+                // Redirect unauthenticated users to /Account/Login
+                return RedirectToPage("/Account/Login");
             }
-            return Page();
+
+            // Redirect authenticated users to /Dashboard/Index (existing logic)
+            return RedirectToPage("/Dashboard/Index");
         }
     }
 }

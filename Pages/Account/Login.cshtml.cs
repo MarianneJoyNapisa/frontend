@@ -37,6 +37,19 @@ namespace HomeownersMS.Pages.Account
             public string Password { get; set; } = string.Empty;
         }
 
+        public async Task<IActionResult> OnGetAsync()
+        {
+            // Check if the user is already authenticated
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                // Redirect authenticated users to the Index page
+                return RedirectToPage("/Index");
+            }
+
+            return Page(); // Render the login page for unauthenticated users
+        }
+
+
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {

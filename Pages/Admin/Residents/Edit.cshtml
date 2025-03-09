@@ -1,0 +1,57 @@
+@page
+@model HomeownersMS.Pages_Admin_Residents.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Resident</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Resident.UserId" />
+            <div class="form-group">
+                <label asp-for="Resident.LName" class="control-label"></label>
+                <input asp-for="Resident.LName" class="form-control" />
+                <span asp-validation-for="Resident.LName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resident.FName" class="control-label"></label>
+                <input asp-for="Resident.FName" class="form-control" />
+                <span asp-validation-for="Resident.FName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resident.Email" class="control-label"></label>
+                <input asp-for="Resident.Email" class="form-control" />
+                <span asp-validation-for="Resident.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resident.ContactNo" class="control-label"></label>
+                <input asp-for="Resident.ContactNo" class="form-control" />
+                <span asp-validation-for="Resident.ContactNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resident.Address" class="control-label"></label>
+                <input asp-for="Resident.Address" class="form-control" />
+                <span asp-validation-for="Resident.Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resident.MoveInDate" class="control-label"></label>
+                <input asp-for="Resident.MoveInDate" class="form-control" />
+                <span asp-validation-for="Resident.MoveInDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+

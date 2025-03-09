@@ -1,0 +1,71 @@
+﻿@page
+@model HomeownersMS.Pages.Admin.Users.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Users</h1>
+
+<!-- Navigation Links -->
+<div class="mb-3">
+    <a class="btn btn-primary" asp-page="/Account/RegisterResident">Register Resident</a>
+    <a class="btn btn-primary" asp-page="/Account/RegisterStaff">Register Staff</a>
+    <a class="btn btn-primary" asp-page="/Account/RegisterAdmin">Register Admin</a>
+</div>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserList[0].UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserList[0].Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserList[0].Privilege)
+            </th>
+            @* <th>
+                Staff ID
+            </th>
+            <th>
+                Admin ID
+            </th>
+            <th>
+                Resident ID
+            </th> *@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.UserList) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Privilege)
+            </td>
+            @* <td>
+                @Html.DisplayFor(modelItem => item.Staff.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Admin.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Resident.UserId)
+            </td> *@
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.UserId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.UserId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.UserId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

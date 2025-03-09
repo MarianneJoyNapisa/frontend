@@ -14,7 +14,7 @@ namespace HomeownersMS
 
             // Database Context (Only register once!)
             builder.Services.AddDbContext<HomeownersContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("HomeownersContext") 
+                options.UseSqlServer(builder.Configuration.GetConnectionString("HomeownersContext")
                     ?? throw new InvalidOperationException("Connection string 'HomeownersContext' not found.")));
 
             // Add services to the container.

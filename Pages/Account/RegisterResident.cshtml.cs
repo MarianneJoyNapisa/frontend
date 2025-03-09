@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -5,9 +6,13 @@ using HomeownersMS.Data;
 using HomeownersMS.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace HomeownersMS.Pages.Account
 {
+    [Authorize]
     public class RegisterResidentModel : PageModel
     {
         private readonly HomeownersContext _context;
@@ -21,41 +26,80 @@ namespace HomeownersMS.Pages.Account
         [BindProperty]
         public UserRegistrationModel UserInput { get; set; } = new();
 
+        public class UserRegistrationModel
+        {
+            [Required]
+            public string Username { get; set; } = string.Empty;
+
+            [Required]
+            [DataType(DataType.Password)]
+            public string Password { get; set; } = string.Empty;
+
+            [Required]
+            [DataType(DataType.Password)]
+            [Compare("Password", ErrorMessage = "Password and Confirm Password do not match.")]
+            public string ConfirmPassword { get; set; } = string.Empty;
+
+            [Required]
+            public string LName { get; set; } = string.Empty;
+
+            [Required]
+            public string FName { get; set; } = string.Empty;
+
+            [Required]
+            [EmailAddress]
+            public string Email { get; set; } = string.Empty;
+
+            [Required]
+            [Phone]
+            public string ContactNo { get; set; } = string.Empty;
+
+            [Required]
+            public string Address { get; set; } = string.Empty;
+
+            [Required]
+            [DataType(DataType.Date)]
+            public DateTime MoveInDate { get; set; } = DateTime.Now;
+        }
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
                 return Page();
 
-            // Fix: Use _context.Users instead of _context.User
+            // Check if the username is already taken
             if (await _context.Users.AnyAsync(u => u.Username == UserInput.Username))
             {
                 ModelState.AddModelError("UserInput.Username", "Username is already taken.");
                 return Page();
             }
 
+            // Create the User entity
             var user = new User
             {
                 Username = UserInput.Username,
-                PasswordHash = _passwordHasher.HashPassword(new User(), UserInput.Password), // Fix: Pass a User instance
-                Privilege = Privileges.resident // Fix: Ensure the correct role is assigned
+                PasswordHash = _passwordHasher.HashPassword(new User(), UserInput.Password),
+                Privilege = Privileges.resident
             };
 
+            // Create the Resident entity
             var resident = new Resident
             {
-                LName = "", 
-                FName = "",
-                Email = "",
-                ContactNo = "",
-                Address = "",
-                MoveInDate = System.DateTime.Now,
+                LName = UserInput.LName,
+                FName = UserInput.FName,
+                Email = UserInput.Email,
+                ContactNo = UserInput.ContactNo,
+                Address = UserInput.Address,
+                MoveInDate = UserInput.MoveInDate,
                 User = user
             };
 
+            // Add and save to the database
             _context.Users.Add(user);
             _context.Residents.Add(resident);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("/Index");
+            return RedirectToPage("/Admin/Users/Index");
         }
     }
 }
