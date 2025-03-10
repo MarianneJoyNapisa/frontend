@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HomeownersMS.Migrations
 {
     [DbContext(typeof(HomeownersContext))]
-    [Migration("20250310030016_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250310064618_ModifiedFacility")]
+    partial class ModifiedFacility
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -132,6 +132,9 @@ namespace HomeownersMS.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("FacilityImage")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
@@ -149,13 +152,28 @@ namespace HomeownersMS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("EmailAddress")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<int?>("FacilityId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("RequestCompletionDate")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("ReservationDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<TimeSpan?>("ReservationTime")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("ResidentId")
@@ -171,6 +189,32 @@ namespace HomeownersMS.Migrations
                     b.HasIndex("ResidentId");
 
                     b.ToTable("FacilityRequest", (string)null);
+                });
+
+            modelBuilder.Entity("HomeownersMS.Models.FacilityReview", b =>
+                {
+                    b.Property<int>("ReviewId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("FacilityId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ReviewDate")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ReviewId");
+
+                    b.HasIndex("FacilityId");
+
+                    b.ToTable("FacilityReviews");
                 });
 
             modelBuilder.Entity("HomeownersMS.Models.Resident", b =>
@@ -392,6 +436,17 @@ namespace HomeownersMS.Migrations
                     b.Navigation("Resident");
                 });
 
+            modelBuilder.Entity("HomeownersMS.Models.FacilityReview", b =>
+                {
+                    b.HasOne("HomeownersMS.Models.Facility", "Facility")
+                        .WithMany("FacilityReviews")
+                        .HasForeignKey("FacilityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Facility");
+                });
+
             modelBuilder.Entity("HomeownersMS.Models.Resident", b =>
                 {
                     b.HasOne("HomeownersMS.Models.User", "User")
@@ -450,6 +505,11 @@ namespace HomeownersMS.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HomeownersMS.Models.Facility", b =>
+                {
+                    b.Navigation("FacilityReviews");
                 });
 
             modelBuilder.Entity("HomeownersMS.Models.Resident", b =>

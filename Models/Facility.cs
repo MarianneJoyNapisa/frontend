@@ -15,5 +15,11 @@ namespace HomeownersMS.Models
 
         // This will be mapped to REAL in SQLite
         public float? PricePerHour { get; set; }
+
+        // Facility Image (stored as a file path or URL)
+        public string? FacilityImage { get; set; }
+
+        // Navigation property for reviews
+        public virtual ICollection<FacilityReview> FacilityReviews { get; set; } = new List<FacilityReview>();
     }
 }

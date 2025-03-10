@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HomeownersMS.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class ModifiedFacility : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,8 @@ namespace HomeownersMS.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
-                    PricePerHour = table.Column<float>(type: "REAL", nullable: true)
+                    PricePerHour = table.Column<float>(type: "REAL", nullable: true),
+                    FacilityImage = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -39,6 +40,28 @@ namespace HomeownersMS.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.UserId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FacilityReviews",
+                columns: table => new
+                {
+                    ReviewId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    FacilityId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Content = table.Column<string>(type: "TEXT", nullable: false),
+                    ReviewDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Rating = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FacilityReviews", x => x.ReviewId);
+                    table.ForeignKey(
+                        name: "FK_FacilityReviews_Facility_FacilityId",
+                        column: x => x.FacilityId,
+                        principalTable: "Facility",
+                        principalColumn: "FacilityId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -205,10 +228,14 @@ namespace HomeownersMS.Migrations
                     FacilityRequestId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     ReservationDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    ReservationTime = table.Column<TimeSpan>(type: "TEXT", nullable: true),
                     RequestCompletionDate = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Status = table.Column<int>(type: "INTEGER", nullable: true),
                     ResidentId = table.Column<int>(type: "INTEGER", nullable: true),
-                    FacilityId = table.Column<int>(type: "INTEGER", nullable: true)
+                    FacilityId = table.Column<int>(type: "INTEGER", nullable: true),
+                    FullName = table.Column<string>(type: "TEXT", nullable: false),
+                    EmailAddress = table.Column<string>(type: "TEXT", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -304,6 +331,11 @@ namespace HomeownersMS.Migrations
                 column: "ResidentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FacilityReviews_FacilityId",
+                table: "FacilityReviews",
+                column: "FacilityId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Resource_CreatedBy",
                 table: "Resource",
                 column: "CreatedBy");
@@ -335,6 +367,9 @@ namespace HomeownersMS.Migrations
 
             migrationBuilder.DropTable(
                 name: "FacilityRequest");
+
+            migrationBuilder.DropTable(
+                name: "FacilityReviews");
 
             migrationBuilder.DropTable(
                 name: "Resource");

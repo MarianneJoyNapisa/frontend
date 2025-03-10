@@ -2,6 +2,8 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+// Facility Request or Facility Reservation
+
 namespace HomeownersMS.Models
 {
     public class FacilityRequest
@@ -9,7 +11,11 @@ namespace HomeownersMS.Models
         [Key]
         public int FacilityRequestId { get; set; }
 
-        public DateTime? ReservationDate { get; set; } 
+        [DataType(DataType.Date)]
+        public DateTime? ReservationDate { get; set; } // Date only
+
+        [DataType(DataType.Time)]
+        public TimeSpan? ReservationTime { get; set; }  
 
         public DateTime? RequestCompletionDate { get; set; }
 
@@ -20,6 +26,17 @@ namespace HomeownersMS.Models
 
         [ForeignKey("Facility")]
         public int? FacilityId { get; set; }
+
+        [Required]
+        public string? FullName { get; set; } // Full Name
+
+        [Required]
+        [EmailAddress]
+        public string? EmailAddress { get; set; } // Email Address
+
+        [Required]
+        [Phone]
+        public string? PhoneNumber { get; set; }
 
         public virtual Resident? Resident { get; set; }
         public virtual Facility? Facility { get; set; }

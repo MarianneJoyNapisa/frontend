@@ -21,6 +21,7 @@ namespace HomeownersMS.Data
         public DbSet<ServiceRequest> ServiceRequests { get; set; } = default!;
 
         public DbSet<Facility> Facilities { get; set; } = default!;
+        public DbSet<FacilityReview> FacilityReviews { get; set; } = default!;
         public DbSet<FacilityRequest> FacilityRequests { get; set; } = default!;
         public DbSet<CommunityPost> CommunityPosts { get; set; } = default!;
         public DbSet<CommunityComment> CommunityComments { get; set; } = default!;
@@ -64,6 +65,12 @@ namespace HomeownersMS.Data
                 .WithMany(s => s.ServiceRequests) // Ensure Service has a collection of ServiceRequests
                 .HasForeignKey(sr => sr.ServiceId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Facility>()
+                .HasMany(f => f.FacilityReviews)
+                .WithOne(r => r.Facility)
+                .HasForeignKey(r => r.FacilityId)
+                .OnDelete(DeleteBehavior.Cascade); // Cascade delete reviews when a facility is deleted
 
             modelBuilder.Entity<FacilityRequest>()
                 .HasOne(fr => fr.Resident)
