@@ -56,10 +56,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudFxSZWdpc3RlclN0YWZmLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Account/_RegisterForm.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudFxfUmVnaXN0ZXJGb3JtLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/Admins/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQWRtaW5zXERlbGV0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -74,6 +70,26 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/Admins/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQWRtaW5zXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/Facilities/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRmFjaWxpdGllc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/Facilities/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRmFjaWxpdGllc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/Facilities/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRmFjaWxpdGllc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/Facilities/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRmFjaWxpdGllc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/Facilities/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRmFjaWxpdGllc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/Residents/Delete.cshtml]
@@ -166,6 +182,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/_AdminLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0FkbWluTGF5b3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/_ViewImports.cshtml]

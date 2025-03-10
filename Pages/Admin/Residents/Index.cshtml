@@ -2,12 +2,19 @@
 @model HomeownersMS.Pages_Admin_Residents.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    Layout = "_AdminLayout"; // Use the Admin layout
+    ViewData["HeaderTitle"] = "User Management";
+    ViewData["Title"] = "Residents";
+    var username = HttpContext?.User?.Identity?.Name ?? "Guest";
+    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+    ViewData["Username"] = username;
+    ViewData["CurrentPage"] = currentPage;
 }
 
-<h1>Index</h1>
+<h1>Residents</h1>
 
-<table class="table">
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
     <thead>
         <tr>
             <th>
@@ -67,3 +74,5 @@
 }
     </tbody>
 </table>
+
+</div>

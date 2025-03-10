@@ -7,6 +7,7 @@
     <title>@ViewData["Title"] - HomeownersMS</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/css/GLobalstyle.css">
     <style>
     body {  
@@ -42,6 +43,11 @@
 </head>
 
 <body>
+    <!-- Render the Sidebar section if it exists -->
+    @if (IsSectionDefined("Sidebar"))
+    {
+        @RenderSection("Sidebar", required: false)
+    }
 
     <div class="container bg-colorr">
         <img src="~/images/Housing_Logo.png" alt="Logo" class="img-fluid" id="logo" />
@@ -50,9 +56,9 @@
         </main>
     </div>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/SideNavjs.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
