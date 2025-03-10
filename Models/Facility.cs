@@ -1,4 +1,3 @@
-// emptyusing System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,10 +8,12 @@ namespace HomeownersMS.Models
         [Key]
         public int FacilityId { get; set; }
 
-        public string? Name { get; set; } 
+        // These properties will be mapped to TEXT in SQLite
+        public string? Name { get; set; }
 
         public string? Description { get; set; }
 
+        // This will be mapped to REAL in SQLite
         public float? PricePerHour { get; set; }
     }
 }

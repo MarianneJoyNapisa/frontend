@@ -14,7 +14,7 @@ namespace HomeownersMS
 
             // Database Context (Only register once!)
             builder.Services.AddDbContext<HomeownersContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("HomeownersContext")
+                options.UseSqlite(builder.Configuration.GetConnectionString("HomeownersContext")
                     ?? throw new InvalidOperationException("Connection string 'HomeownersContext' not found.")));
 
             // Add services to the container.
@@ -67,6 +67,15 @@ namespace HomeownersMS
             //     DbInitializer.Initialize(context);
             // }
 
+            // Database Initialization (Migrate database on startup)
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<HomeownersContext>();
+                context.Database.Migrate(); // Apply pending migrations automatically
+                DbInitializer.Initialize(context); // You can initialize your DB here if needed
+            }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -104,10 +113,32 @@ VALUES ('admin', 'qwerty', 2);
 go
 
 
+
 dotnet ef migrations add MigrationName
 dotnet ef database update
 
 dotnet ef database drop --force
 dotnet ef migrations remove
 dotnet ef migrations list
+
+
+initiate database:
+dotnet tool install --global dotnet-ef
+dotnet add package Microsoft.EntityFrameworkCore.Design
+
+check sa C:\Users\<name sa imo user>\.dotnet\tools\dotnet-ef.exe
+copy dir e.g. C:\Users\xx203\.dotnet\tools\dotnet-ef.exe
+
+C:\Users\xx203\.dotnet\tools\dotnet-ef.exe migrations add InitialCreate
+C:\Users\xx203\.dotnet\tools\dotnet-ef.exe database update
+
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+
+
+sqlite:
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+dotnet add package Microsoft.EntityFrameworkCore.Design
+
+
 */

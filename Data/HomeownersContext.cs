@@ -65,10 +65,6 @@ namespace HomeownersMS.Data
                 .HasForeignKey(sr => sr.ServiceId)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            modelBuilder.Entity<Facility>()
-                .Property(f => f.PricePerHour)
-                .HasColumnType("decimal(10,2)"); // Ensure proper decimal format
-
             modelBuilder.Entity<FacilityRequest>()
                 .HasOne(fr => fr.Resident)
                 .WithMany() // Assuming one resident can have multiple facility requests
