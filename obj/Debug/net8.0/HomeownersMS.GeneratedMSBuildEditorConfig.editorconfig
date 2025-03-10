@@ -92,6 +92,22 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRmFjaWxpdGllc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/FacilityRequests/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRmFjaWxpdHlSZXF1ZXN0c1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/FacilityRequests/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRmFjaWxpdHlSZXF1ZXN0c1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/FacilityRequests/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRmFjaWxpdHlSZXF1ZXN0c1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/FacilityRequests/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRmFjaWxpdHlSZXF1ZXN0c1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Admin/Residents/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cUmVzaWRlbnRzXERlbGV0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -186,6 +202,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/_AdminLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0FkbWluTGF5b3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/_ResidentLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1Jlc2lkZW50TGF5b3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/_ViewImports.cshtml]

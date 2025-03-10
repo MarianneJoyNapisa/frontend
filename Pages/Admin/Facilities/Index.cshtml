@@ -8,7 +8,8 @@
     var username = HttpContext?.User?.Identity?.Name ?? "Guest";
     var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
     ViewData["Username"] = username;
-    ViewData["CurrentPage"] = currentPage;}
+    ViewData["CurrentPage"] = currentPage;
+}
 
 <h1>Facilities</h1>
 
