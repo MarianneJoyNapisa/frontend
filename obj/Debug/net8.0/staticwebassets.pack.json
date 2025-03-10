@@ -5,12 +5,48 @@
       "PackagePath": "staticwebassets\\HomeownersMS.4wenblwj1i.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\xx203\\Desktop\\homeowners\\ELNET_HomeownersMS\\wwwroot\\css\\Globalstyle.css",
+      "PackagePath": "staticwebassets\\css\\Globalstyle.css"
+    },
+    {
       "Id": "C:\\Users\\xx203\\Desktop\\homeowners\\ELNET_HomeownersMS\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
       "Id": "C:\\Users\\xx203\\Desktop\\homeowners\\ELNET_HomeownersMS\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\xx203\\Desktop\\homeowners\\ELNET_HomeownersMS\\wwwroot\\images\\BasketballCourt.png",
+      "PackagePath": "staticwebassets\\images\\BasketballCourt.png"
+    },
+    {
+      "Id": "C:\\Users\\xx203\\Desktop\\homeowners\\ELNET_HomeownersMS\\wwwroot\\images\\Chapel.png",
+      "PackagePath": "staticwebassets\\images\\Chapel.png"
+    },
+    {
+      "Id": "C:\\Users\\xx203\\Desktop\\homeowners\\ELNET_HomeownersMS\\wwwroot\\images\\FunctionHall.png",
+      "PackagePath": "staticwebassets\\images\\FunctionHall.png"
+    },
+    {
+      "Id": "C:\\Users\\xx203\\Desktop\\homeowners\\ELNET_HomeownersMS\\wwwroot\\images\\HomeOwners_bgc.png",
+      "PackagePath": "staticwebassets\\images\\HomeOwners_bgc.png"
+    },
+    {
+      "Id": "C:\\Users\\xx203\\Desktop\\homeowners\\ELNET_HomeownersMS\\wwwroot\\images\\Housing_Logo.png",
+      "PackagePath": "staticwebassets\\images\\Housing_Logo.png"
+    },
+    {
+      "Id": "C:\\Users\\xx203\\Desktop\\homeowners\\ELNET_HomeownersMS\\wwwroot\\images\\SwimmingPool.png",
+      "PackagePath": "staticwebassets\\images\\SwimmingPool.png"
+    },
+    {
+      "Id": "C:\\Users\\xx203\\Desktop\\homeowners\\ELNET_HomeownersMS\\wwwroot\\js\\Calendar.js",
+      "PackagePath": "staticwebassets\\js\\Calendar.js"
+    },
+    {
+      "Id": "C:\\Users\\xx203\\Desktop\\homeowners\\ELNET_HomeownersMS\\wwwroot\\js\\sideNavjs.js",
+      "PackagePath": "staticwebassets\\js\\sideNavjs.js"
     },
     {
       "Id": "C:\\Users\\xx203\\Desktop\\homeowners\\ELNET_HomeownersMS\\wwwroot\\js\\site.js",
