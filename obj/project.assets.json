@@ -8310,23 +8310,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\xx203\\.nuget\\packages\\": {},
+    "C:\\Users\\ramil\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\xx203\\Desktop\\homeowners\\ELNET_HomeownersMS\\HomeownersMS.csproj",
+      "projectUniqueName": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\HomeownersMS.csproj",
       "projectName": "HomeownersMS",
-      "projectPath": "C:\\Users\\xx203\\Desktop\\homeowners\\ELNET_HomeownersMS\\HomeownersMS.csproj",
-      "packagesPath": "C:\\Users\\xx203\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\xx203\\Desktop\\homeowners\\ELNET_HomeownersMS\\obj\\",
+      "projectPath": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\HomeownersMS.csproj",
+      "packagesPath": "C:\\Users\\ramil\\.nuget\\packages\\",
+      "outputPath": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\xx203\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ramil\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -8335,7 +8335,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

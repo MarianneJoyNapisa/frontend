@@ -1,6 +1,6 @@
 ﻿@page
 @using System.Security.Claims
-@model HomeownersMS.Pages.Dashboard.IndexModel
+@model HomeownersMS.Pages.Dashboard.IndexResidentModel
 @{
     Layout = null;
     ViewData["Title"] = "Dashboard";
@@ -79,7 +79,7 @@
                 <i class="bi bi-gear-fill"></i>
                 <span>Settings</span>
             </a>
-            <a asp-page="/Login" class="navItem @(currentPage?.StartsWith("/Login")==true ? "active" : "")">
+            <a asp-page="/Account/Logout" class="navItem @(currentPage?.StartsWith("/Account/Logout")==true ? "active" : "")">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Logout</span>
             </a>

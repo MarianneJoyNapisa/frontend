@@ -6,8 +6,8 @@ using System.Security.Claims;
 
 namespace HomeownersMS.Pages.Dashboard
 {
-    [Authorize(Roles = "admin,resident")]
-    public class IndexResidentModel : PageModel
+    [Authorize(Roles = "admin")]
+    public class IndexAdminModel : PageModel
     {
         public void OnGet()
         {

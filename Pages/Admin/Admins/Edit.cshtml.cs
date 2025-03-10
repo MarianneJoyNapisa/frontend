@@ -8,9 +8,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HomeownersMS.Data;
 using HomeownersMS.Models;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace HomeownersMS.Pages_Admin_Admins
 {
+    [Authorize(Roles = "admin")]
     public class EditModel : PageModel
     {
         private readonly HomeownersMS.Data.HomeownersContext _context;

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using HomeownersMS.Data;
 using HomeownersMS.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HomeownersMS.Pages_Admin_Staffs
 {
+    [Authorize(Roles = "admin")]
     public class IndexModel : PageModel
     {
         private readonly HomeownersMS.Data.HomeownersContext _context;
