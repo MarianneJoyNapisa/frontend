@@ -41,6 +41,10 @@
       "PackagePath": "staticwebassets\\images\\SwimmingPool.png"
     },
     {
+      "Id": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\images\\profiles\\fcef9826-a7cf-4b79-8a2a-45062bb1caf5_462081518_516923527853853_2334258783827048833_n.jpg",
+      "PackagePath": "staticwebassets\\images\\profiles\\fcef9826-a7cf-4b79-8a2a-45062bb1caf5_462081518_516923527853853_2334258783827048833_n.jpg"
+    },
+    {
       "Id": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\js\\Calendar.js",
       "PackagePath": "staticwebassets\\js\\Calendar.js"
     },

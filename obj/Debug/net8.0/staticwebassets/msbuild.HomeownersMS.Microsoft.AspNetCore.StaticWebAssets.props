@@ -162,6 +162,24 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\Housing_Logo.png'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\profiles\fcef9826-a7cf-4b79-8a2a-45062bb1caf5_462081518_516923527853853_2334258783827048833_n.jpg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>HomeownersMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/HomeownersMS</BasePath>
+      <RelativePath>images/profiles/fcef9826-a7cf-4b79-8a2a-45062bb1caf5_462081518_516923527853853_2334258783827048833_n.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>hzuscuumxm</Fingerprint>
+      <Integrity>3a9NnoStiq08mhjPU1px/kz4O1kCyiXsicSeXJJ9M40=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\profiles\fcef9826-a7cf-4b79-8a2a-45062bb1caf5_462081518_516923527853853_2334258783827048833_n.jpg'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\SwimmingPool.png'))">
       <SourceType>Package</SourceType>
       <SourceId>HomeownersMS</SourceId>

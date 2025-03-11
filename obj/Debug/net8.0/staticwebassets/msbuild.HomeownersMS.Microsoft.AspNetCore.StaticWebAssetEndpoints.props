@@ -108,6 +108,18 @@
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"yilg0vtuod"},{"Name":"integrity","Value":"sha256-\u002BvwRiHohwFY1Dn9Z2eB8FOc5cFYrO0kCtjQtJCGdKWQ="},{"Name":"label","Value":"_content/HomeownersMS/images/Housing_Logo.png"}]]]></EndpointProperties>
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"83315"},{"Name":"Content-Type","Value":"image/png"},{"Name":"ETag","Value":"\u0022\u002BvwRiHohwFY1Dn9Z2eB8FOc5cFYrO0kCtjQtJCGdKWQ=\u0022"},{"Name":"Last-Modified","Value":"Mon, 10 Mar 2025 05:13:47 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/HomeownersMS/images/profiles/fcef9826-a7cf-4b79-8a2a-45062bb1caf5_462081518_516923527853853_2334258783827048833_n.hzuscuumxm.jpg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\profiles\fcef9826-a7cf-4b79-8a2a-45062bb1caf5_462081518_516923527853853_2334258783827048833_n.jpg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"hzuscuumxm"},{"Name":"integrity","Value":"sha256-3a9NnoStiq08mhjPU1px/kz4O1kCyiXsicSeXJJ9M40="},{"Name":"label","Value":"_content/HomeownersMS/images/profiles/fcef9826-a7cf-4b79-8a2a-45062bb1caf5_462081518_516923527853853_2334258783827048833_n.jpg"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"113204"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u00223a9NnoStiq08mhjPU1px/kz4O1kCyiXsicSeXJJ9M40=\u0022"},{"Name":"Last-Modified","Value":"Tue, 11 Mar 2025 12:20:45 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/HomeownersMS/images/profiles/fcef9826-a7cf-4b79-8a2a-45062bb1caf5_462081518_516923527853853_2334258783827048833_n.jpg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\profiles\fcef9826-a7cf-4b79-8a2a-45062bb1caf5_462081518_516923527853853_2334258783827048833_n.jpg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-3a9NnoStiq08mhjPU1px/kz4O1kCyiXsicSeXJJ9M40="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"113204"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u00223a9NnoStiq08mhjPU1px/kz4O1kCyiXsicSeXJJ9M40=\u0022"},{"Name":"Last-Modified","Value":"Tue, 11 Mar 2025 12:20:45 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/HomeownersMS/images/SwimmingPool.png">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\SwimmingPool.png'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
