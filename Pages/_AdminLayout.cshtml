@@ -1,8 +1,20 @@
 @{
-    Layout = "_Layout"; // Inherit from main layout
+    Layout = null;
 }
 
-@section Sidebar {
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] | Blue Peak Living</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="~/css/GLobalstyle.css" />
+</head>
+
+<body>
     <!-- Header -->
     <div class="headerPage">
         <button id="sideNav_toggleBtn">
@@ -68,7 +80,18 @@
     </div>
 
     <div class="overlay" id="overlay"></div>
-}
+    
 
-<!-- Main Content Area -->
-@RenderBody()
+    <!-- Main Content Area -->
+    <div class="dashboard container-fluid mainSection">
+        @RenderBody() <!-- This is where the content of Reservation.cshtml will be rendered -->
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/SideNavjs.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>
