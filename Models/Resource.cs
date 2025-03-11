@@ -18,6 +18,6 @@ namespace HomeownersMS.Models
 
         public DateTime? CreatedAt { get; set; }
 
-        public required virtual Admin Admin { get; set; }
+        public virtual Admin? Admin { get; set; }
     }
 }

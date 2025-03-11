@@ -17,6 +17,6 @@ namespace HomeownersMS.Models
         public int CommunityPostId { get; set; }
 
 
-        public required virtual CommunityPost CommunityPost { get; set; }
+        public virtual CommunityPost? CommunityPost { get; set; }
     }
 }

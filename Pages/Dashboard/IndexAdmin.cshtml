@@ -3,8 +3,8 @@
 @model HomeownersMS.Pages.Dashboard.IndexAdminModel
 @{
     Layout = "_AdminLayout"; // Use the Admin layout
-    ViewData["HeaderTitle"] = "User Management";
-    ViewData["Title"] = "Users";
+    ViewData["HeaderTitle"] = "Dashboard";
+    ViewData["Title"] = "Dashboard";
     var username = HttpContext?.User?.Identity?.Name ?? "Guest";
     var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
     ViewData["Username"] = username;

@@ -15,6 +15,8 @@ namespace HomeownersMS.Models
         public string? Address { get; set; } 
         public DateTime? MoveInDate { get; set; }
 
+        public string? ProfileImage { get; set; }
+
         public virtual User User { get; set; }
 
         public virtual ICollection<ServiceRequest> ServiceRequests { get; set; } = new List<ServiceRequest>();

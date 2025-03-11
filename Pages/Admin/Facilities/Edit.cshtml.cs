@@ -22,6 +22,8 @@ namespace HomeownersMS.Pages_Admin_Facilities
 
         [BindProperty]
         public Facility Facility { get; set; } = default!;
+        [BindProperty]
+        public IFormFile? FacilityImage { get; set; } // Property for the uploaded file
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -48,7 +50,52 @@ namespace HomeownersMS.Pages_Admin_Facilities
                 return Page();
             }
 
-            _context.Attach(Facility).State = EntityState.Modified;
+            var existingFacility = await _context.Facilities.FindAsync(Facility.FacilityId);
+
+            if (existingFacility == null)
+            {
+                return NotFound();
+            }
+
+            // Update text fields
+            existingFacility.Name = Facility.Name;
+            existingFacility.Description = Facility.Description;
+            existingFacility.PricePerHour = Facility.PricePerHour;
+
+            if (FacilityImage != null && FacilityImage.Length > 0)
+            {
+                // Delete old image if it exists
+                if (!string.IsNullOrEmpty(existingFacility.FacilityImage))
+                {
+                    var oldImagePath = Path.Combine("wwwroot", existingFacility.FacilityImage);
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+                }
+
+                // Define folder for uploads
+                var uploadsFolder = Path.Combine("wwwroot", "images", "facilities");
+
+                // Ensure the folder exists
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                // Generate unique file name
+                var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(FacilityImage.FileName);
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                // Save the new image file
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await FacilityImage.CopyToAsync(fileStream);
+                }
+
+                // Save new image path in the database
+                existingFacility.FacilityImage = Path.Combine("images", "facilities", uniqueFileName);
+            }
 
             try
             {

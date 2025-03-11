@@ -48,6 +48,24 @@ namespace HomeownersMS.Data
                 .HasForeignKey<Resident>(r => r.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // modelBuilder.Entity<Resident>()
+            //     .HasOne(r => r.User)
+            //     .WithOne(u => u.Resident)
+            //     .HasForeignKey<Resident>(r => r.UserId)
+            //     .OnDelete(DeleteBehavior.Cascade);
+
+            // modelBuilder.Entity<Admin>()
+            //     .HasOne(a => a.User)
+            //     .WithOne(u => u.Admin)
+            //     .HasForeignKey<Admin>(a => a.UserId)
+            //     .OnDelete(DeleteBehavior.Cascade); // Ensures that when Admin is deleted, User is also deleted
+
+            // modelBuilder.Entity<Staff>()
+            //     .HasOne(s => s.User)
+            //     .WithOne(u => u.Staff)
+            //     .HasForeignKey<Staff>(s => s.UserId)
+            //     .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Service>()
                 .HasOne(s => s.Staff)
                 .WithMany(st => st.Services) // Ensure Staff has a collection of Services

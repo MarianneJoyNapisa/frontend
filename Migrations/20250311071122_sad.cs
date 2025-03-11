@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HomeownersMS.Migrations
 {
     /// <inheritdoc />
-    public partial class ModifiedFacility : Migration
+    public partial class sad : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -74,7 +74,8 @@ namespace HomeownersMS.Migrations
                     Email = table.Column<string>(type: "TEXT", nullable: true),
                     ContactNo = table.Column<string>(type: "TEXT", nullable: true),
                     Job = table.Column<string>(type: "TEXT", nullable: true),
-                    HireDate = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    HireDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    ProfileImage = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -120,7 +121,8 @@ namespace HomeownersMS.Migrations
                     Email = table.Column<string>(type: "TEXT", nullable: true),
                     ContactNo = table.Column<string>(type: "TEXT", nullable: true),
                     Address = table.Column<string>(type: "TEXT", nullable: true),
-                    MoveInDate = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    MoveInDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    ProfileImage = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -143,7 +145,8 @@ namespace HomeownersMS.Migrations
                     Email = table.Column<string>(type: "TEXT", nullable: true),
                     ContactNo = table.Column<string>(type: "TEXT", nullable: true),
                     Job = table.Column<string>(type: "TEXT", nullable: true),
-                    HireDate = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    HireDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    ProfileImage = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -164,6 +167,8 @@ namespace HomeownersMS.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", nullable: true),
                     Content = table.Column<string>(type: "TEXT", nullable: true),
+                    EventDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    BlocksAffected = table.Column<string>(type: "TEXT", nullable: true),
                     CreatedBy = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },

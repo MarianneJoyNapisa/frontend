@@ -15,6 +15,7 @@ namespace HomeownersMS.Models
         public string? ContactNo { get; set; } 
         public string? Job { get; set; }
         public DateTime? HireDate { get; set; }
+        public string? ProfileImage { get; set; }
 
         public required virtual User User { get; set; }
 

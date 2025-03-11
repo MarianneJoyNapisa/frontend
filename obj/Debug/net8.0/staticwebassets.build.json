@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "/lYGGA2w+Bkebj67os61JJMK64ToEzJVLVfqDixjw9A=",
+  "Hash": "WkNoX2/iLmAMZPn6TBV2KkrKXKW1HubqGsTHOTnxNK0=",
   "Source": "HomeownersMS",
   "BasePath": "_content/HomeownersMS",
   "Mode": "Default",
@@ -162,27 +162,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\Chapel.png"
-    },
-    {
-      "Identity": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\images\\facilities\\f9b1b783-4427-4d01-b49f-573088e521d9_0d4f550f-8331-49b8-bff9-729465499ff0.jpg",
-      "SourceId": "HomeownersMS",
-      "SourceType": "Discovered",
-      "ContentRoot": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\",
-      "BasePath": "_content/HomeownersMS",
-      "RelativePath": "images/facilities/f9b1b783-4427-4d01-b49f-573088e521d9_0d4f550f-8331-49b8-bff9-729465499ff0#[.{fingerprint}]?.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "Fingerprint": "e7vhgw1d75",
-      "Integrity": "xmeB+euM+FLENuyom3hUL2A9tgox3NE4SFdWPf5u3D8=",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\facilities\\f9b1b783-4427-4d01-b49f-573088e521d9_0d4f550f-8331-49b8-bff9-729465499ff0.jpg"
     },
     {
       "Identity": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\images\\FunctionHall.png",
@@ -2101,88 +2080,6 @@
         {
           "Name": "integrity",
           "Value": "sha256-3hd52kmCnu+F3J7lZyhETDRaUcq5o4As+L/CWU/0ZRY="
-        }
-      ]
-    },
-    {
-      "Route": "images/facilities/f9b1b783-4427-4d01-b49f-573088e521d9_0d4f550f-8331-49b8-bff9-729465499ff0.e7vhgw1d75.jpg",
-      "AssetFile": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\images\\facilities\\f9b1b783-4427-4d01-b49f-573088e521d9_0d4f550f-8331-49b8-bff9-729465499ff0.jpg",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "78477"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "image/jpeg"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"xmeB+euM+FLENuyom3hUL2A9tgox3NE4SFdWPf5u3D8=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 10 Mar 2025 11:50:49 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "e7vhgw1d75"
-        },
-        {
-          "Name": "label",
-          "Value": "images/facilities/f9b1b783-4427-4d01-b49f-573088e521d9_0d4f550f-8331-49b8-bff9-729465499ff0.jpg"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-xmeB+euM+FLENuyom3hUL2A9tgox3NE4SFdWPf5u3D8="
-        }
-      ]
-    },
-    {
-      "Route": "images/facilities/f9b1b783-4427-4d01-b49f-573088e521d9_0d4f550f-8331-49b8-bff9-729465499ff0.jpg",
-      "AssetFile": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\images\\facilities\\f9b1b783-4427-4d01-b49f-573088e521d9_0d4f550f-8331-49b8-bff9-729465499ff0.jpg",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "78477"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "image/jpeg"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"xmeB+euM+FLENuyom3hUL2A9tgox3NE4SFdWPf5u3D8=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 10 Mar 2025 11:50:49 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=3600, must-revalidate"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-xmeB+euM+FLENuyom3hUL2A9tgox3NE4SFdWPf5u3D8="
         }
       ]
     },

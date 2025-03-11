@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Resident.UserId" />
             <div class="form-group">
@@ -43,6 +43,11 @@
                 <label asp-for="Resident.MoveInDate" class="control-label"></label>
                 <input asp-for="Resident.MoveInDate" class="form-control" />
                 <span asp-validation-for="Resident.MoveInDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProfileImage" class="control-label"></label>
+                <input type="file" asp-for="ProfileImage" class="form-control" /> <!-- File input -->
+                <span asp-validation-for="ProfileImage" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

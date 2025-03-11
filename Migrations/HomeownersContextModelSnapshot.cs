@@ -40,6 +40,9 @@ namespace HomeownersMS.Migrations
                     b.Property<string>("LName")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ProfileImage")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("UserId");
 
                     b.ToTable("Admin", (string)null);
@@ -51,6 +54,9 @@ namespace HomeownersMS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("BlocksAffected")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Content")
                         .HasColumnType("TEXT");
 
@@ -59,6 +65,9 @@ namespace HomeownersMS.Migrations
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("EventDate")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
                         .HasColumnType("TEXT");
@@ -237,6 +246,9 @@ namespace HomeownersMS.Migrations
                     b.Property<DateTime?>("MoveInDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ProfileImage")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("UserId");
 
                     b.ToTable("Resident", (string)null);
@@ -346,6 +358,9 @@ namespace HomeownersMS.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProfileImage")
                         .HasColumnType("TEXT");
 
                     b.HasKey("UserId");
