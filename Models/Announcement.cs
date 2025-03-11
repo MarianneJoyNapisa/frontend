@@ -14,14 +14,14 @@ namespace HomeownersMS.Models
 
         public string? Content { get; set; }
 
-        public DateTime? EventDate { get; set;}
+        public DateOnly? EventDate { get; set;}
 
         public string? BlocksAffected { get; set; }
 
         [ForeignKey("Admin")]
-        public int CreatedBy { get; set; }
+        public int? CreatedBy { get; set; }
 
-        public DateTime? CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public virtual Admin? Admin { get; set; }
     }

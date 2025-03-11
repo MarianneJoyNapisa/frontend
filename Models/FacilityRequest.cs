@@ -11,11 +11,9 @@ namespace HomeownersMS.Models
         [Key]
         public int FacilityRequestId { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime? ReservationDate { get; set; } // Date only
+        public DateOnly? ReservationDate { get; set; } // Date only
 
-        [DataType(DataType.Time)]
-        public TimeSpan? ReservationTime { get; set; }  
+        public TimeOnly? ReservationTime { get; set; }  
 
         public DateTime? RequestCompletionDate { get; set; }
 
@@ -26,16 +24,10 @@ namespace HomeownersMS.Models
 
         [ForeignKey("Facility")]
         public int? FacilityId { get; set; }
-
-        [Required]
         public string? FullName { get; set; } // Full Name
 
-        [Required]
-        [EmailAddress]
         public string? EmailAddress { get; set; } // Email Address
 
-        [Required]
-        [Phone]
         public string? PhoneNumber { get; set; }
 
         public virtual Resident? Resident { get; set; }

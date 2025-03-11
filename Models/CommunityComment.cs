@@ -11,10 +11,11 @@ namespace HomeownersMS.Models
 
         public string? Content { get; set; } 
 
-        public DateTime? CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
         [ForeignKey("CommunityPost")]
-        public int CommunityPostId { get; set; }
+        public int? CommunityPostId { get; set; }
 
 
         public virtual CommunityPost? CommunityPost { get; set; }

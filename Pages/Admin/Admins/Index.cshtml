@@ -10,67 +10,96 @@
     ViewData["Username"] = username;
     ViewData["CurrentPage"] = currentPage;
 }
-<h1>Admins</h1>
 
-<div class="table-responsive">
-    <table class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Admin[0].LName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Admin[0].FName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Admin[0].Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Admin[0].ContactNo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Admin[0].Job)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Admin[0].HireDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Admin[0].User)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Admin) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.LName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContactNo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Job)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HireDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.UserId)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.UserId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.UserId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.UserId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="container px-3">
+    <!-- Tabs -->
+    <ul class="nav nav-tabs userTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link @(ViewData["CurrentPage"]?.ToString().Contains("Users") == true ? "active" : "")"
+            asp-page="/Admin/Users/Index">Index</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link @(ViewData["CurrentPage"]?.ToString().Contains("Residents") == true ? "active" : "")"
+            asp-page="/Admin/Residents/Index">Resident</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link @(ViewData["CurrentPage"]?.ToString().Contains("Staffs") == true ? "active" : "")"
+            asp-page="/Admin/Staffs/Index">Staff</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active @(ViewData["CurrentPage"]?.ToString().Contains("Admins") == true ? "active" : "")"
+            asp-page="/Admin/Admins/Index">Admin</a>
+        </li>
+    </ul>
 </div>
+
+<div class="container p-0 border border-start border-end border-bottom rounded-3 p-3">
+    <div class="table-responsive">
+        <div class="mt-2 mb-4 px-3">
+            <a class="btn btn-primary" asp-page="/Account/RegisterResident">Register Resident</a>
+            <a class="btn btn-primary" asp-page="/Account/RegisterStaff">Register Staff</a>
+            <a class="btn btn-primary" asp-page="/Account/RegisterAdmin">Register Admin</a>
+        </div>
+        <table class="table table-striped table-bordered" id="adminTable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Admin[0].LName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Admin[0].FName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Admin[0].Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Admin[0].ContactNo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Admin[0].Job)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Admin[0].HireDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Admin[0].User)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model.Admin) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Job)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HireDate)
+                </td>
+                <td>
+                    @(item.User != null ? item.User.UserId : "")
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.UserId">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.UserId">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.UserId">Delete</a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+    </div>
+</div>
+

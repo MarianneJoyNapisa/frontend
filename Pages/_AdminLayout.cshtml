@@ -41,38 +41,38 @@
                 <i class="bi bi-house-door-fill"></i>
                 <span>Dashboard</span>
             </a>
-            <a asp-page="/Admin/Announcements/Index" class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Admin/Announcements/Index" ? "active" : "")">
-                <i class="bi bi-house-door-fill"></i>
-                <span>Announcements</span>
-            </a>
             <a asp-page="/Admin/Users/Index" class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Admin/Users/Index" ? "active" : "")">
-                <i class="bi bi-house-door-fill"></i>
+                <i class="bi bi-people-fill"></i>
                 <span>User Management</span>
             </a>
-            <a asp-page="/Admin/Residents/Index" class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Admin/Residents/Index" ? "active" : "")">
-                <i class="bi bi-house-door-fill"></i>
-                <span>Residents</span>
-            </a>
-            <a asp-page="/Admin/Staffs/Index" class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Admin/Staffs/Index" ? "active" : "")">
-                <i class="bi bi-house-door-fill"></i>
-                <span>Staffs</span>
-            </a>
-            <a asp-page="/Admin/Admins/Index" class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Admin/Admins/Index" ? "active" : "")">
-                <i class="bi bi-house-door-fill"></i>
-                <span>Admins</span>
-            </a>
             <a asp-page="/Admin/Facilities/Index" class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Admin/Facilities/Index" ? "active" : "")">
-                <i class="bi bi-house-door-fill"></i>
+                <i class="bi bi-calendar-fill"></i>
                 <span>Facilities Management</span>
             </a>
-            <a asp-page="/Admin/FacilityRequests/Index" class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Admin/FacilityRequests/Index" ? "active" : "")">
-                <i class="bi bi-house-door-fill"></i>
-                <span>Facility Requests</span>
+            <a asp-page="/Admin/Announcements/Index" class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Admin/Announcements/Index" ? "active" : "")">
+                <i class="bi bi-megaphone-fill"></i>
+                <span>Announcements & Events</span>
+            </a>
+            <a asp-page="#" class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Admin/Staffs/Index" ? "active" : "")">
+                <i class="bi bi-credit-card-fill"></i>
+                <span>Billings & Payments</span>
+            </a>
+                <a asp-page="#" class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Resources" ? "active" : "")">
+                <i class="bi bi-bar-chart-fill"></i>
+                <span>Report & Analytics</span>
+            </a>
+            <a asp-page="#" class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Community" ? "active" : "")">
+                <i class="bi bi-chat-left-text-fill"></i>
+                <span>Community</span>
+            </a>
+            <a asp-page="#" class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Resources" ? "active" : "")">
+                <i class="bi bi-file-earmark-text-fill"></i>
+                <span>Resources </span>
             </a>
         </div>
 
         <div class="genfunc_navLinks">
-            <a asp-page="/Settings" class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Settings") == true ? "active" : "")">
+            <a asp-page="#" class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Settings") == true ? "active" : "")">
                 <i class="bi bi-gear-fill"></i>
                 <span>Settings</span>
             </a>

@@ -58,8 +58,7 @@ namespace HomeownersMS.Pages.Account
             public string Address { get; set; } = string.Empty;
 
             [Required]
-            [DataType(DataType.Date)]
-            public DateTime MoveInDate { get; set; } = DateTime.Now;
+            public DateOnly MoveInDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
         }
 
         public async Task<IActionResult> OnPostAsync()

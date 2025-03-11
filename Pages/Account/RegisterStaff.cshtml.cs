@@ -58,8 +58,7 @@ namespace HomeownersMS.Pages.Account
             public string Job { get; set; } = string.Empty;
 
             [Required]
-            [DataType(DataType.Date)]
-            public DateTime HireDate { get; set; } = DateTime.Now;
+            public DateOnly HireDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
         }
 
         public async Task<IActionResult> OnPostAsync()

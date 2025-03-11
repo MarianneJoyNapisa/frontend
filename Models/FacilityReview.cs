@@ -10,24 +10,21 @@ namespace HomeownersMS.Models
         public int ReviewId { get; set; }
 
         // Foreign key to Facility
-        public int FacilityId { get; set; }
+        public int? FacilityId { get; set; }
 
         // Navigation property to Facility
         [ForeignKey("FacilityId")]
-        public virtual Facility Facility { get; set; }
+        public virtual Facility? Facility { get; set; }
 
         // Review content
-        [Required]
         public string? Content { get; set; }
 
         // Review date
-        [Required]
-        [DataType(DataType.DateTime)]
         public DateTime ReviewDate { get; set; } = DateTime.Now;
 
         // Rating in stars (1 to 5)
         [Required]
         [Range(1, 5, ErrorMessage = "Rating must be between 1 and 5.")]
-        public int Rating { get; set; }
+        public int? Rating { get; set; }
     }
 }

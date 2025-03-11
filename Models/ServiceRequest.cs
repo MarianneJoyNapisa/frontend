@@ -22,7 +22,7 @@ namespace HomeownersMS.Models
 
         public Statuses? Status { get; set; }
 
-        public DateTime? RequestedAt { get; set; }
+        public DateTime RequestedAt { get; set; } = DateTime.Now;
 
         [ForeignKey("Resident")]
         public int? RequestedBy { get; set; }

@@ -41,11 +41,63 @@ namespace HomeownersMS.Data
                 Email = "admin@example.com", // Admin email
                 ContactNo = "1234567890", // Admin contact number
                 Job = "Administrator", // Admin job
-                HireDate = DateTime.Now // Admin hire date
+                HireDate = DateOnly.FromDateTime(DateTime.Now) // Admin hire date
             };
 
             context.Admins.Add(admin);
             context.SaveChanges(); // Save the admin record
+
+            // ========== CREATE DUMMY RESIDENT ==========
+            var residentUser = new User
+            {
+                Username = "resident",
+                Privilege = Privileges.resident
+            };
+            residentUser.SetPassword("residentPassword123");
+
+            context.Users.Add(residentUser);
+            context.SaveChanges();
+
+            var resident = new Resident
+            {
+                UserId = residentUser.UserId,
+                User = residentUser,
+                FName = "John",
+                LName = "Doe",
+                Email = "resident@example.com",
+                ContactNo = "0987654321",
+                Address = "123 Main St",
+                MoveInDate = DateOnly.FromDateTime(DateTime.Now)
+            };
+
+            context.Residents.Add(resident);
+            context.SaveChanges();
+
+            // ========== CREATE DUMMY STAFF ==========
+            var staffUser = new User
+            {
+                Username = "staff",
+                Privilege = Privileges.staff
+            };
+            staffUser.SetPassword("staffPassword123");
+
+            context.Users.Add(staffUser);
+            context.SaveChanges();
+
+            var staff = new Staff
+            {
+                UserId = staffUser.UserId,
+                User = staffUser,
+                FName = "Jane",
+                LName = "Smith",
+                Email = "staff@example.com",
+                ContactNo = "09123456789",
+                Job = "Maintenance",
+                HireDate = DateOnly.FromDateTime(DateTime.Now)
+            };
+
+            context.Staffs.Add(staff);
+            context.SaveChanges();
         }
     }
 }

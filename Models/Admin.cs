@@ -14,24 +14,22 @@ namespace HomeownersMS.Models
         public string? Email { get; set; }
         public string? ContactNo { get; set; } 
         public string? Job { get; set; }
-        public DateTime? HireDate { get; set; }
+        public DateOnly HireDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
         public string? ProfileImage { get; set; }
 
-        public required virtual User User { get; set; }
+        public virtual User? User { get; set; }
 
         public Admin()
         {
-            if (!IsSeeding)
+            // if (!IsSeeding)
+            User = new User
             {
-                User = new User
-                {
-                    Privilege = Privileges.admin,
-                    Admin = this
-                };
-            }
+                Privilege = Privileges.admin,
+                Admin = this
+            };
         }
 
-        [NotMapped]
-        public static bool IsSeeding { get; set; } = false;
+        // [NotMapped]
+        // public static bool IsSeeding { get; set; } = false;
     }
 }

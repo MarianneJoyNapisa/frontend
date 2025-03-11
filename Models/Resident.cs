@@ -13,7 +13,7 @@ namespace HomeownersMS.Models
         public string? Email { get; set; } 
         public string? ContactNo { get; set; } 
         public string? Address { get; set; } 
-        public DateTime? MoveInDate { get; set; }
+        public DateOnly MoveInDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
 
         public string? ProfileImage { get; set; }
 

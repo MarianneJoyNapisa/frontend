@@ -14,9 +14,9 @@ namespace HomeownersMS.Models
         public string? Content { get; set; }
 
         [ForeignKey("Admin")]
-        public int CreatedBy { get; set; }
+        public int? CreatedBy { get; set; }
 
-        public DateTime? CreatedAt { get; set; }
+        public DateOnly CreatedAt { get; set; } = DateOnly.FromDateTime(DateTime.Now);
 
         public virtual Admin? Admin { get; set; }
     }

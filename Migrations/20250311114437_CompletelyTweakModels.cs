@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HomeownersMS.Migrations
 {
     /// <inheritdoc />
-    public partial class sad : Migration
+    public partial class CompletelyTweakModels : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,8 +48,8 @@ namespace HomeownersMS.Migrations
                 {
                     ReviewId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    FacilityId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Content = table.Column<string>(type: "TEXT", nullable: false),
+                    FacilityId = table.Column<int>(type: "INTEGER", nullable: true),
+                    Content = table.Column<string>(type: "TEXT", nullable: true),
                     ReviewDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Rating = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -74,7 +74,7 @@ namespace HomeownersMS.Migrations
                     Email = table.Column<string>(type: "TEXT", nullable: true),
                     ContactNo = table.Column<string>(type: "TEXT", nullable: true),
                     Job = table.Column<string>(type: "TEXT", nullable: true),
-                    HireDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    HireDate = table.Column<DateOnly>(type: "TEXT", nullable: false),
                     ProfileImage = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -96,7 +96,8 @@ namespace HomeownersMS.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", nullable: true),
                     Content = table.Column<string>(type: "TEXT", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Type = table.Column<int>(type: "INTEGER", nullable: true),
                     CreatedBy = table.Column<int>(type: "INTEGER", nullable: true)
                 },
@@ -121,7 +122,7 @@ namespace HomeownersMS.Migrations
                     Email = table.Column<string>(type: "TEXT", nullable: true),
                     ContactNo = table.Column<string>(type: "TEXT", nullable: true),
                     Address = table.Column<string>(type: "TEXT", nullable: true),
-                    MoveInDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    MoveInDate = table.Column<DateOnly>(type: "TEXT", nullable: false),
                     ProfileImage = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -145,7 +146,7 @@ namespace HomeownersMS.Migrations
                     Email = table.Column<string>(type: "TEXT", nullable: true),
                     ContactNo = table.Column<string>(type: "TEXT", nullable: true),
                     Job = table.Column<string>(type: "TEXT", nullable: true),
-                    HireDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    HireDate = table.Column<DateOnly>(type: "TEXT", nullable: false),
                     ProfileImage = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -167,10 +168,10 @@ namespace HomeownersMS.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", nullable: true),
                     Content = table.Column<string>(type: "TEXT", nullable: true),
-                    EventDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    EventDate = table.Column<DateOnly>(type: "TEXT", nullable: true),
                     BlocksAffected = table.Column<string>(type: "TEXT", nullable: true),
-                    CreatedBy = table.Column<int>(type: "INTEGER", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    CreatedBy = table.Column<int>(type: "INTEGER", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -191,8 +192,8 @@ namespace HomeownersMS.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", nullable: true),
                     Content = table.Column<string>(type: "TEXT", nullable: true),
-                    CreatedBy = table.Column<int>(type: "INTEGER", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    CreatedBy = table.Column<int>(type: "INTEGER", nullable: true),
+                    CreatedAt = table.Column<DateOnly>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -212,8 +213,9 @@ namespace HomeownersMS.Migrations
                     CommunityCommentId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Content = table.Column<string>(type: "TEXT", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    CommunityPostId = table.Column<int>(type: "INTEGER", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CommunityPostId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -232,15 +234,15 @@ namespace HomeownersMS.Migrations
                 {
                     FacilityRequestId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ReservationDate = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    ReservationTime = table.Column<TimeSpan>(type: "TEXT", nullable: true),
+                    ReservationDate = table.Column<DateOnly>(type: "TEXT", nullable: true),
+                    ReservationTime = table.Column<TimeOnly>(type: "TEXT", nullable: true),
                     RequestCompletionDate = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Status = table.Column<int>(type: "INTEGER", nullable: true),
                     ResidentId = table.Column<int>(type: "INTEGER", nullable: true),
                     FacilityId = table.Column<int>(type: "INTEGER", nullable: true),
-                    FullName = table.Column<string>(type: "TEXT", nullable: false),
-                    EmailAddress = table.Column<string>(type: "TEXT", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: false)
+                    FullName = table.Column<string>(type: "TEXT", nullable: true),
+                    EmailAddress = table.Column<string>(type: "TEXT", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -265,8 +267,8 @@ namespace HomeownersMS.Migrations
                 {
                     ServiceId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", nullable: true),
+                    Description = table.Column<string>(type: "TEXT", nullable: true),
                     StaffId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
@@ -289,7 +291,7 @@ namespace HomeownersMS.Migrations
                     Title = table.Column<string>(type: "TEXT", nullable: true),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
                     Status = table.Column<int>(type: "INTEGER", nullable: true),
-                    RequestedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    RequestedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     RequestedBy = table.Column<int>(type: "INTEGER", nullable: true),
                     ServiceId = table.Column<int>(type: "INTEGER", nullable: true)
                 },

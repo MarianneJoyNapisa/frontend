@@ -49,10 +49,12 @@ namespace HomeownersMS.Pages_Admin_Announcements
             }
 
             // Custom validation for EventDate
-            if (Announcement.EventDate < DateTime.Now)
+            if (Announcement.EventDate < DateOnly.FromDateTime(DateTime.Now))
             {
                 ModelState.AddModelError("Announcement.EventDate", "The Event Date must be in the future.");
             }
+
+            //DateOnly.FromDateTime(DateTime.Now)
 
             // If the ModelState is invalid, return the page with validation errors
             // AHHHH gagu mao diay. kay wala mn nako giapil ang CreatedAt ug CreatedBy sa form, edi wow always invalid ang model state. so ako ni iexclude daan sa modelSTate

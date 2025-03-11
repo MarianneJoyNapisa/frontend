@@ -4,88 +4,116 @@
 @{
     Layout = "_AdminLayout"; // Use the Admin layout
     ViewData["HeaderTitle"] = "User Management";
-    ViewData["Title"] = "Residents";
+    ViewData["Title"] = "Users";
     var username = HttpContext?.User?.Identity?.Name ?? "Guest";
     var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
     ViewData["Username"] = username;
     ViewData["CurrentPage"] = currentPage;
 }
 
-<h1>Residents</h1>
+<div class="container px-3">
+    <!-- Tabs -->
+    <ul class="nav nav-tabs userTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link @(ViewData["CurrentPage"]?.ToString().Contains("Users") == true ? "active" : "")"
+            asp-page="/Admin/Users/Index">Index</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active @(ViewData["CurrentPage"]?.ToString().Contains("Residents") == true ? "active" : "")"
+            asp-page="/Admin/Residents/Index">Resident</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link @(ViewData["CurrentPage"]?.ToString().Contains("Staffs") == true ? "active" : "")"
+            asp-page="/Admin/Staffs/Index">Staff</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link @(ViewData["CurrentPage"]?.ToString().Contains("Admins") == true ? "active" : "")"
+            asp-page="/Admin/Admins/Index">Admin</a>
+        </li>
+    </ul>
+</div>
 
-<div class="table-responsive">
-    <table class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Resident[0].LName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Resident[0].FName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Resident[0].Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Resident[0].ContactNo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Resident[0].Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Resident[0].MoveInDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Resident[0].User)
-            </th>
-            <th>
-                ProfileImage
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Resident) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.LName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContactNo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MoveInDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.UserId)
-            </td>
-            <td>
-                @if (!string.IsNullOrEmpty(item.ProfileImage))
+<div class="container p-0 border border-start border-end border-bottom rounded-3 p-3">
+    <!-- Members Table -->
+    <div class="table-responsive">
+        <div class="mt-2 mb-4 px-3">
+            <a class="btn btn-primary" asp-page="/Account/RegisterResident">Register Resident</a>
+            <a class="btn btn-primary" asp-page="/Account/RegisterStaff">Register Staff</a>
+            <a class="btn btn-primary" asp-page="/Account/RegisterAdmin">Register Admin</a>
+        </div>
+        <table class="table table-striped table-bordered" id="residentTable">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Resident[0].LName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Resident[0].FName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Resident[0].Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Resident[0].ContactNo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Resident[0].Address)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Resident[0].MoveInDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Resident[0].User)
+                    </th>
+                    <th>
+                        ProfileImage
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Resident)
                 {
-                    <a href="/@item.ProfileImage" target="_blank">@item.ProfileImage</a>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ContactNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MoveInDate)
+                        </td>
+                        <td>
+                            @(item.User != null ? item.User.UserId : "")
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.ProfileImage))
+                            {
+                                <a href="/@item.ProfileImage" target="_blank">@item.ProfileImage</a>
+                            }
+                            else
+                            {
+                                <span>No Image</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-page="./Edit" asp-route-id="@item.UserId">Edit</a> |
+                            <a asp-page="./Details" asp-route-id="@item.UserId">Details</a> |
+                            <a asp-page="./Delete" asp-route-id="@item.UserId">Delete</a>
+                        </td>
+                    </tr>
                 }
-                else
-                {
-                    <span>No Image</span>
-                }
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.UserId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.UserId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.UserId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-
+            </tbody>
+        </table>
+    </div>
 </div>

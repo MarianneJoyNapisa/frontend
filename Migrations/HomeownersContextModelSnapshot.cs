@@ -31,7 +31,7 @@ namespace HomeownersMS.Migrations
                     b.Property<string>("FName")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("HireDate")
+                    b.Property<DateOnly>("HireDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Job")
@@ -60,13 +60,13 @@ namespace HomeownersMS.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("CreatedBy")
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("EventDate")
+                    b.Property<DateOnly?>("EventDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
@@ -85,13 +85,16 @@ namespace HomeownersMS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CommunityPostId")
+                    b.Property<int?>("CommunityPostId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Content")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("CommunityCommentId");
@@ -110,7 +113,7 @@ namespace HomeownersMS.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("CreatedBy")
@@ -121,6 +124,9 @@ namespace HomeownersMS.Migrations
 
                     b.Property<int?>("Type")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("CommunityPostId");
 
@@ -159,27 +165,24 @@ namespace HomeownersMS.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("EmailAddress")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("FacilityId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("RequestCompletionDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("ReservationDate")
+                    b.Property<DateOnly?>("ReservationDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<TimeSpan?>("ReservationTime")
+                    b.Property<TimeOnly?>("ReservationTime")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("ResidentId")
@@ -204,10 +207,9 @@ namespace HomeownersMS.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Content")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("FacilityId")
+                    b.Property<int?>("FacilityId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Rating")
@@ -243,7 +245,7 @@ namespace HomeownersMS.Migrations
                     b.Property<string>("LName")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("MoveInDate")
+                    b.Property<DateOnly>("MoveInDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProfileImage")
@@ -263,10 +265,10 @@ namespace HomeownersMS.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateOnly>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("CreatedBy")
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
@@ -286,15 +288,12 @@ namespace HomeownersMS.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("StaffId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(255)
                         .HasColumnType("TEXT");
 
                     b.HasKey("ServiceId");
@@ -313,7 +312,7 @@ namespace HomeownersMS.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("RequestedAt")
+                    b.Property<DateTime>("RequestedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("RequestedBy")
@@ -351,7 +350,7 @@ namespace HomeownersMS.Migrations
                     b.Property<string>("FName")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("HireDate")
+                    b.Property<DateOnly>("HireDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Job")
@@ -404,8 +403,7 @@ namespace HomeownersMS.Migrations
                     b.HasOne("HomeownersMS.Models.Admin", "Admin")
                         .WithMany()
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Admin");
                 });
@@ -415,8 +413,7 @@ namespace HomeownersMS.Migrations
                     b.HasOne("HomeownersMS.Models.CommunityPost", "CommunityPost")
                         .WithMany()
                         .HasForeignKey("CommunityPostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("CommunityPost");
                 });
@@ -453,8 +450,7 @@ namespace HomeownersMS.Migrations
                     b.HasOne("HomeownersMS.Models.Facility", "Facility")
                         .WithMany("FacilityReviews")
                         .HasForeignKey("FacilityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Facility");
                 });
@@ -475,8 +471,7 @@ namespace HomeownersMS.Migrations
                     b.HasOne("HomeownersMS.Models.Admin", "Admin")
                         .WithMany()
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Admin");
                 });

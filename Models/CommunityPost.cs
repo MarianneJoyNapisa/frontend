@@ -17,8 +17,9 @@ namespace HomeownersMS.Models
         public string? Title { get; set; }
 
         public string? Content { get; set; }
-        public DateTime? CreatedAt { get; set; }
-        public Types? Type { get; set; } = Types.general;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
+        public Types? Type { get; set; }
         [ForeignKey("User")]
         public int? CreatedBy { get; set; }
 
