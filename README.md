@@ -11,6 +11,13 @@
 7. `git pull origin development`
 
 
+## How to Pull Forcefully from Development (Reject Local Changes)
+
+1. `git remote add origin https://github.com/VulpritProoze/ELNET_HomeownersMS`
+2. `git fetch origin development`
+3. `git reset --hard origin/development`
+
+
 ## How to Push?
 
 1. Go to the root directory of your folder (I think ELNET_HomeownersMS ang name)
