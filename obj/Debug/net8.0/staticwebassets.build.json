@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "hf++n3J9khlb4v8TERXeMZKcwy8YFMEwV/ltkXjmbdE=",
+  "Hash": "7r6l+Kdq1YMdD+58Y9aq9G5DLQNDa4Ky0gXx4x9evyE=",
   "Source": "HomeownersMS",
   "BasePath": "_content/HomeownersMS",
   "Mode": "Default",
@@ -73,8 +73,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "1qf89hld7t",
-      "Integrity": "Z+Ft8F28C4CgbZHYVXrBa+Yt30ey3wvixFm+XMlAtMQ=",
+      "Fingerprint": "mlx8otwyz8",
+      "Integrity": "GohbKzct8wl5c/y6VxCc83BQNaxSk4UvWJkMUWhS+Ws=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\Globalstyle.css"
@@ -162,6 +162,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\Chapel.png"
+    },
+    {
+      "Identity": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\images\\facilities\\5994cdac-1b28-4831-9a19-a11afb38e7ea_0d4f550f-8331-49b8-bff9-729465499ff0.jpg",
+      "SourceId": "HomeownersMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\",
+      "BasePath": "_content/HomeownersMS",
+      "RelativePath": "images/facilities/5994cdac-1b28-4831-9a19-a11afb38e7ea_0d4f550f-8331-49b8-bff9-729465499ff0#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "e7vhgw1d75",
+      "Integrity": "xmeB+euM+FLENuyom3hUL2A9tgox3NE4SFdWPf5u3D8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\facilities\\5994cdac-1b28-4831-9a19-a11afb38e7ea_0d4f550f-8331-49b8-bff9-729465499ff0.jpg"
     },
     {
       "Identity": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\images\\facilities\\7a10b414-3fc1-47eb-9d8b-7995451bbdcb_caleb.jpg",
@@ -1552,51 +1573,6 @@
   ],
   "Endpoints": [
     {
-      "Route": "css/Globalstyle.1qf89hld7t.css",
-      "AssetFile": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\css\\Globalstyle.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "6529"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"Z+Ft8F28C4CgbZHYVXrBa+Yt30ey3wvixFm+XMlAtMQ=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Wed, 12 Mar 2025 02:12:12 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "1qf89hld7t"
-        },
-        {
-          "Name": "label",
-          "Value": "css/Globalstyle.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-Z+Ft8F28C4CgbZHYVXrBa+Yt30ey3wvixFm+XMlAtMQ="
-        }
-      ]
-    },
-    {
       "Route": "css/Globalstyle.css",
       "AssetFile": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\css\\Globalstyle.css",
       "Selectors": [],
@@ -1607,7 +1583,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "6529"
+          "Value": "6604"
         },
         {
           "Name": "Content-Type",
@@ -1615,11 +1591,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"Z+Ft8F28C4CgbZHYVXrBa+Yt30ey3wvixFm+XMlAtMQ=\""
+          "Value": "\"GohbKzct8wl5c/y6VxCc83BQNaxSk4UvWJkMUWhS+Ws=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 12 Mar 2025 02:12:12 GMT"
+          "Value": "Wed, 12 Mar 2025 03:58:35 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1629,7 +1605,52 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-Z+Ft8F28C4CgbZHYVXrBa+Yt30ey3wvixFm+XMlAtMQ="
+          "Value": "sha256-GohbKzct8wl5c/y6VxCc83BQNaxSk4UvWJkMUWhS+Ws="
+        }
+      ]
+    },
+    {
+      "Route": "css/Globalstyle.mlx8otwyz8.css",
+      "AssetFile": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\css\\Globalstyle.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6604"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"GohbKzct8wl5c/y6VxCc83BQNaxSk4UvWJkMUWhS+Ws=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 12 Mar 2025 03:58:35 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "mlx8otwyz8"
+        },
+        {
+          "Name": "label",
+          "Value": "css/Globalstyle.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-GohbKzct8wl5c/y6VxCc83BQNaxSk4UvWJkMUWhS+Ws="
         }
       ]
     },
@@ -2122,6 +2143,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-3hd52kmCnu+F3J7lZyhETDRaUcq5o4As+L/CWU/0ZRY="
+        }
+      ]
+    },
+    {
+      "Route": "images/facilities/5994cdac-1b28-4831-9a19-a11afb38e7ea_0d4f550f-8331-49b8-bff9-729465499ff0.e7vhgw1d75.jpg",
+      "AssetFile": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\images\\facilities\\5994cdac-1b28-4831-9a19-a11afb38e7ea_0d4f550f-8331-49b8-bff9-729465499ff0.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "78477"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"xmeB+euM+FLENuyom3hUL2A9tgox3NE4SFdWPf5u3D8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 12 Mar 2025 02:49:20 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "e7vhgw1d75"
+        },
+        {
+          "Name": "label",
+          "Value": "images/facilities/5994cdac-1b28-4831-9a19-a11afb38e7ea_0d4f550f-8331-49b8-bff9-729465499ff0.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-xmeB+euM+FLENuyom3hUL2A9tgox3NE4SFdWPf5u3D8="
+        }
+      ]
+    },
+    {
+      "Route": "images/facilities/5994cdac-1b28-4831-9a19-a11afb38e7ea_0d4f550f-8331-49b8-bff9-729465499ff0.jpg",
+      "AssetFile": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\images\\facilities\\5994cdac-1b28-4831-9a19-a11afb38e7ea_0d4f550f-8331-49b8-bff9-729465499ff0.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "78477"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"xmeB+euM+FLENuyom3hUL2A9tgox3NE4SFdWPf5u3D8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 12 Mar 2025 02:49:20 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-xmeB+euM+FLENuyom3hUL2A9tgox3NE4SFdWPf5u3D8="
         }
       ]
     },

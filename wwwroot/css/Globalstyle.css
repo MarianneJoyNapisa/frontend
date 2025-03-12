@@ -198,10 +198,10 @@
 }
 
 .mainSection {
-    margin-top: 90px; /* Adjusted to give space below the fixed header */
-    padding: 24px 200px;
-
+    margin-top: 90px; /* Space below the fixed header */
+    padding: 24px 150px; /* Default for large screens */
 }
+
 
 #announcementSection {
     margin-bottom: 24px;
@@ -288,10 +288,6 @@
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-    .mainSection {
-        padding: 16px;
-    }
-
     #announcementCards {
         flex-direction: column;
     }
@@ -305,6 +301,9 @@
 
 /* Adjust size on medium screens */
 @media (max-width: 768px) {
+    .mainSection {
+        padding: 24px 100px;
+    }
     .facility-img {
         max-width: 200px; /* Smaller image for tablets */
     }
@@ -312,6 +311,9 @@
 
 /* Adjust size on small screens */
 @media (max-width: 576px) {
+    .mainSection {
+        padding: 16px 20px;
+    }
     .facility-img {
         max-width: 150px; /* Even smaller for mobile devices */
     }

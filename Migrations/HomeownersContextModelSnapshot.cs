@@ -57,6 +57,9 @@ namespace HomeownersMS.Migrations
                     b.Property<string>("BlocksAffected")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("ContactNumber")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Content")
                         .HasColumnType("TEXT");
 
@@ -67,6 +70,9 @@ namespace HomeownersMS.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateOnly?>("EventDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Office")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")

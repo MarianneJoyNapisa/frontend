@@ -12,8 +12,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>1qf89hld7t</Fingerprint>
-      <Integrity>Z+Ft8F28C4CgbZHYVXrBa+Yt30ey3wvixFm+XMlAtMQ=</Integrity>
+      <Fingerprint>mlx8otwyz8</Fingerprint>
+      <Integrity>GohbKzct8wl5c/y6VxCc83BQNaxSk4UvWJkMUWhS+Ws=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Globalstyle.css'))</OriginalItemSpec>
@@ -107,6 +107,24 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\Chapel.png'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\facilities\5994cdac-1b28-4831-9a19-a11afb38e7ea_0d4f550f-8331-49b8-bff9-729465499ff0.jpg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>HomeownersMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/HomeownersMS</BasePath>
+      <RelativePath>images/facilities/5994cdac-1b28-4831-9a19-a11afb38e7ea_0d4f550f-8331-49b8-bff9-729465499ff0.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>e7vhgw1d75</Fingerprint>
+      <Integrity>xmeB+euM+FLENuyom3hUL2A9tgox3NE4SFdWPf5u3D8=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\facilities\5994cdac-1b28-4831-9a19-a11afb38e7ea_0d4f550f-8331-49b8-bff9-729465499ff0.jpg'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\facilities\7a10b414-3fc1-47eb-9d8b-7995451bbdcb_caleb.jpg'))">
       <SourceType>Package</SourceType>

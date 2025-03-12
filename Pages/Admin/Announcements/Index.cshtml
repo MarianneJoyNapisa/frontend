@@ -33,6 +33,12 @@
                     @Html.DisplayNameFor(model => model.Announcement[0].BlocksAffected)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.Announcement[0].Office)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Announcement[0].ContactNumber)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.Announcement[0].CreatedAt)
                 </th>
                 <th>
@@ -55,6 +61,12 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.BlocksAffected)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Office)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactNumber)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.CreatedAt)

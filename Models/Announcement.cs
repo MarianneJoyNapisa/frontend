@@ -18,6 +18,10 @@ namespace HomeownersMS.Models
 
         public string? BlocksAffected { get; set; }
 
+        public string? Office { get; set; }
+
+        public int? ContactNumber { get; set;}
+
         [ForeignKey("Admin")]
         public int? CreatedBy { get; set; }
 

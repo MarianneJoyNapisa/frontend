@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HomeownersMS.Migrations
 {
     [DbContext(typeof(HomeownersContext))]
-    [Migration("20250312024448_FacilityUpdate")]
-    partial class FacilityUpdate
+    [Migration("20250312041101_TweakAnnouncement")]
+    partial class TweakAnnouncement
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,6 +60,9 @@ namespace HomeownersMS.Migrations
                     b.Property<string>("BlocksAffected")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("ContactNumber")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Content")
                         .HasColumnType("TEXT");
 
@@ -70,6 +73,9 @@ namespace HomeownersMS.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateOnly?>("EventDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Office")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")

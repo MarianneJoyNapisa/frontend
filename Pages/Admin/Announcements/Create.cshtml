@@ -37,6 +37,16 @@
                 <input asp-for="Announcement.BlocksAffected" class="form-control" />
                 <span asp-validation-for="Announcement.BlocksAffected" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Announcement.Office" class="control-label"></label>
+                <input asp-for="Announcement.Office" class="form-control" />
+                <span asp-validation-for="Announcement.Office" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Announcement.ContactNumber" class="control-label"></label>
+                <input asp-for="Announcement.ContactNumber" class="form-control" />
+                <span asp-validation-for="Announcement.ContactNumber" class="text-danger"></span>
+            </div>
 
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
