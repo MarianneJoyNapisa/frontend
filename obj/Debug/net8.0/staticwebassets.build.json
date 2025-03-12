@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "dDLZTjjQurh6Xk7fAxy3U4H5FB18XzhHNJBhNuIDMQ8=",
+  "Hash": "hf++n3J9khlb4v8TERXeMZKcwy8YFMEwV/ltkXjmbdE=",
   "Source": "HomeownersMS",
   "BasePath": "_content/HomeownersMS",
   "Mode": "Default",
@@ -73,8 +73,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "81tjgqd6he",
-      "Integrity": "vCFfoR/oIS9/K11Bf58w1L8VJEOjNWj2THwTiM1kRnI=",
+      "Fingerprint": "1qf89hld7t",
+      "Integrity": "Z+Ft8F28C4CgbZHYVXrBa+Yt30ey3wvixFm+XMlAtMQ=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\Globalstyle.css"
@@ -1552,7 +1552,7 @@
   ],
   "Endpoints": [
     {
-      "Route": "css/Globalstyle.81tjgqd6he.css",
+      "Route": "css/Globalstyle.1qf89hld7t.css",
       "AssetFile": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\css\\Globalstyle.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -1562,7 +1562,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "6521"
+          "Value": "6529"
         },
         {
           "Name": "Content-Type",
@@ -1570,11 +1570,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"vCFfoR/oIS9/K11Bf58w1L8VJEOjNWj2THwTiM1kRnI=\""
+          "Value": "\"Z+Ft8F28C4CgbZHYVXrBa+Yt30ey3wvixFm+XMlAtMQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 12 Mar 2025 01:45:00 GMT"
+          "Value": "Wed, 12 Mar 2025 02:12:12 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1584,7 +1584,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "81tjgqd6he"
+          "Value": "1qf89hld7t"
         },
         {
           "Name": "label",
@@ -1592,7 +1592,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-vCFfoR/oIS9/K11Bf58w1L8VJEOjNWj2THwTiM1kRnI="
+          "Value": "sha256-Z+Ft8F28C4CgbZHYVXrBa+Yt30ey3wvixFm+XMlAtMQ="
         }
       ]
     },
@@ -1607,7 +1607,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "6521"
+          "Value": "6529"
         },
         {
           "Name": "Content-Type",
@@ -1615,11 +1615,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"vCFfoR/oIS9/K11Bf58w1L8VJEOjNWj2THwTiM1kRnI=\""
+          "Value": "\"Z+Ft8F28C4CgbZHYVXrBa+Yt30ey3wvixFm+XMlAtMQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 12 Mar 2025 01:45:00 GMT"
+          "Value": "Wed, 12 Mar 2025 02:12:12 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1629,7 +1629,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-vCFfoR/oIS9/K11Bf58w1L8VJEOjNWj2THwTiM1kRnI="
+          "Value": "sha256-Z+Ft8F28C4CgbZHYVXrBa+Yt30ey3wvixFm+XMlAtMQ="
         }
       ]
     },

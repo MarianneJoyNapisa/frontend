@@ -6,6 +6,7 @@ namespace HomeownersMS.Pages.Reservation
     {
         public void OnGet()
         {
+            
         }
     }
 }

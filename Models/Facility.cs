@@ -19,6 +19,8 @@ namespace HomeownersMS.Models
         // Facility Image (stored as a file path or URL)
         public string? FacilityImage { get; set; }
 
+        public string? Address { get; set;}
+
         // Navigation property for reviews
         public virtual ICollection<FacilityReview> FacilityReviews { get; set; } = new List<FacilityReview>();
     }

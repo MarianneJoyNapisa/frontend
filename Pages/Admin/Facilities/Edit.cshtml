@@ -30,6 +30,11 @@
                 <span asp-validation-for="Facility.PricePerHour" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Facility.Address" class="control-label"></label>
+                <input asp-for="Facility.Address" class="form-control" />
+                <span asp-validation-for="Facility.Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="FacilityImage" class="control-label"></label>
                 <input type="file" asp-for="FacilityImage" class="form-control" /> <!-- File input -->
                 <span asp-validation-for="FacilityImage" class="text-danger"></span>
