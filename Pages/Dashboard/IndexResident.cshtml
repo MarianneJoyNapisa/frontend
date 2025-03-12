@@ -15,7 +15,7 @@
             <div id="announcementSection">
                 <div class="Title-ViewAll">
                     <p class="fs-4 m-0">Announcement</p>
-                    <a asp-page="/Announcements" class="text-primary">View All</a>
+                    <a asp-page="/Announcement/Announcement_Events" class="text-pryimary @(ViewData["CurrentPage"]?.ToString() == "/Dashboard/Index" ? "active" : "")">View All</a>
                 </div>
                 <div id="announcementCards" class="row">
                     <div class="ann-Card clean-up">
@@ -83,7 +83,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <a asp-page="/Billing" class="viewall_Btn btn btn-primary">View All</a>
+                    <a asp-page="/Billings_Payments/Payments" class="viewall_Btn btn btn-primary @(ViewData["CurrentPage"]?.ToString() == "/Billings_Payments/Payments" ? "active" : "")">View All</a>
                 </div>
                 <div id="securityLogs">
                     <p class="fs-5 fw-bold m-0">Security Logs</p>
@@ -105,7 +105,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <a asp-page="/Security" class="viewall_Btn btn btn-primary">View All</a>
+                    <a asp-page="/Security/Security" class="viewall_Btn btn btn-primary @(ViewData["CurrentPage"]?.ToString() == "/Security/Security" ? "active" : "")">View All</a>
                 </div>
             </div>
         </div>

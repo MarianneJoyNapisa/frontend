@@ -100,7 +100,7 @@
 }
 
 /* Toggle button styling */
-#sideNav_toggleBtn {
+.sideNav_toggleBtn {
     color: white;
     background-color: #3c6693;
     border: none;
@@ -198,8 +198,9 @@
 }
 
 .mainSection {
-    margin-top: 70px;
-    padding: 24px;
+    margin-top: 90px; /* Adjusted to give space below the fixed header */
+    padding: 24px 200px;
+
 }
 
 #announcementSection {
@@ -215,7 +216,8 @@
 
 #announcementCards {
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
+    flex-direction: column;
     gap: 16px;
 }
 
@@ -225,6 +227,22 @@
     border-radius: 8px;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
     padding: 16px;
+}
+.ann-Card .icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    color: white;
+}
+
+.ann-Card .header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 #tableSummaries {

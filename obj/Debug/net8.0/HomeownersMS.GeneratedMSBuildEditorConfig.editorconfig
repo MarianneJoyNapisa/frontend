@@ -180,6 +180,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cVXNlcnNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Announcement/Announcement_Events.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQW5ub3VuY2VtZW50XEFubm91bmNlbWVudF9FdmVudHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Billings_Payments/Payments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmlsbGluZ3NfUGF5bWVudHNcUGF5bWVudHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Dashboard/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -204,6 +212,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Notification/Notifications.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTm90aWZpY2F0aW9uXE5vdGlmaWNhdGlvbnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -214,6 +226,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Reservation/Reservation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVzZXJ2YXRpb25cUmVzZXJ2YXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Security/Security.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VjdXJpdHlcU2VjdXJpdHkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/User Folder/Magus Files/RRA Personal Folder/HelloWorld/C\#/HomeownersMS/Pages/Shared/_ValidationScriptsPartial.cshtml]

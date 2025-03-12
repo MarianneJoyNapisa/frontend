@@ -70,12 +70,44 @@ namespace HomeownersMS.Pages.Admin.Users
                 return Page();
             }
 
-            if (!string.IsNullOrEmpty(UserList.PasswordHash))
+            // Fetch the existing user from the database
+            var existingUser = await _context.Users.FindAsync(UserList.UserId);
+            if (existingUser == null)
             {
-                UserList.SetPassword(UserList.PasswordHash);
+                return NotFound();
             }
 
-            _context.Attach(UserList).State = EntityState.Modified;
+            // Update only the fields that have been explicitly set
+            if (!string.IsNullOrEmpty(UserList.Username))
+            {
+                existingUser.Username = UserList.Username;
+            }
+
+            if (!string.IsNullOrEmpty(UserList.PasswordHash))
+            {
+                existingUser.SetPassword(UserList.PasswordHash);
+            }
+
+            if (UserList.Privilege.HasValue)
+            {
+                existingUser.Privilege = UserList.Privilege;
+            }
+
+            // Update navigation properties if needed
+            if (UserList.Admin != null)
+            {
+                existingUser.Admin = UserList.Admin;
+            }
+
+            if (UserList.Staff != null)
+            {
+                existingUser.Staff = UserList.Staff;
+            }
+
+            if (UserList.Resident != null)
+            {
+                existingUser.Resident = UserList.Resident;
+            }
 
             try
             {
@@ -95,7 +127,6 @@ namespace HomeownersMS.Pages.Admin.Users
 
             return RedirectToPage("./Index");
         }
-
         private bool UserExists(int id)
         {
             return _context.Users.Any(e => e.UserId == id);

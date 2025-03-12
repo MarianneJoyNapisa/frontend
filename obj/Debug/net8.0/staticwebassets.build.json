@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Rn7IHnuYimMZiIiKat4R02JwATVIB75uqLxYfVilXtA=",
+  "Hash": "dDLZTjjQurh6Xk7fAxy3U4H5FB18XzhHNJBhNuIDMQ8=",
   "Source": "HomeownersMS",
   "BasePath": "_content/HomeownersMS",
   "Mode": "Default",
@@ -73,8 +73,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "ysxj5enerd",
-      "Integrity": "4j7kRKFcoJ0UDX+o5JgRcIRsposXtM32TLtrB1LYUgg=",
+      "Fingerprint": "81tjgqd6he",
+      "Integrity": "vCFfoR/oIS9/K11Bf58w1L8VJEOjNWj2THwTiM1kRnI=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\Globalstyle.css"
@@ -162,6 +162,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\Chapel.png"
+    },
+    {
+      "Identity": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\images\\facilities\\7a10b414-3fc1-47eb-9d8b-7995451bbdcb_caleb.jpg",
+      "SourceId": "HomeownersMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\",
+      "BasePath": "_content/HomeownersMS",
+      "RelativePath": "images/facilities/7a10b414-3fc1-47eb-9d8b-7995451bbdcb_caleb#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "kj9kwytpbb",
+      "Integrity": "UGUscZc2AU5SL1WRDd/7ranzbrAeJK0hZJIkmn5F5mg=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\facilities\\7a10b414-3fc1-47eb-9d8b-7995451bbdcb_caleb.jpg"
     },
     {
       "Identity": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\images\\FunctionHall.png",
@@ -1531,6 +1552,51 @@
   ],
   "Endpoints": [
     {
+      "Route": "css/Globalstyle.81tjgqd6he.css",
+      "AssetFile": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\css\\Globalstyle.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6521"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"vCFfoR/oIS9/K11Bf58w1L8VJEOjNWj2THwTiM1kRnI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 12 Mar 2025 01:45:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "81tjgqd6he"
+        },
+        {
+          "Name": "label",
+          "Value": "css/Globalstyle.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-vCFfoR/oIS9/K11Bf58w1L8VJEOjNWj2THwTiM1kRnI="
+        }
+      ]
+    },
+    {
       "Route": "css/Globalstyle.css",
       "AssetFile": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\css\\Globalstyle.css",
       "Selectors": [],
@@ -1541,7 +1607,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "6132"
+          "Value": "6521"
         },
         {
           "Name": "Content-Type",
@@ -1549,11 +1615,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"4j7kRKFcoJ0UDX+o5JgRcIRsposXtM32TLtrB1LYUgg=\""
+          "Value": "\"vCFfoR/oIS9/K11Bf58w1L8VJEOjNWj2THwTiM1kRnI=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 10 Mar 2025 09:33:51 GMT"
+          "Value": "Wed, 12 Mar 2025 01:45:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1563,52 +1629,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-4j7kRKFcoJ0UDX+o5JgRcIRsposXtM32TLtrB1LYUgg="
-        }
-      ]
-    },
-    {
-      "Route": "css/Globalstyle.ysxj5enerd.css",
-      "AssetFile": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\css\\Globalstyle.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "6132"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"4j7kRKFcoJ0UDX+o5JgRcIRsposXtM32TLtrB1LYUgg=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 10 Mar 2025 09:33:51 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "ysxj5enerd"
-        },
-        {
-          "Name": "label",
-          "Value": "css/Globalstyle.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-4j7kRKFcoJ0UDX+o5JgRcIRsposXtM32TLtrB1LYUgg="
+          "Value": "sha256-vCFfoR/oIS9/K11Bf58w1L8VJEOjNWj2THwTiM1kRnI="
         }
       ]
     },
@@ -2101,6 +2122,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-3hd52kmCnu+F3J7lZyhETDRaUcq5o4As+L/CWU/0ZRY="
+        }
+      ]
+    },
+    {
+      "Route": "images/facilities/7a10b414-3fc1-47eb-9d8b-7995451bbdcb_caleb.jpg",
+      "AssetFile": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\images\\facilities\\7a10b414-3fc1-47eb-9d8b-7995451bbdcb_caleb.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "128441"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"UGUscZc2AU5SL1WRDd/7ranzbrAeJK0hZJIkmn5F5mg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 12 Mar 2025 01:20:56 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-UGUscZc2AU5SL1WRDd/7ranzbrAeJK0hZJIkmn5F5mg="
+        }
+      ]
+    },
+    {
+      "Route": "images/facilities/7a10b414-3fc1-47eb-9d8b-7995451bbdcb_caleb.kj9kwytpbb.jpg",
+      "AssetFile": "D:\\User Folder\\Magus Files\\RRA Personal Folder\\HelloWorld\\C#\\HomeownersMS\\wwwroot\\images\\facilities\\7a10b414-3fc1-47eb-9d8b-7995451bbdcb_caleb.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "128441"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"UGUscZc2AU5SL1WRDd/7ranzbrAeJK0hZJIkmn5F5mg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 12 Mar 2025 01:20:56 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "kj9kwytpbb"
+        },
+        {
+          "Name": "label",
+          "Value": "images/facilities/7a10b414-3fc1-47eb-9d8b-7995451bbdcb_caleb.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-UGUscZc2AU5SL1WRDd/7ranzbrAeJK0hZJIkmn5F5mg="
         }
       ]
     },
