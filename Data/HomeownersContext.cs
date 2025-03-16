@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using HomeownersMS.Models;
+using ELNET_HomeownersMS.Models; // Ensure this is the correct namespace
 
 namespace HomeownersMS.Data
 {
@@ -12,20 +13,18 @@ namespace HomeownersMS.Data
         {
         }
 
+        public DbSet<Announcement> Announcements { get; set; } = default!;
         public DbSet<User> Users { get; set; } = default!;
         public DbSet<Resident> Residents { get; set; } = default!;
         public DbSet<Staff> Staffs { get; set; } = default!;
         public DbSet<Admin> Admins { get; set; } = default!;
         public DbSet<Service> Services { get; set; } = default!;
-
         public DbSet<ServiceRequest> ServiceRequests { get; set; } = default!;
-
         public DbSet<Facility> Facilities { get; set; } = default!;
         public DbSet<FacilityReview> FacilityReviews { get; set; } = default!;
         public DbSet<FacilityRequest> FacilityRequests { get; set; } = default!;
         public DbSet<CommunityPost> CommunityPosts { get; set; } = default!;
         public DbSet<CommunityComment> CommunityComments { get; set; } = default!;
-        public DbSet<Announcement> Announcements { get; set; } = default!;
         public DbSet<Resource> Resources { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -48,39 +47,21 @@ namespace HomeownersMS.Data
                 .HasForeignKey<Resident>(r => r.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // modelBuilder.Entity<Resident>()
-            //     .HasOne(r => r.User)
-            //     .WithOne(u => u.Resident)
-            //     .HasForeignKey<Resident>(r => r.UserId)
-            //     .OnDelete(DeleteBehavior.Cascade);
-
-            // modelBuilder.Entity<Admin>()
-            //     .HasOne(a => a.User)
-            //     .WithOne(u => u.Admin)
-            //     .HasForeignKey<Admin>(a => a.UserId)
-            //     .OnDelete(DeleteBehavior.Cascade); // Ensures that when Admin is deleted, User is also deleted
-
-            // modelBuilder.Entity<Staff>()
-            //     .HasOne(s => s.User)
-            //     .WithOne(u => u.Staff)
-            //     .HasForeignKey<Staff>(s => s.UserId)
-            //     .OnDelete(DeleteBehavior.Cascade);
-
             modelBuilder.Entity<Service>()
                 .HasOne(s => s.Staff)
-                .WithMany(st => st.Services) // Ensure Staff has a collection of Services
+                .WithMany(st => st.Services)
                 .HasForeignKey(s => s.StaffId)
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<ServiceRequest>()
                 .HasOne(sr => sr.Resident)
-                .WithMany(r => r.ServiceRequests) // Ensure Resident has a collection of ServiceRequests
+                .WithMany(r => r.ServiceRequests)
                 .HasForeignKey(sr => sr.RequestedBy)
-                .OnDelete(DeleteBehavior.Cascade); // If a Resident is deleted, delete their ServiceRequests
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ServiceRequest>()
                 .HasOne(sr => sr.Service)
-                .WithMany(s => s.ServiceRequests) // Ensure Service has a collection of ServiceRequests
+                .WithMany(s => s.ServiceRequests)
                 .HasForeignKey(sr => sr.ServiceId)
                 .OnDelete(DeleteBehavior.SetNull);
 
@@ -88,41 +69,41 @@ namespace HomeownersMS.Data
                 .HasMany(f => f.FacilityReviews)
                 .WithOne(r => r.Facility)
                 .HasForeignKey(r => r.FacilityId)
-                .OnDelete(DeleteBehavior.Cascade); // Cascade delete reviews when a facility is deleted
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<FacilityRequest>()
                 .HasOne(fr => fr.Resident)
-                .WithMany() // Assuming one resident can have multiple facility requests
+                .WithMany()
                 .HasForeignKey(fr => fr.ResidentId)
-                .OnDelete(DeleteBehavior.SetNull); // Prevent cascade delete, keep history
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<FacilityRequest>()
                 .HasOne(fr => fr.Facility)
-                .WithMany() // Assuming one facility can have multiple requests
+                .WithMany()
                 .HasForeignKey(fr => fr.FacilityId)
-                .OnDelete(DeleteBehavior.SetNull); // Prevent cascade delete, keep history
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<CommunityPost>()
                 .HasOne(cp => cp.User)
-                .WithMany() // Assuming a user can create multiple posts
+                .WithMany()
                 .HasForeignKey(cp => cp.CreatedBy)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<CommunityComment>()
                 .HasOne(cc => cc.CommunityPost)
-                .WithMany() // Assuming a post can have multiple comments
+                .WithMany()
                 .HasForeignKey(cc => cc.CommunityPostId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Resource>()
                 .HasOne(r => r.Admin)
-                .WithMany() // Assuming an Admin can create multiple resources
+                .WithMany()
                 .HasForeignKey(r => r.CreatedBy)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Announcement>()
                 .HasOne(a => a.Admin)
-                .WithMany() // Assuming an Admin can create multiple announcements
+                .WithMany()
                 .HasForeignKey(a => a.CreatedBy)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -138,8 +119,6 @@ namespace HomeownersMS.Data
             modelBuilder.Entity<CommunityComment>().ToTable("CommunityComment");
             modelBuilder.Entity<Announcement>().ToTable("Announcement");
             modelBuilder.Entity<Resource>().ToTable("Resource");
-
         }
-
     }
 }
