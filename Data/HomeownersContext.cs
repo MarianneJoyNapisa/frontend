@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using HomeownersMS.Models;
-using ELNET_HomeownersMS.Models; // Ensure this is the correct namespace
 
 namespace HomeownersMS.Data
 {
