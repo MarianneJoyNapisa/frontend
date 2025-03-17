@@ -160,13 +160,13 @@
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\Calendar.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"21ni33gafs"},{"Name":"integrity","Value":"sha256-6mtHyEIQFOWLBh/pB1851o3CGOHYBo3GTB4qZh\u002B3YPQ="},{"Name":"label","Value":"_content/HomeownersMS/js/Calendar.js"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"604"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u00226mtHyEIQFOWLBh/pB1851o3CGOHYBo3GTB4qZh\u002B3YPQ=\u0022"},{"Name":"Last-Modified","Value":"Mon, 17 Mar 2025 11:41:16 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"604"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u00226mtHyEIQFOWLBh/pB1851o3CGOHYBo3GTB4qZh\u002B3YPQ=\u0022"},{"Name":"Last-Modified","Value":"Mon, 17 Mar 2025 12:07:05 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/HomeownersMS/js/Calendar.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\Calendar.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-6mtHyEIQFOWLBh/pB1851o3CGOHYBo3GTB4qZh\u002B3YPQ="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"604"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u00226mtHyEIQFOWLBh/pB1851o3CGOHYBo3GTB4qZh\u002B3YPQ=\u0022"},{"Name":"Last-Modified","Value":"Mon, 17 Mar 2025 11:41:16 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"604"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u00226mtHyEIQFOWLBh/pB1851o3CGOHYBo3GTB4qZh\u002B3YPQ=\u0022"},{"Name":"Last-Modified","Value":"Mon, 17 Mar 2025 12:07:05 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/HomeownersMS/js/sideNavjs.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\sideNavjs.js'))</AssetFile>
