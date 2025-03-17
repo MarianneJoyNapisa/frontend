@@ -162,6 +162,24 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\facilities\8b5cc9bf-7ba8-48f3-9105-803af5e5e3d5_cat-cat-meme.png'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\facilities\b4fea22c-efe4-4ba0-b52c-c1ccd6f5001d_cat-cat-meme.png'))">
+      <SourceType>Package</SourceType>
+      <SourceId>HomeownersMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/HomeownersMS</BasePath>
+      <RelativePath>images/facilities/b4fea22c-efe4-4ba0-b52c-c1ccd6f5001d_cat-cat-meme.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>km69yavqah</Fingerprint>
+      <Integrity>zMOrUsYQx9oezu5BITtOXsvnD3ppKouMFnDfOhqRSs0=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\facilities\b4fea22c-efe4-4ba0-b52c-c1ccd6f5001d_cat-cat-meme.png'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\FunctionHall.png'))">
       <SourceType>Package</SourceType>
       <SourceId>HomeownersMS</SourceId>

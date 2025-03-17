@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HomeownersMS.Migrations
 {
     [DbContext(typeof(HomeownersContext))]
-    [Migration("20250317025405_yudepota")]
-    partial class yudepota
+    [Migration("20250317035607_zvzxcvj")]
+    partial class zvzxcvj
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

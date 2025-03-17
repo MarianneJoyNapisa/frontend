@@ -8316,11 +8316,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\xx220\\Desktop\\daf\\ELNET_HomeownersMS\\HomeownersMS.csproj",
+      "projectUniqueName": "C:\\Users\\xx220\\Downloads\\ELNET_HomeownersMS\\HomeownersMS.csproj",
       "projectName": "HomeownersMS",
-      "projectPath": "C:\\Users\\xx220\\Desktop\\daf\\ELNET_HomeownersMS\\HomeownersMS.csproj",
+      "projectPath": "C:\\Users\\xx220\\Downloads\\ELNET_HomeownersMS\\HomeownersMS.csproj",
       "packagesPath": "C:\\Users\\xx220\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\xx220\\Desktop\\daf\\ELNET_HomeownersMS\\obj\\",
+      "outputPath": "C:\\Users\\xx220\\Downloads\\ELNET_HomeownersMS\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

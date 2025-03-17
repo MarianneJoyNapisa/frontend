@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HomeownersMS.Migrations
 {
     /// <inheritdoc />
-    public partial class yudepota : Migration
+    public partial class zvzxcvj : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
