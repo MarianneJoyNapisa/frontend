@@ -37,7 +37,7 @@
                             </div>
                             <div class="content">
                                 <!-- Use string interpolation to format EventDate and EventTime -->
-                                <p><strong>@($"{announcement.EventDate:MM/dd/yyyy} @ {announcement.EventTime:hh\\:mm tt}")</strong></p>
+                                <p><strong>@($"{announcement.EventDate:MMMM d} @ {announcement.EventTime:hh\\:mm tt}")</strong></p>
                                 <p><strong>Block @announcement.BlocksAffected</strong></p>
                                 <p>@announcement.Office - <a href="tel:@announcement.ContactNumber">@announcement.ContactNumber</a></p>
                                 <p>@announcement.Content</p>

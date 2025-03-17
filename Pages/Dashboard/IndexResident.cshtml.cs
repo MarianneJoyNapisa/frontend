@@ -42,10 +42,10 @@ namespace HomeownersMS.Pages.Dashboard
 
         public class CalendarEvent
         {
-            public string Title { get; set; }
-            public string Start { get; set; } // Start is a string in "yyyy-MM-dd" format
-            public string Description { get; set; }
-            public string EventTime { get; set; } // EventTime is a string in "hh:mm tt" format
+            public string? Title { get; set; }
+            public string? Start { get; set; } // Start is a string in "yyyy-MM-dd" format
+            public string? Description { get; set; }
+            public string? EventTime { get; set; } // EventTime is a string in "hh:mm tt" format
         }
     }
 }

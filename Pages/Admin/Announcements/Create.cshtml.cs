@@ -54,12 +54,6 @@ namespace HomeownersMS.Pages_Admin_Announcements
                 ModelState.AddModelError("Announcement.EventDate", "The Event Date must be in the future.");
             }
 
-            // Custom validation for EventTime
-            if (Announcement.EventTime < TimeOnly.FromDateTime(DateTime.Now) && Announcement.EventDate == DateOnly.FromDateTime(DateTime.Now))
-            {
-                ModelState.AddModelError("Announcement.EventTime", "The Event Time must be in the future.");
-            }
-
             //DateOnly.FromDateTime(DateTime.Now)
 
             // If the ModelState is invalid, return the page with validation errors
