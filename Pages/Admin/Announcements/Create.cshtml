@@ -29,8 +29,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="Announcement.EventDate" class="control-label"></label>
-                <input asp-for="Announcement.EventDate" class="form-control" />
+                <input asp-for="Announcement.EventDate" type="date" class="form-control" />
                 <span asp-validation-for="Announcement.EventDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Announcement.EventTime" class="control-label"></label>
+                <input asp-for="Announcement.EventTime" type="time" class="form-control" />
+                <span asp-validation-for="Announcement.EventTime" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Announcement.BlocksAffected" class="control-label"></label>
