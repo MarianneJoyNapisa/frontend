@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HomeownersMS.Migrations
 {
     /// <inheritdoc />
-    public partial class TweakAnnouncement : Migration
+    public partial class StupidDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -170,6 +170,7 @@ namespace HomeownersMS.Migrations
                     Title = table.Column<string>(type: "TEXT", nullable: true),
                     Content = table.Column<string>(type: "TEXT", nullable: true),
                     EventDate = table.Column<DateOnly>(type: "TEXT", nullable: true),
+                    EventTime = table.Column<TimeOnly>(type: "TEXT", nullable: true),
                     BlocksAffected = table.Column<string>(type: "TEXT", nullable: true),
                     Office = table.Column<string>(type: "TEXT", nullable: true),
                     ContactNumber = table.Column<int>(type: "INTEGER", nullable: true),

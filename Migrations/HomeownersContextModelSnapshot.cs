@@ -15,7 +15,7 @@ namespace HomeownersMS.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "9.0.2");
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
 
             modelBuilder.Entity("HomeownersMS.Models.Admin", b =>
                 {
@@ -70,6 +70,9 @@ namespace HomeownersMS.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateOnly?>("EventDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<TimeOnly?>("EventTime")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Office")

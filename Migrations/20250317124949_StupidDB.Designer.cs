@@ -11,14 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HomeownersMS.Migrations
 {
     [DbContext(typeof(HomeownersContext))]
-    [Migration("20250312041101_TweakAnnouncement")]
-    partial class TweakAnnouncement
+    [Migration("20250317124949_StupidDB")]
+    partial class StupidDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "9.0.2");
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
 
             modelBuilder.Entity("HomeownersMS.Models.Admin", b =>
                 {
@@ -73,6 +73,9 @@ namespace HomeownersMS.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateOnly?>("EventDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<TimeOnly?>("EventTime")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Office")
