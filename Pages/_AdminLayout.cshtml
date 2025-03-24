@@ -61,7 +61,7 @@
                 <i class="bi bi-bar-chart-fill"></i>
                 <span>Report & Analytics</span>
             </a>
-            <a asp-page="#" class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Community" ? "active" : "")">
+            <a asp-page="/Admin/Community/Index" class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Community" ? "active" : "")">
                 <i class="bi bi-chat-left-text-fill"></i>
                 <span>Community</span>
             </a>

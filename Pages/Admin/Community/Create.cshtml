@@ -1,0 +1,61 @@
+@page
+@model HomeownersMS.Pages_Admin_Community.CreateModel
+
+@{
+    Layout = "_AdminLayout"; // Use the Admin layout
+    ViewData["HeaderTitle"] = "Community Management";
+    ViewData["Title"] = "Community";
+    var username = HttpContext?.User?.Identity?.Name ?? "Guest";
+    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+    ViewData["Username"] = username;
+    ViewData["CurrentPage"] = currentPage;
+}
+
+<h1>Create</h1>
+
+<h4>CommunityPost</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CommunityPost.Title" class="control-label"></label>
+                <input asp-for="CommunityPost.Title" class="form-control" />
+                <span asp-validation-for="CommunityPost.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CommunityPost.Content" class="control-label"></label>
+                <input asp-for="CommunityPost.Content" class="form-control" />
+                <span asp-validation-for="CommunityPost.Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CommunityPost.CreatedAt" class="control-label"></label>
+                <input asp-for="CommunityPost.CreatedAt" class="form-control" />
+                <span asp-validation-for="CommunityPost.CreatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CommunityPost.UpdatedAt" class="control-label"></label>
+                <input asp-for="CommunityPost.UpdatedAt" class="form-control" />
+                <span asp-validation-for="CommunityPost.UpdatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CommunityPost.Type" class="control-label"></label>
+                <input asp-for="CommunityPost.Type" class="form-control" />
+                <span asp-validation-for="CommunityPost.Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CommunityPost.CreatedBy" class="control-label"></label>
+                <select asp-for="CommunityPost.CreatedBy" class ="form-control" asp-items="ViewBag.CreatedBy"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+

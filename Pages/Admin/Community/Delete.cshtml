@@ -1,0 +1,64 @@
+@page
+@model HomeownersMS.Pages_Admin_Community.DeleteModel
+
+@{
+    Layout = "_AdminLayout"; // Use the Admin layout
+    ViewData["HeaderTitle"] = "Community Management";
+    ViewData["Title"] = "Community";
+    var username = HttpContext?.User?.Identity?.Name ?? "Guest";
+    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+    ViewData["Username"] = username;
+    ViewData["CurrentPage"] = currentPage;
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>CommunityPost</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CommunityPost.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CommunityPost.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CommunityPost.Content)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CommunityPost.Content)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CommunityPost.CreatedAt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CommunityPost.CreatedAt)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CommunityPost.UpdatedAt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CommunityPost.UpdatedAt)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CommunityPost.Type)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CommunityPost.Type)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CommunityPost.User)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CommunityPost.User.UserId)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="CommunityPost.CommunityPostId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>
