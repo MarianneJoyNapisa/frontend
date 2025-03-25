@@ -82,17 +82,25 @@ namespace HomeownersMS.Data
                 .HasForeignKey(fr => fr.FacilityId)
                 .OnDelete(DeleteBehavior.SetNull);
 
+            // Configure CommunityPost relationships
             modelBuilder.Entity<CommunityPost>()
                 .HasOne(cp => cp.User)
-                .WithMany()
+                .WithMany(u => u.CommunityPosts)  // Assuming User has ICollection<CommunityPost> Posts
                 .HasForeignKey(cp => cp.CreatedBy)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // Configure CommunityComment relationships
             modelBuilder.Entity<CommunityComment>()
                 .HasOne(cc => cc.CommunityPost)
-                .WithMany()
+                .WithMany(cp => cp.Comments)  // Links to the Comments collection in CommunityPost
                 .HasForeignKey(cc => cc.CommunityPostId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CommunityComment>()
+                .HasOne(cc => cc.User)
+                .WithMany(u => u.CommunityComments)  // Assuming User has ICollection<CommunityComment> Comments
+                .HasForeignKey(cc => cc.UserId)
+                .OnDelete(DeleteBehavior.Restrict);  // Typically restrict delete for comments when user is deleted
 
             modelBuilder.Entity<Resource>()
                 .HasOne(r => r.Admin)

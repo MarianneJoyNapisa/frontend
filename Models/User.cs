@@ -21,6 +21,10 @@ namespace HomeownersMS.Models
         public virtual Staff? Staff { get; set; }
         public virtual Resident? Resident { get; set; }
 
+        public ICollection<CommunityPost> CommunityPosts { get; set; } = new List<CommunityPost>();
+        public ICollection<CommunityComment> CommunityComments { get; set; } = new List<CommunityComment>();
+
+
         public void SetPassword(string password)
         {
             var passwordHasher = new PasswordHasher<User>();

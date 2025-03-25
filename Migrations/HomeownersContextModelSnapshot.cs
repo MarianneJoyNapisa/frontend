@@ -106,9 +106,14 @@ namespace HomeownersMS.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("CommunityCommentId");
 
                     b.HasIndex("CommunityPostId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("CommunityComment", (string)null);
                 });
@@ -423,17 +428,24 @@ namespace HomeownersMS.Migrations
             modelBuilder.Entity("HomeownersMS.Models.CommunityComment", b =>
                 {
                     b.HasOne("HomeownersMS.Models.CommunityPost", "CommunityPost")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("CommunityPostId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("HomeownersMS.Models.User", "User")
+                        .WithMany("CommunityComments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("CommunityPost");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("HomeownersMS.Models.CommunityPost", b =>
                 {
                     b.HasOne("HomeownersMS.Models.User", "User")
-                        .WithMany()
+                        .WithMany("CommunityPosts")
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -526,6 +538,11 @@ namespace HomeownersMS.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("HomeownersMS.Models.CommunityPost", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
             modelBuilder.Entity("HomeownersMS.Models.Facility", b =>
                 {
                     b.Navigation("FacilityReviews");
@@ -549,6 +566,10 @@ namespace HomeownersMS.Migrations
             modelBuilder.Entity("HomeownersMS.Models.User", b =>
                 {
                     b.Navigation("Admin");
+
+                    b.Navigation("CommunityComments");
+
+                    b.Navigation("CommunityPosts");
 
                     b.Navigation("Resident");
 

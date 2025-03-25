@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HomeownersMS.Migrations
 {
     /// <inheritdoc />
-    public partial class StupidDB : Migration
+    public partial class UpdateComment : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -219,7 +219,8 @@ namespace HomeownersMS.Migrations
                     Content = table.Column<string>(type: "TEXT", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CommunityPostId = table.Column<int>(type: "INTEGER", nullable: true)
+                    CommunityPostId = table.Column<int>(type: "INTEGER", nullable: true),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -230,6 +231,12 @@ namespace HomeownersMS.Migrations
                         principalTable: "CommunityPost",
                         principalColumn: "CommunityPostId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CommunityComment_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -325,6 +332,11 @@ namespace HomeownersMS.Migrations
                 name: "IX_CommunityComment_CommunityPostId",
                 table: "CommunityComment",
                 column: "CommunityPostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CommunityComment_UserId",
+                table: "CommunityComment",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CommunityPost_CreatedBy",

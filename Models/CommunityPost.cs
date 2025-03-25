@@ -25,5 +25,7 @@ namespace HomeownersMS.Models
 
 
         public virtual User? User { get; set; }
+
+        public ICollection<CommunityComment> Comments { get; set; } = new List<CommunityComment>();
     }
 }
