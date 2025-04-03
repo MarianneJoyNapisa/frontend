@@ -24,6 +24,8 @@ namespace HomeownersMS.Models
         public ICollection<CommunityPost> CommunityPosts { get; set; } = new List<CommunityPost>();
         public ICollection<CommunityComment> CommunityComments { get; set; } = new List<CommunityComment>();
 
+        public virtual ICollection<CommunityVote> CommunityVotes { get; set; } = new List<CommunityVote>();
+
 
         public void SetPassword(string password)
         {

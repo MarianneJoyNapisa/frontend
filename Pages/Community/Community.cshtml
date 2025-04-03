@@ -191,6 +191,43 @@
         justify-content: flex-end;
         gap: 5px;
     }
+    /* Upvote/downvote button */
+    /* Voting styles */
+    .vote-buttons {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .btn-vote {
+        cursor: pointer;
+        padding: 2px 5px;
+        border-radius: 3px;
+        border: 1px solid #ddd;
+        background: none;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+    }
+
+    .btn-vote:hover {
+        background-color: #f0f0f0;
+    }
+
+    .btn-vote.active {
+        font-weight: bold;
+    }
+
+    .upvote-btn.active {
+        color: #4CAF50;
+        border-color: #4CAF50;
+    }
+
+    .downvote-btn.active {
+        color: #F44336;
+        border-color: #F44336;
+    }
 </style>
 
 <h2 class="text-center">Community</h2>
@@ -272,9 +309,25 @@
                 <p>@post.Content</p>
                 <div class="post-icons">
                     <div class="reaction-icons">
-                        <span>👍 0</span> <span>👎 0</span>
+                        <span class="vote-buttons">
+                            @{
+                                var userId = User.Identity.IsAuthenticated ? 
+                                    int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value) : 0;
+                                var userVote = post.Votes.FirstOrDefault(v => v.UserId == userId)?.IsUpvote;
+                            }
+                            <button type="button" class="btn-vote upvote-btn @(userVote == true ? "active" : "")" 
+                                    data-post-id="@post.CommunityPostId" data-is-upvote="true">
+                                👍 <span class="upvote-count">@post.Votes.Count(v => v.IsUpvote == true)</span>
+                            </button>
+                            @* Vote count is not being reflected! *@
+                            <span class="net-votes" data-post-id="@post.CommunityPostId">@(post.Votes.Count(v => v.IsUpvote == true) - @post.Votes.Count(v => v.IsUpvote == false))</span>
+                            <button type="button" class="btn-vote downvote-btn @(userVote == false ? "active" : "")" 
+                                    data-post-id="@post.CommunityPostId" data-is-upvote="false">
+                                👎 <span class="downvote-count">@post.Votes.Count(v => v.IsUpvote == false)</span>
+                            </button>
+                        </span>
                     </div>
-                    <span>💬 0</span>
+                    <span>💬 @(post.Comments?.Count ?? 0)</span>
                 </div>
                 @* <!-- Inside your post-card div, after the post-icons div --> *@
                 <div class="comments-section mt-3">
@@ -504,6 +557,45 @@
                     },
                     error: function() {
                         alert('Error deleting item');
+                    }
+                });
+            });
+
+            // Voting functionality
+            $(document).on('click', '.btn-vote', function() {
+                const postId = $(this).data('post-id');
+                const isUpvote = $(this).data('is-upvote');
+                const $button = $(this);
+                const $oppositeButton = isUpvote ? 
+                    $(`.downvote-btn[data-post-id="${postId}"]`) : 
+                    $(`.upvote-btn[data-post-id="${postId}"]`);
+
+                // If already active, this is an unvote
+                const isActive = $button.hasClass('active');
+                const voteValue = isActive ? null : isUpvote;
+
+                $.ajax({
+                    url: window.location.pathname + '?handler=Vote',
+                    type: 'POST',
+                    data: { 
+                        postId: postId,
+                        isUpvote: voteValue,
+                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function(response) {
+                        // Update counts
+                        $(`.upvote-btn[data-post-id="${postId}"] .upvote-count`).text(response.upvotes);
+                        $(`.downvote-btn[data-post-id="${postId}"] .downvote-count`).text(response.downvotes);
+                        
+                        // Update net votes - add this line
+                        $(`.net-votes[data-post-id="${postId}"]`).text(response.upvotes - response.downvotes);
+                        
+                        // Update active states
+                        $button.toggleClass('active', response.userVote === isUpvote);
+                        $oppositeButton.removeClass('active');
+                    },
+                    error: function() {
+                        alert('Error processing your vote');
                     }
                 });
             });

@@ -3,6 +3,7 @@ using System;
 using HomeownersMS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HomeownersMS.Migrations
 {
     [DbContext(typeof(HomeownersContext))]
-    partial class HomeownersContextModelSnapshot : ModelSnapshot
+    [Migration("20250326014615_Shits")]
+    partial class Shits
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
@@ -150,34 +153,6 @@ namespace HomeownersMS.Migrations
                     b.HasIndex("CreatedBy");
 
                     b.ToTable("CommunityPost", (string)null);
-                });
-
-            modelBuilder.Entity("HomeownersMS.Models.CommunityVote", b =>
-                {
-                    b.Property<int>("CommunityVoteId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("CommunityPostId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool?>("IsUpvote")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("CommunityVoteId");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("CommunityPostId", "UserId")
-                        .IsUnique();
-
-                    b.ToTable("CommunityVote", (string)null);
                 });
 
             modelBuilder.Entity("HomeownersMS.Models.Facility", b =>
@@ -483,23 +458,6 @@ namespace HomeownersMS.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("HomeownersMS.Models.CommunityVote", b =>
-                {
-                    b.HasOne("HomeownersMS.Models.CommunityPost", "Post")
-                        .WithMany("Votes")
-                        .HasForeignKey("CommunityPostId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("HomeownersMS.Models.User", "User")
-                        .WithMany("CommunityVotes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Post");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("HomeownersMS.Models.FacilityRequest", b =>
                 {
                     b.HasOne("HomeownersMS.Models.Facility", "Facility")
@@ -589,8 +547,6 @@ namespace HomeownersMS.Migrations
             modelBuilder.Entity("HomeownersMS.Models.CommunityPost", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("HomeownersMS.Models.Facility", b =>
@@ -620,8 +576,6 @@ namespace HomeownersMS.Migrations
                     b.Navigation("CommunityComments");
 
                     b.Navigation("CommunityPosts");
-
-                    b.Navigation("CommunityVotes");
 
                     b.Navigation("Resident");
 

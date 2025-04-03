@@ -23,9 +23,13 @@ namespace HomeownersMS.Models
         [ForeignKey("User")]
         public int? CreatedBy { get; set; }
 
+        public int Vote { get; set; } = 0;
+
 
         public virtual User? User { get; set; }
 
         public ICollection<CommunityComment> Comments { get; set; } = new List<CommunityComment>();
+
+        public virtual ICollection<CommunityVote> Votes { get; set; } = new List<CommunityVote>();
     }
 }

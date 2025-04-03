@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HomeownersMS.Migrations
 {
     [DbContext(typeof(HomeownersContext))]
-    [Migration("20250325040100_UpdateComment")]
-    partial class UpdateComment
+    [Migration("20250326012345_Create")]
+    partial class Create
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -144,6 +144,9 @@ namespace HomeownersMS.Migrations
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Vote")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("CommunityPostId");
 

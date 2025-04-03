@@ -23,6 +23,8 @@ namespace HomeownersMS.Data
         public DbSet<FacilityReview> FacilityReviews { get; set; } = default!;
         public DbSet<FacilityRequest> FacilityRequests { get; set; } = default!;
         public DbSet<CommunityPost> CommunityPosts { get; set; } = default!;
+
+        public DbSet<CommunityVote> CommunityVotes { get; set; } = default!;
         public DbSet<CommunityComment> CommunityComments { get; set; } = default!;
         public DbSet<Resource> Resources { get; set; } = default!;
 
@@ -89,6 +91,29 @@ namespace HomeownersMS.Data
                 .HasForeignKey(cp => cp.CreatedBy)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // Configure CommunityVote relationships
+            modelBuilder.Entity<CommunityVote>(entity =>
+            {
+                // Primary key
+                entity.HasKey(v => v.CommunityVoteId);
+                
+                // Relationship with CommunityPost
+                entity.HasOne(v => v.Post)
+                    .WithMany(p => p.Votes)
+                    .HasForeignKey(v => v.CommunityPostId)
+                    .OnDelete(DeleteBehavior.Cascade); // Delete votes when post is deleted
+                
+                // Relationship with User
+                entity.HasOne(v => v.User)
+                    .WithMany(u => u.CommunityVotes)
+                    .HasForeignKey(v => v.UserId)
+                    .OnDelete(DeleteBehavior.Restrict); // Prevent user deletion if they have votes
+                
+                // Add unique constraint to prevent duplicate votes
+                entity.HasIndex(v => new { v.CommunityPostId, v.UserId })
+                    .IsUnique();
+            });
+
             // Configure CommunityComment relationships
             modelBuilder.Entity<CommunityComment>()
                 .HasOne(cc => cc.CommunityPost)
@@ -123,6 +148,7 @@ namespace HomeownersMS.Data
             modelBuilder.Entity<Facility>().ToTable("Facility");
             modelBuilder.Entity<FacilityRequest>().ToTable("FacilityRequest");
             modelBuilder.Entity<CommunityPost>().ToTable("CommunityPost");
+            modelBuilder.Entity<CommunityVote>().ToTable("CommunityVote");
             modelBuilder.Entity<CommunityComment>().ToTable("CommunityComment");
             modelBuilder.Entity<Announcement>().ToTable("Announcement");
             modelBuilder.Entity<Resource>().ToTable("Resource");

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HomeownersMS.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateComment : Migration
+    public partial class Create : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -100,7 +100,8 @@ namespace HomeownersMS.Migrations
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Type = table.Column<int>(type: "INTEGER", nullable: true),
-                    CreatedBy = table.Column<int>(type: "INTEGER", nullable: true)
+                    CreatedBy = table.Column<int>(type: "INTEGER", nullable: true),
+                    Vote = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
