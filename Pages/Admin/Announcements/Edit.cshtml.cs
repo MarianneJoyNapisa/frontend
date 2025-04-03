@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HomeownersMS.Data;
 using HomeownersMS.Models;
+using System.Security.Claims;
+
 
 namespace HomeownersMS.Pages_Admin_Announcements
 {
@@ -49,6 +51,38 @@ namespace HomeownersMS.Pages_Admin_Announcements
                 return Page();
             }
 
+            var existingAnnouncement = await _context.Announcements
+                .AsNoTracking()
+                .FirstOrDefaultAsync(a => a.AnnouncementId == Announcement.AnnouncementId);
+
+            if (existingAnnouncement == null)
+            {
+                return NotFound();
+            }
+
+            // Retrieve logged-in user ID
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (int.TryParse(userIdString, out int userId))
+            {
+                Announcement.CreatedBy = userId;
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Unable to determine the logged-in user.");
+                return Page();
+            }
+
+            // Ensure CreatedAt remains unchanged
+            Announcement.CreatedAt = existingAnnouncement.CreatedAt;
+
+            // Validate EventTime
+            if (Announcement.EventTime == default)
+            {
+                ModelState.AddModelError("Announcement.EventTime", "Please select a valid time.");
+                return Page();
+            }
+
             _context.Attach(Announcement).State = EntityState.Modified;
 
             try
@@ -69,6 +103,7 @@ namespace HomeownersMS.Pages_Admin_Announcements
 
             return RedirectToPage("./Index");
         }
+
 
         private bool AnnouncementExists(int id)
         {

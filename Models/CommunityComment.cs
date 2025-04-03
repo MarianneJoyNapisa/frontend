@@ -17,7 +17,12 @@ namespace HomeownersMS.Models
         [ForeignKey("CommunityPost")]
         public int? CommunityPostId { get; set; }
 
+        [ForeignKey("User")]
+        public int? UserId { get; set; }
+
 
         public virtual CommunityPost? CommunityPost { get; set; }
+
+        public virtual User? User { get; set; }
     }
 }

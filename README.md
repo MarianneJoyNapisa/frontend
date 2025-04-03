@@ -14,9 +14,11 @@
 ## How to Pull Forcefully from Development (Reject Local Changes)
 
 1. `git remote add origin https://github.com/VulpritProoze/ELNET_HomeownersMS`
-2. `git fetch origin development`
-3. `git reset --hard origin/development`
-
+2. `git branch development`
+3. `git checkout development`
+4. `git pull origin development`
+5. `git branch --set-upstream-to=origin/development development`
+6. `git reset --hard origin/development`
 
 ## How to Push?
 

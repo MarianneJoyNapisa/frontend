@@ -15,6 +15,7 @@ namespace HomeownersMS.Models
         public string? Content { get; set; }
 
         public DateOnly? EventDate { get; set;}
+        public TimeOnly? EventTime { get; set; }  
 
         public string? BlocksAffected { get; set; }
 

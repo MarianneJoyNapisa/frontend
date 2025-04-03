@@ -141,4 +141,11 @@ dotnet add package Microsoft.EntityFrameworkCore.Sqlite
 dotnet add package Microsoft.EntityFrameworkCore.Design
 
 
+
+git operations:
+
+git checkout stash@{3} -- .   // forcefully checks out a stash. number is number of stash
+git stash clear             // delete all stash
+
+
 */

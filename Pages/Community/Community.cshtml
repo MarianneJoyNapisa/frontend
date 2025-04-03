@@ -1,0 +1,604 @@
+@page
+@model HomeownersMS.Pages.Community.CommunityModel
+@using HomeownersMS.Models
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@{
+    Layout = "_ResidentLayout";
+    ViewData["HeaderTitle"] = "Community";
+    ViewData["Title"] = "Community";
+    var username = HttpContext?.User?.Identity?.Name ?? "Guest";
+    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+    ViewData["Username"] = username;
+    ViewData["CurrentPage"] = currentPage;
+}
+
+<style>
+    .community-container {
+        max-width: 800px;
+        margin: auto;
+    }
+    .header-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: #1E4976;
+        color: white;
+        border-radius: 5px;
+    }
+    .action-buttons button {
+        background-color: #1E4976;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-right: 5px;
+    }
+    .post-card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        margin-bottom: 15px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .search-box {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    .post-icons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .reaction-icons span {
+        margin-right: 10px;
+        font-size: 14px;
+    }
+    .see-more {
+        display: block;
+        text-align: center;
+        background-color: #1E4976;
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+    .new-thread {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #f1f1f1;
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        margin-top: 20px;
+    }
+    .badge {
+        display: inline-block;
+        padding: 0.25em 0.4em;
+        font-size: 75%;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.25rem;
+        margin-right: 5px;
+    }
+    .badge-concern {
+        background-color: #dc3545;
+        color: white;
+    }
+    .badge-suggestion {
+        background-color: #28a745;
+        color: white;
+    }
+    .badge-general {
+        background-color: #17a2b8;
+        color: white;
+    }
+    .badge-advice {
+        background-color: #ffc107;
+        color: #212529;
+    }
+    .badge-role {
+        background-color: #6c757d;
+        color: white;
+    }
+    .post-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+    .post-meta {
+        display: flex;
+        align-items: center;
+    }
+    .post-author {
+        font-weight: bold;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    textarea.form-control {
+        min-height: 100px;
+    }
+    /* comment styles */
+    .comments-section {
+        border-top: 1px solid #eee;
+        padding-top: 10px;
+        margin-top: 15px;
+    }
+
+    .comment-card {
+        background-color: #f8f9fa;
+    }
+
+    .comments-list {
+        max-height: 300px;
+        overflow-y: auto;
+        margin-bottom: 10px;
+    }
+
+    .comment-count {
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+    /* edit post */
+    .edit-post-btn, .edit-comment-btn {
+        margin-left: 10px;
+        font-size: 0.8rem;
+        padding: 0.15rem 0.5rem;
+    }
+
+    .comment-actions {
+        margin-top: 5px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    /* delete button */
+    /* Add to your style section */
+    .btn-group {
+        display: inline-flex;
+        margin-left: 10px;
+    }
+
+    .btn-group .btn {
+        margin-left: 0;
+        border-radius: 0.25rem;
+    }
+
+    .btn-group .btn:first-child {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .btn-group .btn:last-child {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    .comment-actions {
+        margin-top: 5px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 5px;
+    }
+    /* Upvote/downvote button */
+    /* Voting styles */
+    .vote-buttons {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .btn-vote {
+        cursor: pointer;
+        padding: 2px 5px;
+        border-radius: 3px;
+        border: 1px solid #ddd;
+        background: none;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+    }
+
+    .btn-vote:hover {
+        background-color: #f0f0f0;
+    }
+
+    .btn-vote.active {
+        font-weight: bold;
+    }
+
+    .upvote-btn.active {
+        color: #4CAF50;
+        border-color: #4CAF50;
+    }
+
+    .downvote-btn.active {
+        color: #F44336;
+        border-color: #F44336;
+    }
+</style>
+
+<h2 class="text-center">Community</h2>
+
+<div class="community-container">
+    <div class="header-bar">
+        <div class="action-buttons">
+            <button>Sort By</button>
+            <button>Filter By</button>
+        </div>
+    </div>
+    <br>
+    
+    <input type="text" class="search-box" placeholder="Search...">
+
+    <!-- Add a New Thread -->
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="new-thread">
+            <form method="post">
+                <div class="form-group">
+                    <input type="text" class="form-control search-box" name="Title" placeholder="Thread Title" required>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control search-box" name="Content" placeholder="Thread Content" required></textarea>
+                </div>
+                <div class="form-group">
+                    <select name="Type" class="form-control search-box" required>
+                        <option value="">Select a category</option>
+                        <option value="@CommunityPost.Types.concern">Concern</option>
+                        <option value="@CommunityPost.Types.suggestion">Suggestion</option>
+                        <option value="@CommunityPost.Types.general">General</option>
+                        <option value="@CommunityPost.Types.advice">Advice</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Thread</button>
+            </form>
+        </div>
+    }
+
+    <!-- Display Posts -->
+    @if (Model.Posts != null && Model.Posts.Any())
+    {
+        foreach (var post in Model.Posts)
+        {
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-meta">
+                        <span class="post-author">@post.User?.Username</span>
+                        @if (post.Type.HasValue)
+                        {
+                            <span class="badge badge-@post.Type.ToString().ToLower()">@post.Type</span>
+                        }
+                        @if (post.User != null)
+                        {
+                            <span class="badge badge-role">@post.User.Privilege.ToString()</span>
+                        }
+                    </div>
+                    @* <!-- Add delete button and edit button for posts --> *@
+                    @if (User.Identity.IsAuthenticated && post.CreatedBy == int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value))
+                    {
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-outline-primary edit-post-btn" 
+                                    data-post-id="@post.CommunityPostId"
+                                    data-original-title="@post.Title"
+                                    data-original-content="@post.Content"
+                                    data-original-type="@post.Type">
+                                Edit
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger delete-post-btn" 
+                                    data-post-id="@post.CommunityPostId">
+                                Delete
+                            </button>
+                        </div>
+                    }
+                    <small>@post.CreatedAt.ToString("g")</small>
+                </div>
+                <h4>@post.Title</h4>
+                <p>@post.Content</p>
+                <div class="post-icons">
+                    <div class="reaction-icons">
+                        <span class="vote-buttons">
+                            @{
+                                var userId = User.Identity.IsAuthenticated ? 
+                                    int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value) : 0;
+                                var userVote = post.Votes.FirstOrDefault(v => v.UserId == userId)?.IsUpvote;
+                            }
+                            <button type="button" class="btn-vote upvote-btn @(userVote == true ? "active" : "")" 
+                                    data-post-id="@post.CommunityPostId" data-is-upvote="true">
+                                👍 <span class="upvote-count">@post.Votes.Count(v => v.IsUpvote == true)</span>
+                            </button>
+                            @* Vote count is not being reflected! *@
+                            <span class="net-votes" data-post-id="@post.CommunityPostId">@(post.Votes.Count(v => v.IsUpvote == true) - @post.Votes.Count(v => v.IsUpvote == false))</span>
+                            <button type="button" class="btn-vote downvote-btn @(userVote == false ? "active" : "")" 
+                                    data-post-id="@post.CommunityPostId" data-is-upvote="false">
+                                👎 <span class="downvote-count">@post.Votes.Count(v => v.IsUpvote == false)</span>
+                            </button>
+                        </span>
+                    </div>
+                    <span>💬 @(post.Comments?.Count ?? 0)</span>
+                </div>
+                @* <!-- Inside your post-card div, after the post-icons div --> *@
+                <div class="comments-section mt-3">
+                    @* <!-- Comment count --> *@
+                    <div class="comment-count mb-2">
+                        <span>💬 @(post.Comments?.Count ?? 0) comments</span>
+                    </div>
+                    
+                    @* <!-- Comments list (initially hidden) --> *@
+                    <div class="comments-list collapse" id="comments-@post.CommunityPostId">
+                        @foreach (var comment in post.Comments ?? new List<CommunityComment>())
+                        {
+                            <div class="comment-card mb-2 p-2 border rounded">
+                                <div class="d-flex justify-content-between">
+                                    <strong>@comment.User?.Username</strong>
+                                    <small class="text-muted">@comment.CreatedAt.ToString("g")</small>
+                                </div>
+                                <p class="mb-0">@comment.Content</p>
+                                @* <!-- Add delete button and edit button for comments --> *@
+                                @if (User.Identity.IsAuthenticated && comment.UserId == int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value))
+                                {
+                                    <div class="comment-actions">
+                                        <button class="btn btn-sm btn-outline-primary edit-comment-btn" 
+                                                data-comment-id="@comment.CommunityCommentId"
+                                                data-original-content="@comment.Content">
+                                            Edit
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger delete-comment-btn" 
+                                                data-comment-id="@comment.CommunityCommentId">
+                                            Delete
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                    
+                    @* <!-- Comment form (only show if user is authenticated) --> *@
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <form method="post" asp-page-handler="AddComment" class="mt-2">
+                            <input type="hidden" name="postId" value="@post.CommunityPostId" />
+                            <div class="input-group">
+                                <textarea name="commentContent" class="form-control" placeholder="Add a comment..." required></textarea>
+                                <button type="submit" class="btn btn-primary">Post</button>
+                            </div>
+                        </form>
+                    }
+                    
+                    @* <!-- Toggle comments button --> *@
+                    <button class="btn btn-sm btn-link mt-1" type="button" data-bs-toggle="collapse" 
+                            data-bs-target="#comments-@post.CommunityPostId" aria-expanded="false" 
+                            aria-controls="comments-@post.CommunityPostId">
+                        Show comments
+                    </button>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No posts yet. Be the first to post!</p>
+    }
+
+    <a href="#" class="see-more">See More</a>
+    
+</div>
+
+<!-- Add edit modal at the bottom of the page -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" id="editForm">
+                <div class="modal-body">
+                    <input type="hidden" id="editId" name="id" />
+                    <input type="hidden" id="editType" name="type" value="post" />
+                    
+                    <div class="form-group post-edit-fields">
+                        <label>Title</label>
+                        <input type="text" class="form-control" name="title" id="editTitle">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Content</label>
+                        <textarea class="form-control" name="content" id="editContent" rows="5"></textarea>
+                    </div>
+                    
+                    <div class="form-group post-edit-fields">
+                        <label>Type</label>
+                        <select class="form-control" name="postType" id="editPostType" disabled>
+                            <option value="@CommunityPost.Types.concern">Concern</option>
+                            <option value="@CommunityPost.Types.suggestion">Suggestion</option>
+                            <option value="@CommunityPost.Types.general">General</option>
+                            <option value="@CommunityPost.Types.advice">Advice</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Add confirmation modal at the bottom of the page -->
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add JavaScript to handle editing -->
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Handle post editing
+            $('.edit-post-btn').click(function() {
+                const postId = $(this).data('post-id');
+                const title = $(this).data('original-title');
+                const content = $(this).data('original-content');
+                const type = $(this).data('original-type');
+                
+                $('#editId').val(postId);
+                $('#editType').val('post');
+                $('#editTitle').val(title);
+                $('#editContent').val(content);
+                $('#editPostType').val(type);
+                $('.post-edit-fields').show();
+                
+                $('#editModal').modal('show');
+            });
+            
+            // Handle comment editing
+            $('.edit-comment-btn').click(function() {
+                const commentId = $(this).data('comment-id');
+                const content = $(this).data('original-content');
+                
+                $('#editId').val(commentId);
+                $('#editType').val('comment');
+                $('#editContent').val(content);
+                $('.post-edit-fields').hide();
+                
+                $('#editModal').modal('show');
+            });
+            
+            // Form submission
+            $('#editForm').submit(function(e) {
+                e.preventDefault();
+                
+                const formData = {
+                    id: $('#editId').val(),
+                    type: $('#editType').val(),
+                    content: $('#editContent').val()
+                };
+                
+                if (formData.type === 'post') {
+                    formData.title = $('#editTitle').val();
+                    formData.postType = $('#editPostType').val();
+                }
+                
+                $.ajax({
+                    url: window.location.pathname + '?handler=Edit',
+                    type: 'POST',
+                    data: formData,
+                    headers: {
+                        "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function() {
+                        location.reload();
+                    },
+                    error: function() {
+                        alert('Error updating content');
+                    }
+                });
+            });
+
+            // Delete functionality
+            let itemToDelete = null;
+            let deleteType = null;
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
+
+            // Handle post deletion
+            $('.delete-post-btn').click(function() {
+                itemToDelete = $(this).data('post-id');
+                deleteType = 'post';
+                deleteModal.show();
+            });
+
+            // Handle comment deletion
+            $('.delete-comment-btn').click(function() {
+                itemToDelete = $(this).data('comment-id');
+                deleteType = 'comment';
+                deleteModal.show();
+            });
+
+            // Confirm deletion
+            $('#confirmDeleteBtn').click(function() {
+                $.ajax({
+                    url: window.location.pathname + '?handler=Delete',
+                    type: 'POST',
+                    data: { 
+                        id: itemToDelete,
+                        type: deleteType,
+                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function() {
+                        deleteModal.hide();
+                        location.reload();
+                    },
+                    error: function() {
+                        alert('Error deleting item');
+                    }
+                });
+            });
+
+            // Voting functionality
+            $(document).on('click', '.btn-vote', function() {
+                const postId = $(this).data('post-id');
+                const isUpvote = $(this).data('is-upvote');
+                const $button = $(this);
+                const $oppositeButton = isUpvote ? 
+                    $(`.downvote-btn[data-post-id="${postId}"]`) : 
+                    $(`.upvote-btn[data-post-id="${postId}"]`);
+
+                // If already active, this is an unvote
+                const isActive = $button.hasClass('active');
+                const voteValue = isActive ? null : isUpvote;
+
+                $.ajax({
+                    url: window.location.pathname + '?handler=Vote',
+                    type: 'POST',
+                    data: { 
+                        postId: postId,
+                        isUpvote: voteValue,
+                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function(response) {
+                        // Update counts
+                        $(`.upvote-btn[data-post-id="${postId}"] .upvote-count`).text(response.upvotes);
+                        $(`.downvote-btn[data-post-id="${postId}"] .downvote-count`).text(response.downvotes);
+                        
+                        // Update net votes - add this line
+                        $(`.net-votes[data-post-id="${postId}"]`).text(response.upvotes - response.downvotes);
+                        
+                        // Update active states
+                        $button.toggleClass('active', response.userVote === isUpvote);
+                        $oppositeButton.removeClass('active');
+                    },
+                    error: function() {
+                        alert('Error processing your vote');
+                    }
+                });
+            });
+        });
+    </script>
+}
