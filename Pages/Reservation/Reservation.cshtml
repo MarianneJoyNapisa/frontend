@@ -1,70 +1,289 @@
 @page
 @model HomeownersMS.Pages.Reservation.ReservationModel
 @{
-    Layout = "_ResidentLayout"; 
+    Layout = "_ResidentLayout";
     ViewData["HeaderTitle"] = "Reservation";
-    ViewData["Title"] = "Facilities";
+    ViewData["Title"] = "Reservation";
+    var username = HttpContext?.User?.Identity?.Name ?? "Guest";
+    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+    ViewData["Username"] = username;
+    ViewData["CurrentPage"] = currentPage;
 }
 
 <style>
     .facility-card {
-        background-color: #ffffff;
-        padding: 20px;
         border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        margin-bottom: 20px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
-    .facility-card img {
-        width: 100%;
-        max-height: 200px;
+
+    .facility-img {
+        height: 100%;
         object-fit: cover;
-        border-radius: 10px;
+        max-height: 150px;
     }
-    .btn-reserve {
-        background-color: #007bff;
-        color: #ffffff;
-        font-weight: bold;
-        padding: 10px 20px;
-        border-radius: 5px;
-        border: none;
-        width: 100%;
+
+    .badge {
+        padding: 0.5em 0.8em;
+        border-radius: 4px;
     }
-    .btn-reserve:hover {
-        background-color: #0056b3;
+
+    .table th {
+        font-weight: 500;
+        color: #555;
+    }
+
+    .table td {
+        padding: 12px 8px;
     }
 </style>
 
-
-<div class="container">
+<div class="row">
+    @* Breadcrumb navigatin *@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
             <li class="breadcrumb-item active" aria-current="page">Facilities</li>
         </ol>
     </nav>
-    <h2 class="text-center mt-4">Facilities</h2>
-
-    @if (Model.Facilities.Any())
-    {
-        @foreach (var facility in Model.Facilities)
-        {
-            <div class="col-md-6 col-lg-4">
-                <div class="facility-card">
-                    <img src="@Url.Content($"~/{@facility.FacilityImage}")" alt="@facility.Name">
-                    <h4>@facility.Name</h4>
-                    <p class="text-muted">@facility.Address</p>
-                    <p class="h5">₱ @facility.PricePerHour/hr</p>
-                    <a asp-page="/Reservation/Reserve"
-                        asp-route-facilityId="@facility.FacilityId"
-                        class="btn btn-reserve">Reserve Now</a>
+    
+    @* <!-- Reservation Content --> *@
+    <div class="col-12">
+        <div class="facilities mb-4">
+            <h2>Facilities</h2>
+            <div class="container-fluid p-0">
+                <div class="row g-3">
+                    @if (Model.Facilities.Any())
+                    {
+                        @foreach (var facility in Model.Facilities)
+                        {
+                            @* <!-- Facility Cards --> *@
+                            <div class="col-12">
+                                <a asp-page="/Reservation/Reserve" asp-route-facilityId="@facility.FacilityId">
+                                    <div class="card facility-card">
+                                        <div class="row g-0">
+                                            <div class="col-md-4">
+                                                <img src="@Url.Content($"~/{@facility.FacilityImage}")" 
+                                                     class="img-fluid facility-img rounded-start" 
+                                                     alt="@facility.Name">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="card-body">
+                                                    <h5 class="card-title mb-1">₱ @facility.PricePerHour/hr</h5>
+                                                    <h6 class="card-subtitle mb-1">@facility.Name</h6>
+                                                    <p class="card-text"><small class="text-muted">@facility.Address</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-12">
+                            <p class="text-center">No facilities available.</p>
+                            <p class="text-center">Debug: Facilities count is @Model.Facilities.Count</p>
+                        </div>
+                    }
                 </div>
             </div>
-        }
-    }
-    else
-    {
-        <p class="text-center">No facilities available.</p>
-        <p>Debug: Facilities count is @Model.Facilities.Count</p>
-    }
+        </div>
+
+        @* <!-- Reservation Log Section --> *@
+        <div class="reservation-log mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2>Reservation Log</h2>
+                <div>
+                    <button class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-filter"></i></button>
+                    <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-sort-down"></i></button>
+                </div>
+            </div>
+
+            <div class="mb-3 d-flex gap-2">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search">
+                    <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
+                </div>
+                <div class="input-group" style="max-width: 200px;">
+                    <input type="text" class="form-control" placeholder="Select Date" aria-label="Date">
+                    <button class="btn btn-outline-secondary" type="button"><i class="bi bi-calendar"></i></button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-borderless">
+                    <thead>
+                        <tr class="table-light">
+                            <th>Facility</th>
+                            <th>Date</th>
+                            <th>Guests</th>
+                            <th>Event</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                Function Hall
+                                <br>
+                                <small class="text-muted">ID/34251</small>
+                            </td>
+                            <td>
+                                Feb. 15, 2025
+                                <br>
+                                <small class="text-muted">10:30 AM - 7:30 PM</small>
+                            </td>
+                            <td>100 Guests</td>
+                            <td>Birthday</td>
+                            <td><span class="badge bg-warning">Pending</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-link text-info"><i class="bi bi-info-circle"></i></button>
+                                <button class="btn btn-sm btn-link text-danger"><i class="bi bi-x-lg"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Party Room
+                                <br>
+                                <small class="text-muted">ID/34251</small>
+                            </td>
+                            <td>
+                                Feb. 13, 2025
+                                <br>
+                                <small class="text-muted">10:30 AM - 7:30 PM</small>
+                            </td>
+                            <td>100 Guests</td>
+                            <td>Birthday</td>
+                            <td><span class="badge bg-warning">Pending</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-link text-info"><i class="bi bi-info-circle"></i></button>
+                                <button class="btn btn-sm btn-link text-danger"><i class="bi bi-x-lg"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Function Hall
+                                <br>
+                                <small class="text-muted">ID/34251</small>
+                            </td>
+                            <td>
+                                Feb. 3, 2025
+                                <br>
+                                <small class="text-muted">10:30 AM - 7:30 PM</small>
+                            </td>
+                            <td>100 Guests</td>
+                            <td>Birthday</td>
+                            <td><span class="badge bg-warning">Pending</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-link text-info"><i class="bi bi-info-circle"></i></button>
+                                <button class="btn btn-sm btn-link text-danger"><i class="bi bi-x-lg"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-outline-primary">Show More</button>
+            </div>
+        </div>
+
+        <!-- Reservation History Section -->
+        <div class="reservation-history mt-5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2>Reservation History</h2>
+                <div>
+                    <button class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-filter"></i></button>
+                    <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-sort-down"></i></button>
+                </div>
+            </div>
+
+            <div class="mb-3 d-flex gap-2">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search">
+                    <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
+                </div>
+                <div class="input-group" style="max-width: 200px;">
+                    <input type="text" class="form-control" placeholder="Select Date" aria-label="Date">
+                    <button class="btn btn-outline-secondary" type="button"><i class="bi bi-calendar"></i></button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-borderless">
+                    <thead>
+                        <tr class="table-light">
+                            <th>Facility</th>
+                            <th>Date</th>
+                            <th>Guests</th>
+                            <th>Event</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                Function Hall
+                                <br>
+                                <small class="text-muted">ID/34251</small>
+                            </td>
+                            <td>
+                                Feb. 15, 2025
+                                <br>
+                                <small class="text-muted">10:30 AM - 7:30 PM</small>
+                            </td>
+                            <td>100 Guests</td>
+                            <td>Birthday</td>
+                            <td><span class="badge bg-success">Approved</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-primary">Feedback</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Party Room
+                                <br>
+                                <small class="text-muted">ID/34251</small>
+                            </td>
+                            <td>
+                                Feb. 13, 2025
+                                <br>
+                                <small class="text-muted">10:30 AM - 7:30 PM</small>
+                            </td>
+                            <td>100 Guests</td>
+                            <td>Birthday</td>
+                            <td><span class="badge bg-success">Approved</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-primary">Feedback</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Function Hall
+                                <br>
+                                <small class="text-muted">ID/34251</small>
+                            </td>
+                            <td>
+                                Feb. 3, 2025
+                                <br>
+                                <small class="text-muted">10:30 AM - 7:30 PM</small>
+                            </td>
+                            <td>100 Guests</td>
+                            <td>Birthday</td>
+                            <td><span class="badge bg-danger">Canceled</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-primary">Feedback</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-outline-primary">Show More</button>
+            </div>
+        </div>
+    </div>
 </div>
