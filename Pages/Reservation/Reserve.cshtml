@@ -1,0 +1,58 @@
+@page
+@model HomeownersMS.Pages.Reservation.ReserveModel
+@{
+    ViewData["Title"] = "Reserve Facility";
+    Layout = "_ResidentLayout";
+}
+
+<style>
+    .facility-card {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .facility-card img {
+        width: 100%;
+        max-height: 200px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+    .btn-reserve {
+        background-color: #007bff;
+        color: #ffffff;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        width: 100%;
+    }
+    .btn-reserve:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div class="container">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a asp-page="/Reservation/Reservation">Facilities</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Reserve @Model.Facility?.Name</li>
+        </ol>
+    </nav>
+    @* Card *@
+    <div class="facility-card">
+        <img src="@Url.Content($"~/{@Model.Facility?.FacilityImage}")" alt="@Model.Facility?.Name">
+        <h4>@Model.Facility?.Name</h4>
+        <p class="text-muted">@Model.Facility?.Address</p>
+        <p class="h5">₱ @Model.Facility?.PricePerHour/hr</p>
+        <!-- Add your reservation form here -->
+        <form>
+            <input type="hidden" asp-for="FacilityId" />
+            <button type="submit" class="btn btn-primary">Confirm Reservation</button>
+        </form>
+    </div>
+</div>

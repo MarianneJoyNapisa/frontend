@@ -35,9 +35,16 @@
     }
 </style>
 
-<h2 class="text-center mt-4">Facilities</h2>
 
-<div class="row">
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Facilities</li>
+        </ol>
+    </nav>
+    <h2 class="text-center mt-4">Facilities</h2>
+
     @if (Model.Facilities.Any())
     {
         @foreach (var facility in Model.Facilities)
@@ -48,7 +55,9 @@
                     <h4>@facility.Name</h4>
                     <p class="text-muted">@facility.Address</p>
                     <p class="h5">₱ @facility.PricePerHour/hr</p>
-                    <a href="/Reservation/Reserve?facilityId=@facility.FacilityId" class="btn btn-reserve">Reserve Now</a>
+                    <a asp-page="/Reservation/Reserve"
+                        asp-route-facilityId="@facility.FacilityId"
+                        class="btn btn-reserve">Reserve Now</a>
                 </div>
             </div>
         }
