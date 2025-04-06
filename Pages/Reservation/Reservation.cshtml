@@ -44,7 +44,7 @@
         {
             <div class="col-md-6 col-lg-4">
                 <div class="facility-card">
-                    <img src="@facility.FacilityImage" alt="@facility.Name">
+                    <img src="@Url.Content($"~/{@facility.FacilityImage}")" alt="@facility.Name">
                     <h4>@facility.Name</h4>
                     <p class="text-muted">@facility.Address</p>
                     <p class="h5">₱ @facility.PricePerHour/hr</p>

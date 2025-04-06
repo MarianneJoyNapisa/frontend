@@ -318,3 +318,8 @@
         max-width: 150px; /* Even smaller for mobile devices */
     }
 }
+
+.ghost-link {
+    text-decoration: none;
+    color: inherit;
+}
