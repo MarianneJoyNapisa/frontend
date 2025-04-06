@@ -1,6 +1,7 @@
 @page
 @model HomeownersMS.Pages.Reservation.ReservationModel
 @{
+    ViewData["CurrentPage"] = "/Reservation/Reservation";  // <-- ADD THIS LINE
     Layout = "_ResidentLayout"; 
     ViewData["HeaderTitle"] = "Reservation";
     ViewData["Title"] = "Facilities";

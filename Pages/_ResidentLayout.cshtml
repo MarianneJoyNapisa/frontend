@@ -47,7 +47,11 @@
             </a>
             <a asp-page="/Reservation/Reservation" class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Reservation/Reservation" ? "active" : "")">
                 <i class="bi bi-calendar-fill"></i>
-                <span>Reservation</span>
+                <span>Facilities</span>
+            </a>
+            <a asp-page="/Reservation/MyReservations" class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Reservation/MyReservations" ? "active" : "")">
+                <i class="bi bi-calendar-check"></i>
+                <span>My Reservations</span>
             </a>
             <a asp-page="/Billings_Payments/Payments" class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Billings_Payments/Payments" ? "active" : "")">
                 <i class="bi bi-credit-card-fill"></i>

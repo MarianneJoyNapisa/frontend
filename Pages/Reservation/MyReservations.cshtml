@@ -1,0 +1,55 @@
+@page
+@model HomeownersMS.Pages.Reservation.MyReservationsModel
+
+@{
+    ViewData["CurrentPage"] = "/Reservation/MyReservations";  // <-- ADD THIS LINE
+    ViewData["Title"] = "My Reservations";
+    Layout = "_ResidentLayout";
+}
+
+<div class="container">
+    <h2>My Reservations</h2>
+    
+    @if (Model.Reservations.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Facility</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var reservation in Model.Reservations)
+                    {
+                        <tr>
+                            <td>@reservation.Facility.Name</td>
+                            <td>@reservation.ReservationDate.ToShortDateString()</td>
+                            <td>@reservation.StartTime - @reservation.EndTime</td>
+                            <td>
+                                <span class="badge 
+                                    @(reservation.Status == RequestStatus.Approved ? "bg-success" :
+                                      reservation.Status == RequestStatus.Declined ? "bg-danger" : "bg-warning")">
+                                    @reservation.Status
+                                </span>
+                            </td>
+                            <td>
+                                <a asp-page="./ViewReservation" asp-route-id="@reservation.FacilityRequestId" class="btn btn-sm btn-info">Details</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            You have no reservations yet.
+        </div>
+    }
+</div>

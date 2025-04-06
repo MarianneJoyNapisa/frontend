@@ -2,35 +2,45 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-// Facility Request or Facility Reservation
-
-namespace HomeownersMS.Models
+namespace HomeownersMS.Models // ← ADD THIS
 {
+    public enum RequestStatus
+    {
+        Pending,
+        Approved,
+        Declined
+    }
+
     public class FacilityRequest
     {
         [Key]
         public int FacilityRequestId { get; set; }
 
-        public DateOnly? ReservationDate { get; set; } // Date only
+        [Required]
+        public DateOnly ReservationDate { get; set; }
 
-        public TimeOnly? ReservationTime { get; set; }  
+        [Required]
+        public TimeOnly StartTime { get; set; }
 
-        public DateTime? RequestCompletionDate { get; set; }
+        [Required]
+        public TimeOnly EndTime { get; set; }
 
-        public Statuses? Status { get; set; }
+        public DateTime RequestDate { get; set; } = DateTime.Now;
+        public RequestStatus Status { get; set; } = RequestStatus.Pending;
 
         [ForeignKey("Resident")]
-        public int? ResidentId { get; set; }
+        public int ResidentId { get; set; }
 
         [ForeignKey("Facility")]
-        public int? FacilityId { get; set; }
-        public string? FullName { get; set; } // Full Name
+        public int FacilityId { get; set; }
 
-        public string? EmailAddress { get; set; } // Email Address
+        public string? AdminNotes { get; set; }
 
-        public string? PhoneNumber { get; set; }
+        public string FullName { get; set; }
+        public string EmailAddress { get; set; }
+        public string PhoneNumber { get; set; }
 
-        public virtual Resident? Resident { get; set; }
-        public virtual Facility? Facility { get; set; }
+        public virtual Resident Resident { get; set; }
+        public virtual Facility Facility { get; set; }
     }
 }
