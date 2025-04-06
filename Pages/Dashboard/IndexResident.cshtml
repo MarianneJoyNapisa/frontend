@@ -1,7 +1,7 @@
 ﻿@page
 @model HomeownersMS.Pages.Dashboard.IndexResidentModel
 @{
-    Layout = "_ResidentLayout"; // Use the Admin layout
+    Layout = "_ResidentLayout";
     ViewData["HeaderTitle"] = "Dashboard";
     ViewData["Title"] = "Dashboard";
     var username = HttpContext?.User?.Identity?.Name ?? "Guest";
@@ -9,129 +9,402 @@
     ViewData["Username"] = username;
     ViewData["CurrentPage"] = currentPage;
 }
+
+<!-- Add FullCalendar CSS in the head section -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet" />
+
 <style>
-    .no-announcements {
+    /* General styles */
+    .card {
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+        background-color: white;
+    }
+    
+    .card-header {
+        border-bottom: 1px solid #eee;
+        padding: 12px 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .card-body {
+        padding: 15px;
+    }
+    
+    .title-with-action {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    /* Calendar specific styles */
+    #calendar {
+        height: 320px;
+        font-size: 12px;
+    }
+    
+    #calendar .fc-header-toolbar {
+        margin-bottom: 5px !important;
+        padding: 0 5px;
+    }
+    
+    #calendar .fc-toolbar-title {
+        font-size: 1rem;
+    }
+    
+    #calendar .fc-button {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.8rem;
+    }
+    
+    #calendar .fc-daygrid-day-number {
+        font-size: 0.8rem;
+        margin: 2px;
+    }
+    
+    #calendar .fc-col-header-cell-cushion {
+        font-size: 0.8rem;
+    }
+    
+    #calendar .fc-daygrid-day.fc-day-today {
+        background-color: rgba(255, 220, 40, 0.15);
+    }
+    
+    #calendar .fc-daygrid-day-events {
+        min-height: 0;
+    }
+    
+    #calendar .fc-event {
+        border-radius: 4px;
+        padding: 2px;
+        font-size: 0.7rem;
+        margin: 1px 0;
+        cursor: pointer;
+    }
+    
+    /* Day names styling */
+    .fc-col-header-cell {
+        background-color: #f8f9fa;
+    }
+    
+    /* Today highlight styling */
+    .fc-day-today {
+        background-color: #e8f4ff !important;
+    }
+    
+    /* Event styling */
+    .fc-event-main {
+        padding: 2px 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    /* Current day highlighting */
+    .fc-day-today .fc-daygrid-day-number {
+        background-color: #3174ad;
+        color: white;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Announcement cards */
+    .ann-Card {
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        margin-bottom: 12px;
+        overflow: hidden;
+    }
+    
+    .ann-Card .header {
+        padding: 8px 12px;
+        background-color: #f8f9fa;
+        display: flex;
+        align-items: center;
+    }
+    
+    .ann-Card .header .icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 8px;
+        color: white;
+    }
+    
+    .ann-Card .content {
+        padding: 12px;
+    }
+    
+    /* Security logs and billing styles */
+    .secTags, .duePrices {
+        font-weight: bold;
+    }
+    
+    .secTags {
+        color: white;
+        background-color: #28a745;
+        border-radius: 4px;
+        padding: 2px 6px;
+        display: inline-block;
+    }
+    
+    .timeline-item {
+        border-left: 2px solid #007bff;
+        padding-left: 15px;
+        margin-bottom: 15px;
+        position: relative;
+    }
+    
+    .timeline-date {
+        font-weight: bold;
+        color: #007bff;
+    }
+    
+    .timeline-item:before {
+        content: '';
+        width: 12px;
+        height: 12px;
+        background-color: #007bff;
+        border-radius: 50%;
+        position: absolute;
+        left: -7px;
+        top: 5px;
+    }
+    
+    .viewall_Btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    /* Custom button styling to match the image */
+    .show-more-btn {
+        background-color: transparent;
+        border: 1px solid #ddd;
+        color: #333;
+        width: 100%;
+        padding: 8px;
+        border-radius: 4px;
         text-align: center;
-        color: #6c757d;
-        font-style: italic;
+        transition: all 0.3s;
+    }
+    
+    .show-more-btn:hover {
+        background-color: #f1f1f1;
     }
 </style>
 
 <div class="row">
     <!-- Announcement Section -->
     <div class="col-12 col-md-6 col-lg-4">
-        <div id="announcementSection">
-            <div class="Title-ViewAll">
-                <p class="fs-4 m-0">Announcement</p>
-                <a asp-page="/Announcement/Announcement_Events" class="text-primary @(ViewData["CurrentPage"]?.ToString() == "/Dashboard/Index" ? "active" : "")">View All</a>
+        <div class="cardd">
+            <div class="card-header">
+                <h5 class="m-0">Announcements</h5>
+                <a asp-page="/Announcement/Announcement_Events" class="text-primary">View All</a>
             </div>
-            <div id="announcementCards" class="row">
-                @if (Model.LatestAnnouncements.Any())
-                {
-                    @foreach (var announcement in Model.LatestAnnouncements)
+            <div class="card-body">
+                <div id="announcementCards" class="row">
+                    @if (Model.LatestAnnouncements?.Any() == true)
                     {
+                        @foreach (var announcement in Model.LatestAnnouncements)
+                        {
+                            <div class="ann-Card">
+                                <div class="header">
+                                    @{
+                                        string iconClass = "bi bi-megaphone-fill";
+                                        string iconColor = "#28a745";
+                                        
+                                        if (announcement.Title.Contains("Clean-Up", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            iconClass = "bi bi-trash-fill";
+                                            iconColor = "#28a745";
+                                        }
+                                        else if (announcement.Title.Contains("Interruption", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            iconClass = "bi bi-lightning-fill";
+                                            iconColor = "#dc3545";
+                                        }
+                                    }
+                                    <i class="@iconClass icon" style="background-color: @iconColor;"></i>
+                                    <span>@announcement.Title</span>
+                                </div>
+                                <div class="content">
+                                    <p><strong>Feb 18  9 AM - 2 PM</strong></p>
+                                    <p><strong>Block @announcement.BlocksAffected</strong></p>
+                                    <p>HOA Office - <a href="tel:@announcement.ContactNumber">@announcement.ContactNumber</a></p>
+                                    <p>@announcement.Content</p>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <!-- Demo content matching the image -->
                         <div class="ann-Card">
                             <div class="header">
                                 <i class="bi bi-trash-fill icon" style="background-color: #28a745;"></i>
-                                <span>@announcement.Title</span>
+                                <span>Clean-Up Drive</span>
                             </div>
                             <div class="content">
-                                <!-- Use string interpolation to format EventDate and EventTime -->
-                                <p><strong>@($"{announcement.EventDate:MMMM d} @ {announcement.EventTime:hh\\:mm tt}")</strong></p>
-                                <p><strong>Block @announcement.BlocksAffected</strong></p>
-                                <p>@announcement.Office - <a href="tel:@announcement.ContactNumber">@announcement.ContactNumber</a></p>
-                                <p>@announcement.Content</p>
+                                <p><strong>Feb 18  9 AM - 2 PM</strong></p>
+                                <p><strong>Block 1-8</strong></p>
+                                <p>HOA Office - <a href="tel:(123) 123-4567">(123) 123-4567</a></p>
+                                <p>Scheduled maintenance. Please prepare.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="ann-Card">
+                            <div class="header">
+                                <i class="bi bi-lightning-fill icon" style="background-color: #dc3545;"></i>
+                                <span>Power Interruption</span>
+                            </div>
+                            <div class="content">
+                                <p><strong>Feb 18  9 AM - 2 PM</strong></p>
+                                <p><strong>Block 1-8</strong></p>
+                                <p>HOA Office - <a href="tel:(123) 123-4567">(123) 123-4567</a></p>
+                                <p>Scheduled maintenance. Please prepare.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="ann-Card">
+                            <div class="header">
+                                <i class="bi bi-trash-fill icon" style="background-color: #28a745;"></i>
+                                <span>Clean-Up Drive</span>
+                            </div>
+                            <div class="content">
+                                <p><strong>Feb 18  9 AM - 2 PM</strong></p>
+                                <p><strong>Block 1-8</strong></p>
+                                <p>HOA Office - <a href="tel:(123) 123-4567">(123) 123-4567</a></p>
+                                <p>Scheduled maintenance. Please prepare.</p>
                             </div>
                         </div>
                     }
-                }
-                else
-                {
-                    <div class="no-announcements">
-                        No announcements found.
-                    </div>
-                }
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Table Summaries -->
+    <!-- Billing and Security Section -->
     <div class="col-12 col-md-6 col-lg-4">
-        <div id="tableSummaries">
-            <div id="upcomingbillsSummary" class="mb-4">
-                <p class="fs-5 fw-bold m-0">Billing Summary</p>
-                <table class="table">
-                    <tbody>
-                        <tr>
-                            <td class="dueNames">Monthly HOA</td>
-                            <td class="dueDates">Feb. 15, 2025</td>
-                            <td class="duePrices">₱ 250.00</td>
-                        </tr>
-                        <tr>
-                            <td class="dueNames">Monthly HOA</td>
-                            <td class="dueDates">Feb. 15, 2025</td>
-                            <td class="duePrices">₱ 250.00</td>
-                        </tr>
-                        <tr>
-                            <td class="dueNames">Monthly HOA</td>
-                            <td class="dueDates">Feb. 15, 2025</td>
-                            <td class="duePrices">₱ 250.00</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <a asp-page="/Billings_Payments/Payments" class="viewall_Btn btn btn-primary @(ViewData["CurrentPage"]?.ToString() == "/Billings_Payments/Payments" ? "active" : "")">View All</a>
+        <!-- Billing Summary -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="m-0">Billing Summary</h5>
             </div>
-            <div id="securityLogs">
-                <p class="fs-5 fw-bold m-0">Security Logs</p>
-                <table class="table">
+            <div class="card-body">
+                <table class="table table-borderless">
                     <tbody>
                         <tr>
-                            <td class="secDates">Feb. 15, 2025
-                                <p class="secTimes">10:30 - 7:30 PM</p>
-                            </td>
-                            <td class="secAbout">Visitor Entry</td>
-                            <td class="secTags">Approved</td>
+                            <td>Monthly HOA</td>
+                            <td>Feb. 15, 2025</td>
+                            <td class="text-end">₱3,500.00</td>
                         </tr>
                         <tr>
-                            <td class="secDates">Feb. 15, 2025
-                                <p class="secTimes">10:30 - 7:30 PM</p>
-                            </td>
-                            <td class="secAbout">Visitor Entry</td>
-                            <td class="secTags">Approved</td>
+                            <td>Monthly HOA</td>
+                            <td>Feb. 18, 2025</td>
+                            <td class="text-end">₱3,500.00</td>
+                        </tr>
+                        <tr>
+                            <td>Monthly HOA</td>
+                            <td>Feb. 23, 2025</td>
+                            <td class="text-end">₱3,500.00</td>
                         </tr>
                     </tbody>
                 </table>
-                <a asp-page="/Security/Security" class="viewall_Btn btn btn-primary @(ViewData["CurrentPage"]?.ToString() == "/Security/Security" ? "active" : "")">View All</a>
+                <button class="show-more-btn">Show More</button>
+            </div>
+        </div>
+        
+        <!-- Security Logs -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="m-0">Security Logs</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <tbody>
+                        <tr>
+                            <td>
+                                Feb. 15, 2025
+                                <p class="small text-muted mb-0">10:30 - 7:30 PM</p>
+                            </td>
+                            <td>Visitor Entry</td>
+                            <td><span class="secTags">Approved</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Feb. 18, 2025
+                                <p class="small text-muted mb-0">10:30 - 7:30 PM</p>
+                            </td>
+                            <td>Visitor Entry</td>
+                            <td><span class="secTags">Approved</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Feb. 18, 2025
+                                <p class="small text-muted mb-0">10:30 - 7:30 PM</p>
+                            </td>
+                            <td>Visitor Entry</td>
+                            <td><span class="secTags">Approved</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="show-more-btn">Show More</button>
             </div>
         </div>
     </div>
 
-    <!-- Events Section -->
+    <!-- Calendar and Events Section -->
     <div class="col-12 col-lg-4">
-        <div id="eventsSection">
-            <div id="calendarSection" class="mb-4">
-                <p class="fs-5 fw-bold m-0">Event Calendar</p>
-                <!-- Checkbox to include/exclude announcements -->
-                <div class="form-check">
+        <!-- Calendar Card -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="m-0">Event Calendar</h5>
+                <div class="form-check form-check-inline m-0">
                     <input type="checkbox" class="form-check-input" id="includeAnnouncements" checked>
                     <label class="form-check-label" for="includeAnnouncements">Include Announcements</label>
                 </div>
-                <div id="calendar"></div>
             </div>
-            <div id="timelineSection">
-                <p class="fs-5 fw-bold m-0">Upcoming Events</p>
+            <div class="card-body">
+                <div id="calendar"></div>
+                <button class="show-more-btn mt-3">Show More</button>
+            </div>
+        </div>
+        
+        <!-- Upcoming Events -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="m-0">Upcoming Events</h5>
+            </div>
+            <div class="card-body">
                 <div class="timeline">
                     <div class="timeline-item">
                         <span class="timeline-date">Feb 15, 2025</span>
-                        <p class="timeline-event">HOA Monthly Meeting at 10:00 AM</p>
+                        <p class="timeline-event mb-0">3:00 - 7:00 PM</p>
+                        <p class="mb-0"><i class="bi bi-geo-alt"></i> Function Hall</p>
+                        <p class="mb-0">HOA Meeting</p>
                     </div>
                     <div class="timeline-item">
-                        <span class="timeline-date">Feb 20, 2025</span>
-                        <p class="timeline-event">Community Clean-Up Drive</p>
+                        <span class="timeline-date">Feb 15, 2025</span>
+                        <p class="timeline-event mb-0">3:00 - 5:00 PM</p>
+                        <p class="mb-0"><i class="bi bi-geo-alt"></i> Function Hall</p>
+                        <p class="mb-0">HOA Meeting</p>
                     </div>
                     <div class="timeline-item">
-                        <span class="timeline-date">Feb 25, 2025</span>
-                        <p class="timeline-event">Security Drill</p>
+                        <span class="timeline-date">Feb 15, 2025</span>
+                        <p class="timeline-event mb-0">3:00 - 5:00 PM</p>
+                        <p class="mb-0"><i class="bi bi-geo-alt"></i> Function Hall</p>
+                        <p class="mb-0">HOA Meeting</p>
                     </div>
                 </div>
             </div>
@@ -139,34 +412,67 @@
     </div>
 </div>
 
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var calendarEl = document.getElementById('calendar');
-
-        // Fetch calendar events from the backend
-        var calendarEvents = @Html.Raw(Json.Serialize(Model.CalendarEvents));
-
-        // Log the calendar events for debugging
-        console.log("Calendar Events:", calendarEvents);
-
+        
+        // Demo events - use this if Model.CalendarEvents is null
+        var demoEvents = [
+            { title: 'HOA Meeting', start: '2021-09-19' },
+            { title: 'Clean-up', start: '2021-09-18' },
+            { title: 'Power Interruption', start: '2021-09-20' }
+        ];
+        
+        // Use either model data or demo data
+        var eventData = [];
+        @if (Model.CalendarEvents != null && Model.CalendarEvents.Any()) {
+            <text>
+            eventData = @Json.Serialize(Model.CalendarEvents);
+            </text>
+        } else {
+            <text>
+            eventData = demoEvents;
+            </text>
+        }
+        
         // Initialize FullCalendar
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
-            events: calendarEvents.map(evt => ({
-                title: evt.title,
-                start: evt.start, // Ensure this is a valid date string
-                description: `${evt.description} (${evt.eventTime})` // Include event time in the description
-            })),
-            eventContent: function (arg) {
-                // Customize event content
-                return {
-                    html: `<div class="fc-event-title">${arg.event.title}</div>
-                           <div class="fc-event-description">${arg.event.extendedProps.description}</div>`
-                };
+            initialDate: '2021-09-19', // Set to match screenshot
+            headerToolbar: {
+                left: 'prev',
+                center: 'title',
+                right: 'next'
+            },
+            height: 'auto',
+            dayMaxEventRows: 1,
+            events: eventData,
+            eventDisplay: 'block',
+            eventColor: '#3788d8',
+            firstDay: 1, // Start week on Monday
+            // Use windowResize to ensure proper rendering at all times
+            windowResize: function(view) {
+                calendar.updateSize();
             }
         });
-
+        
         calendar.render();
+        
+        // Handle checkbox for toggling announcements
+        document.getElementById('includeAnnouncements').addEventListener('change', function() {
+            // This would normally filter events
+            // For demo purposes, just re-render
+            calendar.refetchEvents();
+        });
+        
+        // Make "Show More" buttons functional
+        document.querySelectorAll('.show-more-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // For demo purposes, alert when clicked
+                alert("This would show more items");
+            });
+        });
     });
 </script>

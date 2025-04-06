@@ -1,231 +1,306 @@
+
 @page
 @model HomeownersMS.Pages_Billings_Payments.PaymentsModel
 @{
     Layout = "_ResidentLayout"; // Use your layout file
-    ViewData["HeaderTitle"] = "Billing and Payment";
-    ViewData["Title"] = "Billings and Payments";
+    ViewData["HeaderTitle"] = "Billing and Payments";
+    ViewData["Title"] = "Billing and Payments";
     var username = HttpContext?.User?.Identity?.Name ?? "Guest";
     var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
     ViewData["Username"] = username;
     ViewData["CurrentPage"] = currentPage;
 }
-
-    <div class="row justify-content-center">
-        <div class="col-md-12 col-lg-10">
-            <!-- Top Section: Outstanding Fees and Payment Details -->
-            <div class="row mb-4">
-                <!-- Left Column: Outstanding Fees and Service/Booking Fees -->
-                <div class="col-md-7"> <!-- Increased width for tables -->
-                    <!-- Outstanding Fees/Dues Table -->
-                    <p class="fs-5 mb-1">Outstanding Fees/Dues</p>
-                    <div class="table-responsive mb-4">
-                        <table class="table table-striped fee-table">
-                            <thead>
-                                <tr>
-                                    <th>Select</th>
-                                    <th>Description</th>
-                                    <th>Amount</th>
-                                    <th>Due Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Hardcoded data -->
-                                <tr>
-                                    <td><input type="checkbox" name="selectedFees" value="1" data-amount="100.00"></td>
-                                    <td>Monthly HOA Fee</td>
-                                    <td>$100.00</td>
-                                    <td>2023-11-15</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="selectedFees" value="2" data-amount="500.00"></td>
-                                    <td>Annual Maintenance Fee</td>
-                                    <td>$500.00</td>
-                                    <td>2023-12-01</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Service/Booking Fees Table -->
-                    <p class="fs-5 mb-1">Service/Booking Fees</p>
-                    <div class="table-responsive">
-                        <table class="table table-striped fee-table">
-                            <thead>
-                                <tr>
-                                    <th>Select</th>
-                                    <th>Description</th>
-                                    <th>Amount</th>
-                                    <th>Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Hardcoded data -->
-                                <tr>
-                                    <td><input type="checkbox" name="selectedFees" value="3" data-amount="50.00"></td>
-                                    <td>Clubhouse Booking Fee</td>
-                                    <td>$50.00</td>
-                                    <td>2023-11-10</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="selectedFees" value="4" data-amount="30.00"></td>
-                                    <td>Swimming Pool Maintenance Fee</td>
-                                    <td>$30.00</td>
-                                    <td>2023-11-12</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Right Column: Payment Form -->
-                <div class="col-md-5"> <!-- Reduced width for payment form -->
-                    <div class="payment-form bg-light p-4 rounded">
-                        <h3>Payment Details</h3>
-                        <form method="post">
-                            <div class="mb-3">
-                                <label for="totalAmount" class="form-label">Total Amount to Pay</label>
-                                <input type="text" class="form-control" id="totalAmount" readonly>
-                            </div>
-                            <div class="mb-3">
-                                <label for="paymentMethod" class="form-label">Payment Method</label>
-                                <select class="form-select" id="paymentMethod">
-                                    <option value="creditCard">Credit Card</option>
-                                    <option value="debitCard">Debit Card</option>
-                                    <option value="paypal">PayPal</option>
-                                    <option value="bankTransfer">Bank Transfer</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="cardNumber" class="form-label">Card Number</label>
-                                <input type="text" class="form-control" id="cardNumber" placeholder="Enter card number">
-                            </div>
-                            <div class="mb-3">
-                                <label for="expiryDate" class="form-label">Expiry Date</label>
-                                <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY">
-                            </div>
-                            <div class="mb-3">
-                                <label for="cvv" class="form-label">CVV</label>
-                                <input type="text" class="form-control" id="cvv" placeholder="CVV">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Submit Payment</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Recent Billing Transactions -->
-            <div class="row justify-content-center">
-                <div class="col-11">
-                    <p class="fs-5 mb-1">Recent Billing Transactions</p>
-                    <div class="table-responsive">
-                        <table class="table table-striped fee-table">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Description</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Hardcoded data -->
-                                <tr>
-                                    <td>2023-11-01</td>
-                                    <td>Monthly HOA Fee</td>
-                                    <td>$100.00</td>
-                                    <td>Paid</td>
-                                </tr>
-                                <tr>
-                                    <td>2023-10-01</td>
-                                    <td>Monthly HOA Fee</td>
-                                    <td>$100.00</td>
-                                    <td>Paid</td>
-                                </tr>
-                                <tr>
-                                    <td>2023-09-01</td>
-                                    <td>Monthly HOA Fee</td>
-                                    <td>$100.00</td>
-                                    <td>Paid</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+<link rel="stylesheet" href="~/css/payments.css" />
+<div class="billing-container">
+    <!-- Outstanding Dues Section -->
+    <div class="section-container">
+        <div class="section-header">
+            <span>Outstanding Dues</span>
+            <div class="action-buttons">
+                <button class="action-btn"><i class="fas fa-plus"></i></button>
+                <button class="action-btn"><i class="fas fa-filter"></i></button>
             </div>
         </div>
+        
+        <div class="search-container">
+            <input type="text" placeholder="Search..." class="search-input">
+            <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+        
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 5%"></th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="checkbox" class="fee-checkbox" data-amount="1100.00"></td>
+                        <td>Monthly HOA</td>
+                        <td>₱1,100.00</td>
+                        <td>Feb. 15, 2025</td>
+                        <td><span class="status-badge pending">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="fee-checkbox" data-amount="1000.00"></td>
+                        <td>Monthly HOA</td>
+                        <td>₱1,000.00</td>
+                        <td>Feb. 15, 2025</td>
+                        <td><span class="status-badge unpaid">Unpaid</span></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="fee-checkbox" data-amount="1000.00"></td>
+                        <td>Monthly HOA</td>
+                        <td>₱1,000.00</td>
+                        <td>Feb. 15, 2025</td>
+                        <td><span class="status-badge unpaid">Unpaid</span></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="fee-checkbox" data-amount="1000.00"></td>
+                        <td>Monthly HOA</td>
+                        <td>₱1,000.00</td>
+                        <td>Feb. 15, 2025</td>
+                        <td><span class="status-badge overdue">Overdue</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="pagination">
+            <button class="page-btn"><i class="fas fa-chevron-left"></i> Previous</button>
+            <div class="page-numbers">
+                <button class="page-num">1</button>
+                <button class="page-num active">2</button>
+                <button class="page-num">3</button>
+                <button class="page-num">...</button>
+                <button class="page-num">10</button>
+            </div>
+            <button class="page-btn">Next <i class="fas fa-chevron-right"></i></button>
+        </div>
     </div>
+    
+    <!-- Recent Payments Section -->
+    <div class="section-container mt-4">
+        <div class="section-header">
+            <span>Recent Payments</span>
+            <div class="action-buttons">
+                <button class="action-btn"><i class="fas fa-plus"></i></button>
+                <button class="action-btn"><i class="fas fa-filter"></i></button>
+            </div>
+        </div>
+        
+        <div class="search-container">
+            <input type="text" placeholder="Search..." class="search-input">
+            <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+        
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Amount Paid</th>
+                        <th>Date Paid</th>
+                        <th>Payment Method</th>
+                        <th>Receipt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Monthly HOA</td>
+                        <td>₱1,000.00</td>
+                        <td>Feb. 15, 2025</td>
+                        <td>Credit Card</td>
+                        <td><a href="#" class="download-link"><i class="fas fa-download"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td>Monthly HOA</td>
+                        <td>₱1,000.00</td>
+                        <td>Feb. 15, 2025</td>
+                        <td>Bank Transfer</td>
+                        <td><a href="#" class="download-link"><i class="fas fa-download"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td>Monthly HOA</td>
+                        <td>₱1,000.00</td>
+                        <td>Feb. 15, 2025</td>
+                        <td>E-Wallet</td>
+                        <td><a href="#" class="download-link"><i class="fas fa-download"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td>Monthly HOA</td>
+                        <td>₱1,000.00</td>
+                        <td>Feb. 15, 2025</td>
+                        <td>Credit Card</td>
+                        <td><a href="#" class="download-link"><i class="fas fa-download"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="pagination">
+            <button class="page-btn"><i class="fas fa-chevron-left"></i> Previous</button>
+            <div class="page-numbers">
+                <button class="page-num">1</button>
+                <button class="page-num active">2</button>
+                <button class="page-num">3</button>
+                <button class="page-num">...</button>
+                <button class="page-num">10</button>
+            </div>
+            <button class="page-btn">Next <i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+</div>
+
+<!-- Payment Panel -->
+<div class="payment-panel">
+    <div class="current-balance">
+        <h3>Current Balance</h3>
+        <h2>₱ 5,000</h2>
+        <button class="pay-all-btn">Pay All</button>
+    </div>
+    
+    <div class="selected-fees">
+        <h3>Selected Fees</h3>
+        <div class="fee-item">
+            <input type="checkbox" checked> Monthly HOA
+            <span class="fee-amount">₱ 100.00</span>
+        </div>
+        <div class="fee-item">
+            <input type="checkbox" checked> Monthly HOA
+            <span class="fee-amount">₱ 100.00</span>
+        </div>
+        <div class="fee-item">
+            <input type="checkbox" checked> Monthly HOA
+            <span class="fee-amount">₱ 100.00</span>
+        </div>
+        <div class="fee-total">
+            <span>TOTAL</span>
+            <span class="total-amount">₱ 300.00</span>
+        </div>
+    </div>
+    
+    <div class="payment-method">
+        <div class="method-header" id="cashHeader">
+            <span>Cash On Delivery</span>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="method-content" id="cashContent">
+            <div class="cash-option">
+                <input type="checkbox" id="cash"> <label for="cash">I will pay in cash</label>
+                <div class="cash-note">Please prepare the exact amount due to minimize physical contact for everyone's safety</div>
+            </div>
+            
+            <div class="visit-details">
+                <h4>Visit and Bring the ₱</h4>
+                <div class="address">
+                    <i class="fas fa-map-marker-alt"></i> 123 Subdivision Road, City, Philippines
+                </div>
+                <div class="hours">
+                    <i class="far fa-clock"></i> Monday to Friday, 9:00 AM to 5:00 PM
+                </div>
+            </div>
+            
+            <div class="instructions">
+                <div class="instruction-item">1. Bring the exact amount due</div>
+                <div class="instruction-item">2. Remember ID</div>
+            </div>
+        </div>
+        
+        <div class="method-header" id="cardHeader">
+            <span>Credit/Debit Card</span>
+            <i class="fas fa-chevron-up"></i>
+        </div>
+        <div class="method-content" id="cardContent">
+            <!-- Card payment form would go here -->
+        </div>
+        
+        <div class="method-header" id="walletHeader">
+            <span>E-Wallet</span>
+            <i class="fas fa-chevron-up"></i>
+        </div>
+        <div class="method-content" id="walletContent">
+            <!-- E-wallet payment form would go here -->
+        </div>
+    </div>
+    
+    <button class="confirm-payment-btn">Confirm Payment</button>
+</div>
 
 <style>
-    /* Custom CSS for improved table design */
-    .fee-table {
-        width: 100%;
-        margin: 0 auto; /* Center the table */
-        border-collapse: separate;
-        border-spacing: 0;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .fee-table th,
-    .fee-table td {
-        padding: 12px;
-        text-align: left;
-    }
-
-    .fee-table th {
-        background-color: #3c6693;
-        color: white;
-        font-weight: bold;
-    }
-
-    .fee-table tbody tr:nth-child(odd) {
-        background-color: #f8f9fa;
-    }
-
-    .fee-table tbody tr:hover {
-        background-color: #e9ecef;
-    }
-
-    .payment-form {
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .payment-form h3 {
-        margin-bottom: 20px;
-        color: #3c6693;
-    }
-
-    .payment-form .btn-primary {
-        background-color: #3c6693;
-        border-color: #3c6693;
-    }
-
-    .payment-form .btn-primary:hover {
-        background-color: #2a4a6e;
-        border-color: #2a4a6e;
-    }
+    /* Global styles */
+   
 </style>
 
 @section Scripts {
     <script>
         // Calculate total amount to pay
-        const checkboxes = document.querySelectorAll('input[name="selectedFees"]');
-        const totalAmountInput = document.getElementById('totalAmount');
-
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', () => {
-                let total = 0;
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('.fee-checkbox');
+            let totalAmount = 0;
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    calculateTotal();
+                });
+            });
+            
+            function calculateTotal() {
+                totalAmount = 0;
                 checkboxes.forEach(cb => {
                     if (cb.checked) {
-                        const amount = parseFloat(cb.getAttribute('data-amount'));
-                        total += amount;
+                        const amount = parseFloat(cb.getAttribute('data-amount') || 0);
+                        totalAmount += amount;
                     }
                 });
-                totalAmountInput.value = total.toFixed(2);
+                // Update total display here if needed
+                console.log('Total: ₱' + totalAmount.toFixed(2));
+            }
+            
+            // Payment method toggles
+            const cashHeader = document.getElementById('cashHeader');
+            const cardHeader = document.getElementById('cardHeader');
+            const walletHeader = document.getElementById('walletHeader');
+            const cashContent = document.getElementById('cashContent');
+            const cardContent = document.getElementById('cardContent');
+            const walletContent = document.getElementById('walletContent');
+            
+            cashHeader.addEventListener('click', function() {
+                toggleSection(cashContent, cashHeader);
             });
+            
+            cardHeader.addEventListener('click', function() {
+                toggleSection(cardContent, cardHeader);
+            });
+            
+            walletHeader.addEventListener('click', function() {
+                toggleSection(walletContent, walletHeader);
+            });
+            
+            function toggleSection(content, header) {
+                const isVisible = content.style.display !== 'none';
+                content.style.display = isVisible ? 'none' : 'block';
+                const icon = header.querySelector('i');
+                if (isVisible) {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                } else {
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
+            }
+            
+            // Initialize payment method sections
+            cardContent.style.display = 'none';
+            walletContent.style.display = 'none';
         });
     </script>
+    
+    <!-- Font Awesome for icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 }
