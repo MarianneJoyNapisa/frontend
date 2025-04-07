@@ -1,5 +1,7 @@
 @page
 @model HomeownersMS.Pages.Admin.Reservations.ManageReservationsModel
+@using HomeownersMS.Models
+
 @{
     ViewData["Title"] = "Manage Reservations";
     ViewData["HeaderTitle"] = "Manage Reservations"; 
@@ -17,6 +19,7 @@
                     <tr>
                         <th>Facility</th>
                         <th>Resident</th>
+                        <th>Event Title</th>
                         <th>Date</th>
                         <th>Time</th>
                         <th>Status</th>
@@ -27,28 +30,32 @@
                     @foreach (var reservation in Model.Reservations)
                     {
                         <tr>
-                            <td>@reservation.Facility.Name</td>
-                            <td>@reservation.FullName</td>
-                            <td>@reservation.ReservationDate.ToShortDateString()</td>
-                            <td>@reservation.StartTime - @reservation.EndTime</td>
+                            <td>@reservation.Facility?.Name</td>
+                            <td>@($"{reservation.Resident?.FName} {reservation.Resident?.LName}")</td>
+                            <td>@reservation.Event?.Title</td>
+                            <td>@reservation.Event?.EventDate?.ToShortDateString()</td>
+                            <td>
+                                @reservation.Event?.EventTimeStart?.ToString("hh\\:mm") - 
+                                @reservation.Event?.EventTimeEnd?.ToString("hh\\:mm")
+                            </td>
                             <td>
                                 <span class="badge 
-                                    @(reservation.Status == RequestStatus.Approved ? "bg-success" :
-                                      reservation.Status == RequestStatus.Declined ? "bg-danger" : "bg-warning")">
-                                    @reservation.Status
+                                    @(reservation.FacilityRequest?.Status == RequestStatus.Approved ? "bg-success" :
+                                      reservation.FacilityRequest?.Status == RequestStatus.Declined ? "bg-danger" : "bg-warning")">
+                                    @reservation.FacilityRequest?.Status
                                 </span>
                             </td>
                             <td>
-                                @if (reservation.Status == RequestStatus.Pending)
+                                @if (reservation.FacilityRequest?.Status == RequestStatus.Pending)
                                 {
                                     <form method="post" asp-page-handler="Approve" class="d-inline">
-                                        <input type="hidden" name="id" value="@reservation.FacilityRequestId" />
+                                        <input type="hidden" name="id" value="@reservation.FacilityRequest.FacilityRequestId" />
                                         <button type="submit" class="btn btn-sm btn-success">Approve</button>
                                     </form>
                                     <button type="button" class="btn btn-sm btn-danger" 
                                             data-bs-toggle="modal" 
                                             data-bs-target="#declineModal"
-                                            data-id="@reservation.FacilityRequestId">
+                                            data-id="@reservation.FacilityRequest.FacilityRequestId">
                                         Decline
                                     </button>
                                 }
@@ -77,11 +84,8 @@
             </div>
             <form method="post" asp-page-handler="Decline">
                 <div class="modal-body">
+                    <p>Are you sure you want to decline this reservation?</p>
                     <input type="hidden" name="id" id="declineReservationId" />
-                    <div class="form-group">
-                        <label for="adminNotes">Reason for declining:</label>
-                        <textarea class="form-control" name="adminNotes" rows="3"></textarea>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

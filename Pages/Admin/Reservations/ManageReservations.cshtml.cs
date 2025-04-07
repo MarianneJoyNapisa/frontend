@@ -17,16 +17,31 @@ namespace HomeownersMS.Pages.Admin.Reservations
             _context = context;
         }
 
-        public List<FacilityRequest> Reservations { get; set; }
+        public List<ReservationViewModel> Reservations { get; set; } = new();
 
         public async Task OnGetAsync()
         {
-            Reservations = await _context.FacilityRequests
+            // Get all facility requests with their facilities and residents
+            var facilityRequests = await _context.FacilityRequests
                 .Include(fr => fr.Facility)
                 .Include(fr => fr.Resident)
-                .OrderBy(fr => fr.ReservationDate)
-                .ThenBy(fr => fr.StartTime)
+                .OrderBy(fr => fr.RequestDate)
                 .ToListAsync();
+
+            // Get all events for these facility requests
+            var facilityRequestIds = facilityRequests.Select(fr => fr.FacilityRequestId).ToList();
+            var events = await _context.Events
+                .Where(e => facilityRequestIds.Contains(e.FacilityRequestId ?? 0))
+                .ToListAsync();
+
+            // Combine them for the view
+            Reservations = facilityRequests.Select(fr => new ReservationViewModel
+            {
+                FacilityRequest = fr,
+                Event = events.FirstOrDefault(e => e.FacilityRequestId == fr.FacilityRequestId),
+                Facility = fr.Facility,
+                Resident = fr.Resident
+            }).ToList();
         }
 
         public async Task<IActionResult> OnPostApproveAsync(int id)
@@ -35,21 +50,29 @@ namespace HomeownersMS.Pages.Admin.Reservations
             if (request != null)
             {
                 request.Status = RequestStatus.Approved;
+                request.ApprovalDate = DateTime.Now;
                 await _context.SaveChangesAsync();
             }
             return RedirectToPage();
         }
 
-        public async Task<IActionResult> OnPostDeclineAsync(int id, string adminNotes)
+        public async Task<IActionResult> OnPostDeclineAsync(int id)
         {
             var request = await _context.FacilityRequests.FindAsync(id);
             if (request != null)
             {
                 request.Status = RequestStatus.Declined;
-                request.AdminNotes = adminNotes;
                 await _context.SaveChangesAsync();
             }
             return RedirectToPage();
         }
+    }
+
+    public class ReservationViewModel
+    {
+        public FacilityRequest? FacilityRequest { get; set; }
+        public Event? Event { get; set; }
+        public Facility? Facility { get; set; }
+        public Resident? Resident { get; set; }
     }
 }

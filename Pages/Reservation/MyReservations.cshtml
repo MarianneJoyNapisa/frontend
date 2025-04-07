@@ -1,8 +1,9 @@
 @page
 @model HomeownersMS.Pages.Reservation.MyReservationsModel
+@using HomeownersMS.Models
 
 @{
-    ViewData["CurrentPage"] = "/Reservation/MyReservations";  // <-- ADD THIS LINE
+    ViewData["CurrentPage"] = "/Reservation/MyReservations";
     ViewData["Title"] = "My Reservations";
     Layout = "_ResidentLayout";
 }
@@ -16,7 +17,8 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Facility</th>
+                        <th>Event Title</th>
+                        <th>Event Type</th>
                         <th>Date</th>
                         <th>Time</th>
                         <th>Status</th>
@@ -27,18 +29,19 @@
                     @foreach (var reservation in Model.Reservations)
                     {
                         <tr>
-                            <td>@reservation.Facility.Name</td>
-                            <td>@reservation.ReservationDate.ToShortDateString()</td>
-                            <td>@reservation.StartTime - @reservation.EndTime</td>
+                            <td>@reservation.Event?.Title</td>
+                            <td>@reservation.Event?.EventType</td>
+                            <td>@reservation.Event?.EventDate?.ToShortDateString()</td>
+                            <td>@reservation.Event?.EventTimeStart?.ToString("hh\\:mm") - @reservation.Event?.EventTimeEnd?.ToString("hh\\:mm")</td>
                             <td>
                                 <span class="badge 
-                                    @(reservation.Status == RequestStatus.Approved ? "bg-success" :
-                                      reservation.Status == RequestStatus.Declined ? "bg-danger" : "bg-warning")">
-                                    @reservation.Status
+                                    @(reservation.FacilityRequest?.Status == RequestStatus.Approved ? "bg-success" :
+                                    reservation.FacilityRequest?.Status == RequestStatus.Declined ? "bg-danger" : "bg-warning")">
+                                    @reservation.FacilityRequest?.Status
                                 </span>
                             </td>
                             <td>
-                                <a asp-page="./ViewReservation" asp-route-id="@reservation.FacilityRequestId" class="btn btn-sm btn-info">Details</a>
+                                <a asp-page="./ViewReservation" asp-route-id="@reservation.FacilityRequest?.FacilityRequestId" class="btn btn-sm btn-info">Details</a>
                             </td>
                         </tr>
                     }

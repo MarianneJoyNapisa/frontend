@@ -8,7 +8,8 @@ namespace HomeownersMS.Models // ← ADD THIS
     {
         Pending,
         Approved,
-        Declined
+        Declined,
+        Cancelled
     }
 
     public class FacilityRequest
@@ -16,16 +17,12 @@ namespace HomeownersMS.Models // ← ADD THIS
         [Key]
         public int FacilityRequestId { get; set; }
 
-        [Required]
-        public DateOnly ReservationDate { get; set; }
 
-        [Required]
-        public TimeOnly StartTime { get; set; }
-
-        [Required]
-        public TimeOnly EndTime { get; set; }
-
+        // Time the facility request was made (doesn't mean it's the time the event will be held)
         public DateTime RequestDate { get; set; } = DateTime.Now;
+
+        public DateTime? ApprovalDate { get; set; }
+
         public RequestStatus Status { get; set; } = RequestStatus.Pending;
 
         [ForeignKey("Resident")]
@@ -34,13 +31,11 @@ namespace HomeownersMS.Models // ← ADD THIS
         [ForeignKey("Facility")]
         public int FacilityId { get; set; }
 
-        public string? AdminNotes { get; set; }
+        public string? FullName { get; set; }
+        public string? EmailAddress { get; set; }
+        public string? PhoneNumber { get; set; }
 
-        public string FullName { get; set; }
-        public string EmailAddress { get; set; }
-        public string PhoneNumber { get; set; }
-
-        public virtual Resident Resident { get; set; }
-        public virtual Facility Facility { get; set; }
+        public virtual Resident? Resident { get; set; }
+        public virtual Facility? Facility { get; set; }
     }
 }
