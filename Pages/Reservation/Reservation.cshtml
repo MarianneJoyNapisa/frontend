@@ -12,13 +12,13 @@
 }
 
 <div class="row">
-    <!-- Reservation Content -->
-    <div class="col-12">
+    <!-- Left Side: Facilities -->
+    <div class="col-md-4">
         <div class="facilities mb-4">
             <h2>Facilities</h2>
             <div class="container-fluid p-0">
                 <div class="row g-3">
-                    <!-- Facility Cards -->
+                    <!-- Function Hall -->
                     <div class="col-12">
                         <div class="card facility-card">
                             <div class="row g-0">
@@ -36,6 +36,7 @@
                         </div>
                     </div>
 
+                    <!-- Swimming Pool -->
                     <div class="col-12">
                         <div class="card facility-card">
                             <div class="row g-0">
@@ -53,11 +54,12 @@
                         </div>
                     </div>
 
+                    <!-- Party Room -->
                     <div class="col-12">
                         <div class="card facility-card">
                             <div class="row g-0">
                                 <div class="col-md-4">
-                                    <img src="/images/BasketballCourt.png" class="img-fluid facility-img rounded-start" alt="Basketball Court">
+                                    <img src="/images/BasketballCourt.png" class="img-fluid facility-img rounded-start" alt="Party Room">
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body">
@@ -70,6 +72,7 @@
                         </div>
                     </div>
 
+                    <!-- Chapel -->
                     <div class="col-12">
                         <div class="card facility-card">
                             <div class="row g-0">
@@ -86,10 +89,31 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Fifth Facility -->
+                    <div class="col-12">
+                        <div class="card facility-card">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img src="/images/Chapel.png" class="img-fluid facility-img rounded-start" alt="Function Hall">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-1">₱ 1,500/hr</h5>
+                                        <h6 class="card-subtitle mb-1">Swimming Pool</h6>
+                                        <p class="card-text"><small class="text-muted">Lat 7: Rosewood Lane</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
+    <!-- Right Side: Reservation Log and History -->
+    <div class="col-md-8">
         <!-- Reservation Log Section -->
         <div class="reservation-log mb-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -292,6 +316,7 @@
         border-radius: 10px;
         overflow: hidden;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        margin-bottom: 15px;
     }
     .facility-img {
         height: 100%;
@@ -308,5 +333,17 @@
     }
     .table td {
         padding: 12px 8px;
+    }
+    .btn-primary {
+        background-color: #3a6ea5;
+        border-color: #3a6ea5;
+    }
+    .btn-outline-primary {
+        color: #3a6ea5;
+        border-color: #3a6ea5;
+    }
+    .btn-outline-primary:hover {
+        background-color: #3a6ea5;
+        border-color: #3a6ea5;
     }
 </style>
