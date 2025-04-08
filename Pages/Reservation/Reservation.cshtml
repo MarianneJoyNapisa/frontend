@@ -1,5 +1,6 @@
 @page
 @model HomeownersMS.Pages.Reservation.ReservationModel
+@using HomeownersMS.Models
 @{
     ViewData["CurrentPage"] = "/Reservation/Reservation";  // <-- ADD THIS LINE
     Layout = "_ResidentLayout"; 
@@ -9,54 +10,218 @@
 
 <style>
     .facility-card {
-        background-color: #ffffff;
-        padding: 20px;
         border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        margin-bottom: 20px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        background-color: var(--primary);
+        color: white;
     }
-    .facility-card img {
-        width: 100%;
-        max-height: 200px;
+
+    .facility-img {
+        height: 100%;
         object-fit: cover;
-        border-radius: 10px;
+        max-height: 150px;
     }
-    .btn-reserve {
-        background-color: #007bff;
-        color: #ffffff;
-        font-weight: bold;
-        padding: 10px 20px;
-        border-radius: 5px;
-        border: none;
-        width: 100%;
+
+    .badge {
+        padding: 0.5em 0.8em;
+        border-radius: 4px;
     }
-    .btn-reserve:hover {
-        background-color: #0056b3;
+
+    .table th {
+        font-weight: 500;
+        color: #555;
+    }
+
+    .table td {
+        padding: 12px 8px;
     }
 </style>
 
-<h2 class="text-center mt-4">Facilities</h2>
-
 <div class="row">
-    @if (Model.Facilities.Any())
-    {
-        @foreach (var facility in Model.Facilities)
-        {
-            <div class="col-md-6 col-lg-4">
-                <div class="facility-card">
-                    <img src="@facility.FacilityImage" alt="@facility.Name">
-                    <h4>@facility.Name</h4>
-                    <p class="text-muted">@facility.Address</p>
-                    <p class="h5">₱ @facility.PricePerHour/hr</p>
-                    <a href="/Reservation/Reserve?facilityId=@facility.FacilityId" class="btn btn-reserve">Reserve Now</a>
+    @* Breadcrumb navigatin *@
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Facilities</li>
+        </ol>
+    </nav>
+    
+    @* <!-- Reservation Content --> *@
+    <div class="col-12">
+        <div class="facilities mb-4">
+            <h2>Facilities</h2>
+            <div class="container-fluid p-0">
+                <div class="row g-3">
+                    @if (Model.Facilities.Any())
+                    {
+                        @foreach (var facility in Model.Facilities)
+                        {
+                            @* <!-- Facility Cards --> *@
+                            <div class="col-12">
+                                <a asp-page="/Reservation/Reserve" asp-route-facilityId="@facility.FacilityId" class="ghost-link">
+                                    <div class="card facility-card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <img src="@Url.Content($"~/{@facility.FacilityImage}")" 
+                                                        class="img-fluid facility-img" 
+                                                        alt="@facility.Name">
+                                                </div>
+                                                <div class="col-9 d-flex justify-content-evenly flex-column">
+                                                    <h5 class="card-title mb-1 fw-bold">₱ @string.Format("{0:N0}", facility.PricePerHour)/hr</h5>
+                                                    <h6 class="card-subtitle mb-1 text-capitalize">@facility.Name</h6>
+                                                        <p class="card-text small text-capitalize">
+                                                        <i class="bi bi-geo-alt"></i> @facility.Address</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-12">
+                            <p class="text-center">No facilities available.</p>
+                        </div>
+                    }
+                </div>
+            </div>  
+        </div>
+
+        @* <!-- Reservation Log Section --> *@
+        <div class="reservation-log mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="fw-bold">Reservation Log</h2>
+                <div>
+                    <button class="btn btn-sm btn-primary me-1"><i class="bi bi-filter"></i></button>
+                    <button class="btn btn-sm btn-primary"><i class="bi bi-sort-down"></i></button>
                 </div>
             </div>
-        }
-    }
-    else
-    {
-        <p class="text-center">No facilities available.</p>
-        <p>Debug: Facilities count is @Model.Facilities.Count</p>
-    }
+
+            @if (Model.PendingReservations.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr class="table-light">
+                                <th>Facility</th>
+                                <th>Date</th>
+                                <th>Guests</th>
+                                <th>Event</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var reservation in Model.PendingReservations)
+                            {
+                                <tr>
+                                    <td>
+                                        <span class="text-capitalize">@reservation.FacilityRequest?.Facility?.Name</span>
+                                        <br>
+                                        <small class="text-muted">ID/@reservation.FacilityRequest?.FacilityRequestId</small>
+                                    </td>
+                                    <td>
+                                        @reservation.FacilityRequest?.RequestDate.ToString("MMM. dd, yyyy")
+                                        <br>
+                                        <small class="text-muted">
+                                            @(reservation.Event?.EventTimeStart?.ToString("h:mm tt") ?? "--:--") - 
+                                            @(reservation.Event?.EventTimeEnd?.ToString("h:mm tt") ?? "--:--")
+                                        </small>
+                                    </td>
+                                    <td>@reservation.Event?.GuestCapacity</td>
+                                    <td><span class="text-capitalize">@reservation.Event?.EventType</span></td>
+                                    <td>
+                                        <span class="badge bg-warning">@reservation.FacilityRequest?.Status</span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-link text-info"><i class="bi bi-info-circle"></i></button>
+                                        <button class="btn btn-sm btn-link text-danger"><i class="bi bi-x-lg"></i></button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else 
+            {
+                <div class="alert alert-info">
+                    No pending reservations.
+                </div>
+            }
+        </div>
+
+        <!-- Reservation History Section -->
+        <div class="reservation-history mt-5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="fw-bold">Reservation History</h2>
+                <div>
+                    <button class="btn btn-sm btn-primary me-1"><i class="bi bi-filter"></i></button>
+                    <button class="btn btn-sm btn-primary"><i class="bi bi-sort-down"></i></button>
+                </div>
+            </div>
+
+            @if (Model.HistoricalReservations.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr class="table-light">
+                                <th>Facility</th>
+                                <th>Date</th>
+                                <th>Guests</th>
+                                <th>Event</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var reservation in Model.HistoricalReservations)
+                            {
+                                <tr>
+                                    <td>
+                                        <span class="text-capitalize">@reservation.FacilityRequest?.Facility?.Name</span>
+                                        <br>
+                                        <small class="text-muted">ID/@reservation.FacilityRequest?.FacilityRequestId</small>
+                                    </td>
+                                    <td>
+                                        @reservation.FacilityRequest?.RequestDate.ToString("MMM. dd, yyyy")
+                                        <br>
+                                        <small class="text-muted">
+                                            @(reservation.Event?.EventTimeStart?.ToString("h:mm tt") ?? "--:--") - 
+                                            @(reservation.Event?.EventTimeEnd?.ToString("h:mm tt") ?? "--:--")
+                                        </small>
+                                    </td>
+                                    <td>@reservation.Event?.GuestCapacity</td>
+                                    <td><span class="text-capitalize">@reservation.Event?.EventType</span></td>
+                                    <td>
+                                        <span class="badge 
+                                            @(reservation.FacilityRequest?.Status == RequestStatus.Approved ? "bg-success" :
+                                            reservation.FacilityRequest?.Status == RequestStatus.Declined ? "bg-danger" : 
+                                            reservation.FacilityRequest?.Status == RequestStatus.Cancelled ? "bg-danger" : "bg-warning")">
+                                            @reservation.FacilityRequest?.Status
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-link text-info"><i class="bi bi-info-circle"></i></button>
+                                        <button class="btn btn-sm btn-link text-danger"><i class="bi bi-x-lg"></i></button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else 
+            {
+                <div class="alert alert-info">
+                    You currently have not made any reservations at all. Try scheduling a reservation now!
+                </div>
+            }
+        </div>
+    </div>
 </div>

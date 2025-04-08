@@ -106,7 +106,7 @@ namespace HomeownersMS.Pages.Reservation
             _context.Events.Add(Event);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("/Reservation/MyReservations");
+            return RedirectToPage("/Reservation/Reservation");
         }
     }
 }

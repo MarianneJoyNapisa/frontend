@@ -1,5 +1,9 @@
 @import url("../node_modules/bootstrap-icons/font/bootstrap-icons.css");
 
+:root {
+    --primary: #3c6693;
+}
+
 /* Gi add ni Ram  */
 .validation-summary {
     color: #dc3545; /* Red color for errors */
@@ -317,4 +321,8 @@
     .facility-img {
         max-width: 150px; /* Even smaller for mobile devices */
     }
+}
+
+.ghost-link {
+    text-decoration: none;
 }
