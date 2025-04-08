@@ -51,6 +51,10 @@
                 <i class="bi bi-calendar-fill"></i>
                 <span>Facilities Management</span>
             </a>
+            <a asp-page="/Admin/Reservations/ManageReservations" class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Admin/Reservations/ManageReservations" ? "active" : "")">
+                <i class="bi bi-calendar-check-fill"></i>
+                <span>Reservations</span>
+            </a>
             <a asp-page="/Admin/Announcements/Index" class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Admin/Announcements/Index" ? "active" : "")">
                 <i class="bi bi-megaphone-fill"></i>
                 <span>Announcements & Events</span>

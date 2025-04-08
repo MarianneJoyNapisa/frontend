@@ -10,18 +10,18 @@
     ViewData["CurrentPage"] = currentPage;
 }
 
-<!-- Add FullCalendar CSS in the head section -->
+<!-- Add FullCalendar CSS -->
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet" />
 
 <style>
     /* General styles */
     .card {
         border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         margin-bottom: 20px;
         background-color: white;
     }
-    
+
     .card-header {
         border-bottom: 1px solid #eee;
         padding: 12px 15px;
@@ -29,93 +29,11 @@
         justify-content: space-between;
         align-items: center;
     }
-    
+
     .card-body {
         padding: 15px;
     }
-    
-    .title-with-action {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-    
-    /* Calendar specific styles */
-    #calendar {
-        height: 320px;
-        font-size: 12px;
-    }
-    
-    #calendar .fc-header-toolbar {
-        margin-bottom: 5px !important;
-        padding: 0 5px;
-    }
-    
-    #calendar .fc-toolbar-title {
-        font-size: 1rem;
-    }
-    
-    #calendar .fc-button {
-        padding: 0.2rem 0.4rem;
-        font-size: 0.8rem;
-    }
-    
-    #calendar .fc-daygrid-day-number {
-        font-size: 0.8rem;
-        margin: 2px;
-    }
-    
-    #calendar .fc-col-header-cell-cushion {
-        font-size: 0.8rem;
-    }
-    
-    #calendar .fc-daygrid-day.fc-day-today {
-        background-color: rgba(255, 220, 40, 0.15);
-    }
-    
-    #calendar .fc-daygrid-day-events {
-        min-height: 0;
-    }
-    
-    #calendar .fc-event {
-        border-radius: 4px;
-        padding: 2px;
-        font-size: 0.7rem;
-        margin: 1px 0;
-        cursor: pointer;
-    }
-    
-    /* Day names styling */
-    .fc-col-header-cell {
-        background-color: #f8f9fa;
-    }
-    
-    /* Today highlight styling */
-    .fc-day-today {
-        background-color: #e8f4ff !important;
-    }
-    
-    /* Event styling */
-    .fc-event-main {
-        padding: 2px 4px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    
-    /* Current day highlighting */
-    .fc-day-today .fc-daygrid-day-number {
-        background-color: #3174ad;
-        color: white;
-        border-radius: 50%;
-        width: 24px;
-        height: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
+
     /* Announcement cards */
     .ann-Card {
         border: 1px solid #ddd;
@@ -123,14 +41,14 @@
         margin-bottom: 12px;
         overflow: hidden;
     }
-    
+
     .ann-Card .header {
         padding: 8px 12px;
         background-color: #f8f9fa;
         display: flex;
         align-items: center;
     }
-    
+
     .ann-Card .header .icon {
         width: 24px;
         height: 24px;
@@ -141,16 +59,17 @@
         margin-right: 8px;
         color: white;
     }
-    
+
     .ann-Card .content {
         padding: 12px;
     }
-    
+
     /* Security logs and billing styles */
-    .secTags, .duePrices {
+    .secTags,
+    .duePrices {
         font-weight: bold;
     }
-    
+
     .secTags {
         color: white;
         background-color: #28a745;
@@ -158,36 +77,44 @@
         padding: 2px 6px;
         display: inline-block;
     }
-    
-    .timeline-item {
-        border-left: 2px solid #007bff;
-        padding-left: 15px;
-        margin-bottom: 15px;
-        position: relative;
+
+    /* Calendar styles */
+    #calendar {
+        height: 100%;
+        min-height: 300px;
+        font-size: 14px;
     }
-    
-    .timeline-date {
-        font-weight: bold;
-        color: #007bff;
+
+    /* Card body should expand to contain calendar */
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        min-height: 350px;
+        /* Minimum height for calendar */
     }
-    
-    .timeline-item:before {
-        content: '';
-        width: 12px;
-        height: 12px;
-        background-color: #007bff;
-        border-radius: 50%;
-        position: absolute;
-        left: -7px;
-        top: 5px;
+
+    /* Responsive adjustments */
+    @@media (max-width: 992px) {
+        #calendar {
+            min-height: 250px;
+        }
+
+        .card-body {
+            min-height: 300px;
+        }
     }
-    
-    .viewall_Btn {
-        width: 100%;
-        margin-top: 10px;
+
+    @@media (max-width: 768px) {
+        #calendar {
+            min-height: 200px;
+        }
+
+        .card-body {
+            min-height: 250px;
+        }
     }
-    
-    /* Custom button styling to match the image */
+
+    /* Custom button styling */
     .show-more-btn {
         background-color: transparent;
         border: 1px solid #ddd;
@@ -198,23 +125,84 @@
         text-align: center;
         transition: all 0.3s;
     }
-    
+
     .show-more-btn:hover {
         background-color: #f1f1f1;
+    }
+
+    /* Selected date highlight */
+    .fc-daygrid-day.selected {
+        background-color: rgba(0, 123, 255, 0.1);
+    }
+
+    /* Event Card Styles */
+    .event-card {
+        border-left: 4px solid var(--primary);
+        border-radius: 8px;
+        padding: 12px 15px;
+        margin-bottom: 12px;
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        transition: all 0.2s ease;
+    }
+
+    .event-card:hover {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transform: translateY(-2px);
+    }
+
+    .event-date {
+        font-size: 0.95rem;
+        color: var(--primary);
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .event-time {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+        color: #555;
+        font-weight: bold;
+    }
+
+    .event-location {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+    }
+
+    .event-location i {
+        margin-right: 5px;
+        color: var(--primary);
+    }
+
+    .event-title {
+        font-weight: 500;
+        font-size: 1rem;
+        color: #333;
+    }
+
+    /* No events message styling */
+    #events-container > p {
+        text-align: center;
+        color: #666;
+        padding: 10px;
     }
 </style>
 
 <div class="row">
     <!-- Announcement Section -->
     <div class="col-12 col-md-6 col-lg-4">
-        <div class="cardd">
+        <div class="card">
             <div class="card-header">
                 <h5 class="m-0">Announcements</h5>
                 <a asp-page="/Announcement/Announcement_Events" class="text-primary">View All</a>
             </div>
             <div class="card-body">
-                <div id="announcementCards" class="row">
-                    @if (Model.LatestAnnouncements?.Any() == true)
+                <div id="announcementCards">
+                    @if (Model.LatestAnnouncements.Any())
                     {
                         @foreach (var announcement in Model.LatestAnnouncements)
                         {
@@ -223,7 +211,7 @@
                                     @{
                                         string iconClass = "bi bi-megaphone-fill";
                                         string iconColor = "#28a745";
-                                        
+
                                         if (announcement.Title.Contains("Clean-Up", StringComparison.OrdinalIgnoreCase))
                                         {
                                             iconClass = "bi bi-trash-fill";
@@ -239,9 +227,22 @@
                                     <span>@announcement.Title</span>
                                 </div>
                                 <div class="content">
-                                    <p><strong>Feb 18  9 AM - 2 PM</strong></p>
-                                    <p><strong>Block @announcement.BlocksAffected</strong></p>
-                                    <p>HOA Office - <a href="tel:@announcement.ContactNumber">@announcement.ContactNumber</a></p>
+                                    @if (announcement.EventDate.HasValue)
+                                    {
+                                        <p><strong>@announcement.EventDate.Value.ToString("MMM dd")</strong></p>
+                                    }
+                                    @if (!string.IsNullOrEmpty(announcement.BlocksAffected))
+                                    {
+                                        <p><strong>Block @announcement.BlocksAffected</strong></p>
+                                    }
+                                    @if (!string.IsNullOrEmpty(announcement.Office))
+                                    {
+                                        <p>@announcement.Office</p>
+                                    }
+                                    @if (announcement.ContactNumber.HasValue)
+                                    {
+                                        <p><a href="tel:@announcement.ContactNumber">@announcement.ContactNumber</a></p>
+                                    }
                                     <p>@announcement.Content</p>
                                 </div>
                             </div>
@@ -249,45 +250,7 @@
                     }
                     else
                     {
-                        <!-- Demo content matching the image -->
-                        <div class="ann-Card">
-                            <div class="header">
-                                <i class="bi bi-trash-fill icon" style="background-color: #28a745;"></i>
-                                <span>Clean-Up Drive</span>
-                            </div>
-                            <div class="content">
-                                <p><strong>Feb 18  9 AM - 2 PM</strong></p>
-                                <p><strong>Block 1-8</strong></p>
-                                <p>HOA Office - <a href="tel:(123) 123-4567">(123) 123-4567</a></p>
-                                <p>Scheduled maintenance. Please prepare.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="ann-Card">
-                            <div class="header">
-                                <i class="bi bi-lightning-fill icon" style="background-color: #dc3545;"></i>
-                                <span>Power Interruption</span>
-                            </div>
-                            <div class="content">
-                                <p><strong>Feb 18  9 AM - 2 PM</strong></p>
-                                <p><strong>Block 1-8</strong></p>
-                                <p>HOA Office - <a href="tel:(123) 123-4567">(123) 123-4567</a></p>
-                                <p>Scheduled maintenance. Please prepare.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="ann-Card">
-                            <div class="header">
-                                <i class="bi bi-trash-fill icon" style="background-color: #28a745;"></i>
-                                <span>Clean-Up Drive</span>
-                            </div>
-                            <div class="content">
-                                <p><strong>Feb 18  9 AM - 2 PM</strong></p>
-                                <p><strong>Block 1-8</strong></p>
-                                <p>HOA Office - <a href="tel:(123) 123-4567">(123) 123-4567</a></p>
-                                <p>Scheduled maintenance. Please prepare.</p>
-                            </div>
-                        </div>
+                        <p>No recent announcements</p>
                     }
                 </div>
             </div>
@@ -324,7 +287,7 @@
                 <button class="show-more-btn">Show More</button>
             </div>
         </div>
-        
+
         <!-- Security Logs -->
         <div class="card mt-4">
             <div class="card-header">
@@ -369,110 +332,165 @@
         <!-- Calendar Card -->
         <div class="card">
             <div class="card-header">
-                <h5 class="m-0">Event Calendar</h5>
-                <div class="form-check form-check-inline m-0">
-                    <input type="checkbox" class="form-check-input" id="includeAnnouncements" checked>
-                    <label class="form-check-label" for="includeAnnouncements">Include Announcements</label>
-                </div>
+                <h5 class="m-0">Calendar</h5>
+                <button id="reset-calendar" class="btn btn-sm btn-outline-secondary">Show All</button>
             </div>
             <div class="card-body">
+                @* Calendar shows here *@
                 <div id="calendar"></div>
-                <button class="show-more-btn mt-3">Show More</button>
             </div>
         </div>
-        
-        <!-- Upcoming Events -->
-        <div class="card mt-4">
+
+        <!-- Events -->
+        <div class="card mt-4" id="events">
             <div class="card-header">
-                <h5 class="m-0">Upcoming Events</h5>
+                <h5 class="m-0">Events</h5>
             </div>
             <div class="card-body">
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <span class="timeline-date">Feb 15, 2025</span>
-                        <p class="timeline-event mb-0">3:00 - 7:00 PM</p>
-                        <p class="mb-0"><i class="bi bi-geo-alt"></i> Function Hall</p>
-                        <p class="mb-0">HOA Meeting</p>
-                    </div>
-                    <div class="timeline-item">
-                        <span class="timeline-date">Feb 15, 2025</span>
-                        <p class="timeline-event mb-0">3:00 - 5:00 PM</p>
-                        <p class="mb-0"><i class="bi bi-geo-alt"></i> Function Hall</p>
-                        <p class="mb-0">HOA Meeting</p>
-                    </div>
-                    <div class="timeline-item">
-                        <span class="timeline-date">Feb 15, 2025</span>
-                        <p class="timeline-event mb-0">3:00 - 5:00 PM</p>
-                        <p class="mb-0"><i class="bi bi-geo-alt"></i> Function Hall</p>
-                        <p class="mb-0">HOA Meeting</p>
-                    </div>
+                <div id="events-container">
+                    @if (Model.AllEvents.Any())
+                    {
+                        foreach (var evt in Model.AllEvents)
+                        {
+                            <div class="event-card" data-event-date="@evt.EventDate?.ToString("yyyy-MM-dd")">
+                                <div class="event-date">
+                                    <strong>@(evt.EventDate.HasValue ? evt.EventDate?.ToString("ddd, MMM dd yyyy") : "n.d")</strong>
+                                </div>
+                                <div class="event-time">
+                                    <strong>
+                                        @(evt.EventTimeStart.HasValue ? evt.EventTimeStart.Value.ToString("h:mm tt") : "--:--")
+                                        @(evt.EventTimeEnd.HasValue ? " - " + evt.EventTimeEnd.Value.ToString("h:mm tt") : "")
+                                    </strong>
+                                </div>
+                                <div class="event-location">
+                                    <i class="bi bi-geo-alt"></i> @evt.FacilityRequest?.Facility?.Name
+                                </div>
+                                <div class="event-title">@evt.Title</div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p>No events</p>
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Scripts -->
+<!-- Add FullCalendar JS -->
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Initialize calendar
         var calendarEl = document.getElementById('calendar');
-        
-        // Demo events - use this if Model.CalendarEvents is null
-        var demoEvents = [
-            { title: 'HOA Meeting', start: '2021-09-19' },
-            { title: 'Clean-up', start: '2021-09-18' },
-            { title: 'Power Interruption', start: '2021-09-20' }
-        ];
-        
-        // Use either model data or demo data
-        var eventData = [];
-        @if (Model.CalendarEvents != null && Model.CalendarEvents.Any()) {
-            <text>
-            eventData = @Json.Serialize(Model.CalendarEvents);
-            </text>
-        } else {
-            <text>
-            eventData = demoEvents;
-            </text>
-        }
-        
-        // Initialize FullCalendar
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
-            initialDate: '2021-09-19', // Set to match screenshot
             headerToolbar: {
                 left: 'prev',
                 center: 'title',
                 right: 'next'
             },
             height: 'auto',
-            dayMaxEventRows: 1,
-            events: eventData,
-            eventDisplay: 'block',
-            eventColor: '#3788d8',
+            contentHeight: 'auto',
+            aspectRatio: 1.5, // Better aspect ratio for responsiveness
+            dayMaxEventRows: true,
             firstDay: 1, // Start week on Monday
-            // Use windowResize to ensure proper rendering at all times
-            windowResize: function(view) {
-                calendar.updateSize();
-            }
+            dateClick: function (info) {
+                // Remove previous selection
+                document.querySelectorAll('.fc-daygrid-day.selected').forEach(el => {
+                    el.classList.remove('selected');
+                });
+
+                // Add selection to clicked date
+                info.dayEl.classList.add('selected');
+
+                // Load events for selected date via AJAX
+                loadEventsForDate(info.dateStr);
+            },
+            datesSet: function () {
+                // Highlight today by default if no date is selected
+                @if (!Model.SelectedDate.HasValue)
+                    {
+                        <text>
+                            const today = new Date();
+                            const todayStr = today.toISOString().split('T')[0];
+                            const todayEl = document.querySelector(`.fc-day[data-date="${todayStr}"]`);
+                            if (todayEl) {
+                                todayEl.classList.add('selected');
+                    }
+                        </text>
+                }
+                    else
+                    {
+                        <text>
+                    // Highlight the selected date
+                            const selectedDateStr = '@Model.SelectedDate.Value.ToString("yyyy-MM-dd")';
+                            const selectedEl = document.querySelector(`.fc-day[data-date="${selectedDateStr}"]`);
+                            if (selectedEl) {
+                                selectedEl.classList.add('selected');
+                    }
+                        </text>
+                }
+        }
         });
-        
+
         calendar.render();
-        
-        // Handle checkbox for toggling announcements
-        document.getElementById('includeAnnouncements').addEventListener('change', function() {
-            // This would normally filter events
-            // For demo purposes, just re-render
-            calendar.refetchEvents();
-        });
-        
-        // Make "Show More" buttons functional
-        document.querySelectorAll('.show-more-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                // For demo purposes, alert when clicked
-                alert("This would show more items");
+
+        // Function to load events for a specific date
+        function loadEventsForDate(dateStr) {
+            const date = new Date(dateStr);
+            const formattedDate = date.toISOString().split('T')[0];
+            
+            fetch(`?handler=FilterEvents&date=${formattedDate}`)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('events-container').innerHTML = html;
+                    // Add the same hover effects to newly loaded cards
+                    document.querySelectorAll('.event-card').forEach(card => {
+                        card.addEventListener('mouseenter', function() {
+                            this.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+                            this.style.transform = 'translateY(-2px)';
+                        });
+                        card.addEventListener('mouseleave', function() {
+                            this.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
+                            this.style.transform = 'translateY(0)';
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading events:', error);
+                });
+        }
+
+        // Reset button functionality
+        document.getElementById('reset-calendar').addEventListener('click', function () {
+            // Remove all selections
+            document.querySelectorAll('.fc-daygrid-day.selected').forEach(el => {
+                el.classList.remove('selected');
             });
+
+            // Reload all events
+            fetch('?handler=FilterEvents')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('events-container').innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Error resetting events:', error);
+                });
         });
+
+        // Make calendar responsive
+        function handleResize() {
+            calendar.updateSize();
+        }
+
+        // Add resize event listener
+        window.addEventListener('resize', handleResize);
+
+        // Initial size update
+        handleResize();
     });
 </script>

@@ -1,5 +1,9 @@
 @import url("../node_modules/bootstrap-icons/font/bootstrap-icons.css");
 
+:root {
+    --primary: #3c6693;
+}
+
 /* Gi add ni Ram  */
 .validation-summary {
     color: #dc3545; /* Red color for errors */
@@ -324,31 +328,6 @@
     color: inherit;
 }
 
-/* Bread crumbs styles */
-.breadcrumb {
-    padding: 0.75rem 1rem;
-    margin-bottom: 1rem;
-    list-style: none;
-    background-color: #f8f9fa;
-    border-radius: 0.25rem;
-}
-.breadcrumb-item {
-    display: inline-block;
-}
-.breadcrumb-item + .breadcrumb-item::before {
-    display: inline-block;
-    padding-right: 0.5rem;
-    padding-left: 0.5rem;
-    color: #6c757d;
-    content: "/";
-}
-.breadcrumb-item.active {
-    color: #6c757d;
-}
-.breadcrumb a {
-    color: #007bff;
-    text-decoration: none;
-}
-.breadcrumb a:hover {
-    text-decoration: underline;
+.ghost-link {
+    color: inherit;
 }

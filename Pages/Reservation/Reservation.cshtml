@@ -1,7 +1,9 @@
 @page
 @model HomeownersMS.Pages.Reservation.ReservationModel
+@using HomeownersMS.Models
 @{
-    Layout = "_ResidentLayout";
+    ViewData["CurrentPage"] = "/Reservation/Reservation";  // <-- ADD THIS LINE
+    Layout = "_ResidentLayout"; 
     ViewData["HeaderTitle"] = "Reservation";
     ViewData["Title"] = "Reservation";
     var username = HttpContext?.User?.Identity?.Name ?? "Guest";
@@ -15,6 +17,8 @@
         border-radius: 10px;
         overflow: hidden;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        background-color: var(--primary);
+        color: white;
     }
 
     .facility-img {
@@ -59,19 +63,20 @@
                         {
                             @* <!-- Facility Cards --> *@
                             <div class="col-12">
-                                <a asp-page="/Reservation/Reserve" asp-route-facilityId="@facility.FacilityId">
+                                <a asp-page="/Reservation/Reserve" asp-route-facilityId="@facility.FacilityId" class="ghost-link">
                                     <div class="card facility-card">
-                                        <div class="row g-0">
-                                            <div class="col-md-4">
-                                                <img src="@Url.Content($"~/{@facility.FacilityImage}")" 
-                                                     class="img-fluid facility-img rounded-start" 
-                                                     alt="@facility.Name">
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="card-body">
-                                                    <h5 class="card-title mb-1">₱ @facility.PricePerHour/hr</h5>
-                                                    <h6 class="card-subtitle mb-1">@facility.Name</h6>
-                                                    <p class="card-text"><small class="text-muted">@facility.Address</small></p>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <img src="@Url.Content($"~/{@facility.FacilityImage}")" 
+                                                        class="img-fluid facility-img" 
+                                                        alt="@facility.Name">
+                                                </div>
+                                                <div class="col-9 d-flex justify-content-evenly flex-column">
+                                                    <h5 class="card-title mb-1 fw-bold">₱ @string.Format("{0:N0}", facility.PricePerHour)/hr</h5>
+                                                    <h6 class="card-subtitle mb-1 text-capitalize">@facility.Name</h6>
+                                                        <p class="card-text small text-capitalize">
+                                                        <i class="bi bi-geo-alt"></i> @facility.Address</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -84,206 +89,143 @@
                     {
                         <div class="col-12">
                             <p class="text-center">No facilities available.</p>
-                            <p class="text-center">Debug: Facilities count is @Model.Facilities.Count</p>
                         </div>
                     }
                 </div>
-            </div>
+            </div>  
         </div>
 
         @* <!-- Reservation Log Section --> *@
         <div class="reservation-log mb-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2>Reservation Log</h2>
+                <h2 class="fw-bold">Reservation Log</h2>
                 <div>
-                    <button class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-filter"></i></button>
-                    <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-sort-down"></i></button>
+                    <button class="btn btn-sm btn-primary me-1"><i class="bi bi-filter"></i></button>
+                    <button class="btn btn-sm btn-primary"><i class="bi bi-sort-down"></i></button>
                 </div>
             </div>
 
-            <div class="mb-3 d-flex gap-2">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search">
-                    <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
+            @if (Model.PendingReservations.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr class="table-light">
+                                <th>Facility</th>
+                                <th>Date</th>
+                                <th>Guests</th>
+                                <th>Event</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var reservation in Model.PendingReservations)
+                            {
+                                <tr>
+                                    <td>
+                                        <span class="text-capitalize">@reservation.FacilityRequest?.Facility?.Name</span>
+                                        <br>
+                                        <small class="text-muted">ID/@reservation.FacilityRequest?.FacilityRequestId</small>
+                                    </td>
+                                    <td>
+                                        @reservation.Event?.EventDate?.ToString("MMM. dd, yyyy")
+                                        <br>
+                                        <small class="text-muted">
+                                            @(reservation.Event?.EventTimeStart?.ToString("h:mm tt") ?? "--:--") - 
+                                            @(reservation.Event?.EventTimeEnd?.ToString("h:mm tt") ?? "--:--")
+                                        </small>
+                                    </td>
+                                    <td>@reservation.Event?.GuestCapacity</td>
+                                    <td><span class="text-capitalize">@reservation.Event?.EventType</span></td>
+                                    <td>
+                                        <span class="badge bg-warning">@reservation.FacilityRequest?.Status</span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-link text-info"><i class="bi bi-info-circle"></i></button>
+                                        <button class="btn btn-sm btn-link text-danger"><i class="bi bi-x-lg"></i></button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
-                <div class="input-group" style="max-width: 200px;">
-                    <input type="text" class="form-control" placeholder="Select Date" aria-label="Date">
-                    <button class="btn btn-outline-secondary" type="button"><i class="bi bi-calendar"></i></button>
+            }
+            else 
+            {
+                <div class="alert alert-info">
+                    No pending reservations.
                 </div>
-            </div>
-
-            <div class="table-responsive">
-                <table class="table table-borderless">
-                    <thead>
-                        <tr class="table-light">
-                            <th>Facility</th>
-                            <th>Date</th>
-                            <th>Guests</th>
-                            <th>Event</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                Function Hall
-                                <br>
-                                <small class="text-muted">ID/34251</small>
-                            </td>
-                            <td>
-                                Feb. 15, 2025
-                                <br>
-                                <small class="text-muted">10:30 AM - 7:30 PM</small>
-                            </td>
-                            <td>100 Guests</td>
-                            <td>Birthday</td>
-                            <td><span class="badge bg-warning">Pending</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-link text-info"><i class="bi bi-info-circle"></i></button>
-                                <button class="btn btn-sm btn-link text-danger"><i class="bi bi-x-lg"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Party Room
-                                <br>
-                                <small class="text-muted">ID/34251</small>
-                            </td>
-                            <td>
-                                Feb. 13, 2025
-                                <br>
-                                <small class="text-muted">10:30 AM - 7:30 PM</small>
-                            </td>
-                            <td>100 Guests</td>
-                            <td>Birthday</td>
-                            <td><span class="badge bg-warning">Pending</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-link text-info"><i class="bi bi-info-circle"></i></button>
-                                <button class="btn btn-sm btn-link text-danger"><i class="bi bi-x-lg"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Function Hall
-                                <br>
-                                <small class="text-muted">ID/34251</small>
-                            </td>
-                            <td>
-                                Feb. 3, 2025
-                                <br>
-                                <small class="text-muted">10:30 AM - 7:30 PM</small>
-                            </td>
-                            <td>100 Guests</td>
-                            <td>Birthday</td>
-                            <td><span class="badge bg-warning">Pending</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-link text-info"><i class="bi bi-info-circle"></i></button>
-                                <button class="btn btn-sm btn-link text-danger"><i class="bi bi-x-lg"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="text-center">
-                <button class="btn btn-outline-primary">Show More</button>
-            </div>
+            }
         </div>
 
         <!-- Reservation History Section -->
         <div class="reservation-history mt-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2>Reservation History</h2>
+                <h2 class="fw-bold">Reservation History</h2>
                 <div>
-                    <button class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-filter"></i></button>
-                    <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-sort-down"></i></button>
+                    <button class="btn btn-sm btn-primary me-1"><i class="bi bi-filter"></i></button>
+                    <button class="btn btn-sm btn-primary"><i class="bi bi-sort-down"></i></button>
                 </div>
             </div>
 
-            <div class="mb-3 d-flex gap-2">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search">
-                    <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
+            @if (Model.HistoricalReservations.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr class="table-light">
+                                <th>Facility</th>
+                                <th>Date</th>
+                                <th>Guests</th>
+                                <th>Event</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var reservation in Model.HistoricalReservations)
+                            {
+                                <tr>
+                                    <td>
+                                        <span class="text-capitalize">@reservation.FacilityRequest?.Facility?.Name</span>
+                                        <br>
+                                        <small class="text-muted">ID/@reservation.FacilityRequest?.FacilityRequestId</small>
+                                    </td>
+                                    <td>
+                                        @reservation.Event?.EventDate?.ToString("MMM. dd, yyyy")
+                                        <br>
+                                        <small class="text-muted">
+                                            @(reservation.Event?.EventTimeStart?.ToString("h:mm tt") ?? "--:--") - 
+                                            @(reservation.Event?.EventTimeEnd?.ToString("h:mm tt") ?? "--:--")
+                                        </small>
+                                    </td>
+                                    <td>@reservation.Event?.GuestCapacity</td>
+                                    <td><span class="text-capitalize">@reservation.Event?.EventType</span></td>
+                                    <td>
+                                        <span class="badge 
+                                            @(reservation.FacilityRequest?.Status == RequestStatus.Approved ? "bg-success" :
+                                            reservation.FacilityRequest?.Status == RequestStatus.Declined ? "bg-danger" : 
+                                            reservation.FacilityRequest?.Status == RequestStatus.Cancelled ? "bg-danger" : "bg-warning")">
+                                            @reservation.FacilityRequest?.Status
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-link text-info"><i class="bi bi-info-circle"></i></button>
+                                        <button class="btn btn-sm btn-link text-danger"><i class="bi bi-x-lg"></i></button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
-                <div class="input-group" style="max-width: 200px;">
-                    <input type="text" class="form-control" placeholder="Select Date" aria-label="Date">
-                    <button class="btn btn-outline-secondary" type="button"><i class="bi bi-calendar"></i></button>
+            }
+            else 
+            {
+                <div class="alert alert-info">
+                    You currently have not made any reservations at all. Try scheduling a reservation now!
                 </div>
-            </div>
-
-            <div class="table-responsive">
-                <table class="table table-borderless">
-                    <thead>
-                        <tr class="table-light">
-                            <th>Facility</th>
-                            <th>Date</th>
-                            <th>Guests</th>
-                            <th>Event</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                Function Hall
-                                <br>
-                                <small class="text-muted">ID/34251</small>
-                            </td>
-                            <td>
-                                Feb. 15, 2025
-                                <br>
-                                <small class="text-muted">10:30 AM - 7:30 PM</small>
-                            </td>
-                            <td>100 Guests</td>
-                            <td>Birthday</td>
-                            <td><span class="badge bg-success">Approved</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-primary">Feedback</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Party Room
-                                <br>
-                                <small class="text-muted">ID/34251</small>
-                            </td>
-                            <td>
-                                Feb. 13, 2025
-                                <br>
-                                <small class="text-muted">10:30 AM - 7:30 PM</small>
-                            </td>
-                            <td>100 Guests</td>
-                            <td>Birthday</td>
-                            <td><span class="badge bg-success">Approved</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-primary">Feedback</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Function Hall
-                                <br>
-                                <small class="text-muted">ID/34251</small>
-                            </td>
-                            <td>
-                                Feb. 3, 2025
-                                <br>
-                                <small class="text-muted">10:30 AM - 7:30 PM</small>
-                            </td>
-                            <td>100 Guests</td>
-                            <td>Birthday</td>
-                            <td><span class="badge bg-danger">Canceled</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-primary">Feedback</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="text-center">
-                <button class="btn btn-outline-primary">Show More</button>
-            </div>
+            }
         </div>
     </div>
 </div>
