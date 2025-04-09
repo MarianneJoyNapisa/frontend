@@ -1,9 +1,11 @@
 @page
 @model HomeownersMS.Pages.Admin.Reservations.ManageReservationsModel
 @using HomeownersMS.Models
+@using Newtonsoft.Json
+
 
 @{
-    Layout = "_AdminLayout"; // Use the Admin layout
+    Layout = "_AdminLayout";
     ViewData["Title"] = "Manage Reservations";
     ViewData["HeaderTitle"] = "Manage Reservations"; 
 }
@@ -23,6 +25,7 @@
                         <th>Date</th>
                         <th>Time</th>
                         <th>Status</th>
+                        <th>Additional Services</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -44,6 +47,21 @@
                                       reservation.FacilityRequest?.Status == RequestStatus.Declined ? "bg-danger" : "bg-warning")">
                                     @reservation.FacilityRequest?.Status
                                 </span>
+                            </td>
+                            <td>
+                                @if (reservation.Event?.AdditionalServices?.Any() == true)
+                                {
+                                    <button type="button" class="btn btn-sm btn-outline-primary view-services-btn" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#servicesModal"
+                                            data-services='@Html.Raw(JsonConvert.SerializeObject(reservation.Event.AdditionalServices))'>
+                                        View Services (@reservation.Event.AdditionalServices.Count)
+                                    </button>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">None</span>
+                                }
                             </td>
                             <td>
                                 @if (reservation.FacilityRequest?.Status == RequestStatus.Pending)
@@ -96,12 +114,87 @@
     </div>
 </div>
 
+<!-- Services Modal -->
+<div class="modal fade" id="servicesModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Additional Services</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Description</th>
+                            <th class="text-end">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody id="servicesList">
+                        <!-- Will be populated by JavaScript -->
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="2" class="text-end">Total:</th>
+                            <th class="text-end" id="servicesTotal"></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
-        $('#declineModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var id = button.data('id');
-            $('#declineReservationId').val(id);
+        $(document).ready(function() {
+            // Decline modal handler
+            $('#declineModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var id = button.data('id');
+                $('#declineReservationId').val(id);
+            });
+
+            // Services modal handler
+            $('#servicesModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                try {
+                    console.log(button.data('services'));
+                    var services = button.data('services');
+                    
+                    var servicesList = $('#servicesList');
+                    servicesList.empty();
+                    
+                    var total = 0;
+                    
+                    Object.entries(services).forEach(([key, service]) => {
+                        servicesList.append(`
+                            <tr>
+                                <td>${service.Name || service.name}</td>
+                                <td>${service.Description || service.description}</td>
+                                <td class="text-end">₱${service.Price || service.price}/hr</td>
+                            </tr>
+                        `);
+                        total += service.Price || service.price;
+                    });
+                    
+                    // Format the total with commas
+                    var formattedTotal = new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'PHP',
+                        minimumFractionDigits: 2
+                    }).format(total);
+
+                    $('#servicesTotal').text(formattedTotal);
+                } catch (e) {
+                    console.error("Error parsing services data:", e);
+                    $('#servicesList').html('<tr><td colspan="3" class="text-danger">Error loading services data</td></tr>');
+                }
+            });
         });
     </script>
 }

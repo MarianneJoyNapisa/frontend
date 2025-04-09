@@ -22,45 +22,50 @@ namespace HomeownersMS.Models
         public string? Description { get; set; }
     }
 
-    namespace HomeownersMS.Models
+
+    public static class PredefinedServices
     {
-        public static class PredefinedServices
+        public static readonly AdditionalServiceDetails AirConditioning = new AdditionalServiceDetails
         {
-            public static readonly AdditionalServiceDetails AirConditioning = new AdditionalServiceDetails
-            {
-                Name = "Air Conditioning",
-                Price = 200,
-                Description = "Super cool air conditioning"
-            };
+            Name = "Air Conditioning",
+            Price = 200,
+            Description = "Super cool air conditioning"
+        };
 
-            public static readonly AdditionalServiceDetails TableAndChairs = new AdditionalServiceDetails
-            {
-                Name = "Table and Chairs",
-                Price = 100,
-                Description = "Comfortable tables and chairs"
-            };
+        public static readonly AdditionalServiceDetails TableAndChairs = new AdditionalServiceDetails
+        {
+            Name = "Table and Chairs",
+            Price = 100,
+            Description = "Additional 25 tables and 125 chairs with setup."
+        };
 
-            public static readonly AdditionalServiceDetails SoundSystem = new AdditionalServiceDetails
-            {
-                Name = "Sound System",
-                Price = 150,
-                Description = "High-quality sound system"
-            };
+        public static readonly AdditionalServiceDetails SoundSystem = new AdditionalServiceDetails
+        {
+            Name = "Sound System",
+            Price = 150,
+            Description = "High-quality microphones, speakers, amplifiers, and basic audio testing."
+        };
 
-            public static readonly AdditionalServiceDetails ProjectorAndScreen = new AdditionalServiceDetails
-            {
-                Name = "Projector and Screen",
-                Price = 250,
-                Description = "HD projector and screen for presentations"
-            };
+        public static readonly AdditionalServiceDetails ProjectorAndScreen = new AdditionalServiceDetails
+        {
+            Name = "Projector and Screen",
+            Price = 250,
+            Description = "High-quality projector and screen; compatible for HDMI or VGA connections."
+        };
 
-            public static readonly AdditionalServiceDetails Decorations = new AdditionalServiceDetails
-            {
-                Name = "Decorations",
-                Price = 300,
-                Description = "Beautiful decorations for your event"
-            };
-        }
+        public static readonly AdditionalServiceDetails Decorations = new AdditionalServiceDetails
+        {
+            Name = "Decorations",
+            Price = 300,
+            Description = "Basic lightings & minimalist decor setup."
+        };
+
+        public static readonly AdditionalServiceDetails CleaningServices = new AdditionalServiceDetails
+        {
+            Name = "Cleaning Services",
+            Price = 300,
+            Description = "Offers cleaning services after event"
+        };
     }
 
     public class Event

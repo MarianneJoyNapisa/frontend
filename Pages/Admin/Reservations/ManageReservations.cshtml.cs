@@ -28,7 +28,7 @@ namespace HomeownersMS.Pages.Admin.Reservations
                 .OrderBy(fr => fr.RequestDate)
                 .ToListAsync();
 
-            // Get all events for these facility requests
+            // Get all events with additional services for these facility requests
             var facilityRequestIds = facilityRequests.Select(fr => fr.FacilityRequestId).ToList();
             var events = await _context.Events
                 .Where(e => facilityRequestIds.Contains(e.FacilityRequestId ?? 0))

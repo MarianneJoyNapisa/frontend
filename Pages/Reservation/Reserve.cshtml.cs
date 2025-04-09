@@ -4,9 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using HomeownersMS.Models;
 using HomeownersMS.Data;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace HomeownersMS.Pages.Reservation
 {
+    [Authorize(Roles = "admin,resident")]
     public class ReserveModel : PageModel
     {
         private readonly HomeownersContext _context;
@@ -21,6 +24,9 @@ namespace HomeownersMS.Pages.Reservation
 
         [BindProperty]
         public Event Event { get; set; } = new Event();
+
+        [BindProperty]
+        public List<string> SelectedServices { get; set; } = new List<string>();
 
         public Facility Facility { get; set; } = new Facility();
 
@@ -94,6 +100,29 @@ namespace HomeownersMS.Pages.Reservation
             Console.WriteLine($"  PhoneNumber: {FacilityRequest.PhoneNumber}");
             Console.WriteLine($"  RequestDate: {FacilityRequest.RequestDate}");
             Console.WriteLine($"  Status: {FacilityRequest.Status}");
+
+            // Add selected services to the Event
+            foreach (var service in SelectedServices)
+            {
+                switch (service)
+                {
+                    case "AirConditioning":
+                        Event.AdditionalServices.Add(service, PredefinedServices.AirConditioning);
+                        break;
+                    case "TableAndChairs":
+                        Event.AdditionalServices.Add(service, PredefinedServices.TableAndChairs);
+                        break;
+                    case "SoundSystem":
+                        Event.AdditionalServices.Add(service, PredefinedServices.SoundSystem);
+                        break;
+                    case "ProjectorAndScreen":
+                        Event.AdditionalServices.Add(service, PredefinedServices.ProjectorAndScreen);
+                        break;
+                    case "Decorations":
+                        Event.AdditionalServices.Add(service, PredefinedServices.Decorations);
+                        break;
+                }
+            }
 
             // Save FacilityRequest first to get its ID
             _context.FacilityRequests.Add(FacilityRequest);

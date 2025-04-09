@@ -315,6 +315,12 @@ namespace HomeownersMS.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("ResidentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("ResidentUserId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("ReviewDate")
                         .HasColumnType("TEXT");
 
@@ -322,7 +328,12 @@ namespace HomeownersMS.Migrations
 
                     b.HasIndex("FacilityId");
 
-                    b.ToTable("FacilityReviews");
+                    b.HasIndex("ResidentId");
+
+                    b.HasIndex("ResidentUserId")
+                        .IsUnique();
+
+                    b.ToTable("FacilityReview", (string)null);
                 });
 
             modelBuilder.Entity("HomeownersMS.Models.Resident", b =>
@@ -595,7 +606,18 @@ namespace HomeownersMS.Migrations
                         .HasForeignKey("FacilityId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("HomeownersMS.Models.Resident", "Resident")
+                        .WithMany()
+                        .HasForeignKey("ResidentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("HomeownersMS.Models.Resident", null)
+                        .WithOne("FacilityReview")
+                        .HasForeignKey("HomeownersMS.Models.FacilityReview", "ResidentUserId");
+
                     b.Navigation("Facility");
+
+                    b.Navigation("Resident");
                 });
 
             modelBuilder.Entity("HomeownersMS.Models.Resident", b =>
@@ -671,6 +693,8 @@ namespace HomeownersMS.Migrations
 
             modelBuilder.Entity("HomeownersMS.Models.Resident", b =>
                 {
+                    b.Navigation("FacilityReview");
+
                     b.Navigation("ServiceRequests");
                 });
 

@@ -86,6 +86,12 @@ namespace HomeownersMS.Data
                 .HasForeignKey(fr => fr.FacilityId)
                 .OnDelete(DeleteBehavior.SetNull);
 
+            modelBuilder.Entity<FacilityReview>()
+                .HasOne(fr => fr.Resident)
+                .WithMany()
+                .HasForeignKey(fr => fr.ResidentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // Configure CommunityPost relationships
             modelBuilder.Entity<CommunityPost>()
                 .HasOne(cp => cp.User)
@@ -175,6 +181,7 @@ namespace HomeownersMS.Data
             modelBuilder.Entity<ServiceRequest>().ToTable("ServiceRequest");
             modelBuilder.Entity<Facility>().ToTable("Facility");
             modelBuilder.Entity<FacilityRequest>().ToTable("FacilityRequest");
+            modelBuilder.Entity<FacilityReview>().ToTable("FacilityReview");
             modelBuilder.Entity<CommunityPost>().ToTable("CommunityPost");
             modelBuilder.Entity<CommunityVote>().ToTable("CommunityVote");
             modelBuilder.Entity<CommunityComment>().ToTable("CommunityComment");

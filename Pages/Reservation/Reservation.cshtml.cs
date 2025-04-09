@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using HomeownersMS.Models;
 using HomeownersMS.Data;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HomeownersMS.Pages.Reservation
 {
+    [Authorize(Roles = "admin,resident")]
     public class ReservationModel : PageModel
     {
         private readonly HomeownersContext _context;
