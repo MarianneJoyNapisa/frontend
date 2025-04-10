@@ -38,14 +38,14 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Facilities</li>
+            <li class="breadcrumb-item active" aria-current="page">Reservation</li>
         </ol>
     </nav>
 
     @* <!-- Left Side: Facilities --> *@
     <div class="col-md-4">
         <div class="facilities mb-4">
-            <h2>Facilities</h2>
+            <h4 class="fw-bold">Facilities</h4>
             <div class="container-fluid p-0">
                 <div class="row g-3">
                     @if (Model.Facilities.Any())
@@ -92,7 +92,7 @@
         @* <!-- Reservation Log Section --> *@
         <div class="reservation-log mb-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2>Reservation Log</h2>
+                <h4 class="fw-bold">Reservation Log</h4>
                 <div>
                     <button class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-filter"></i></button>
                     <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-sort-down"></i></button>
@@ -168,7 +168,7 @@
         <!-- Reservation History Section -->
         <div class="reservation-history mt-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2>Reservation History</h2>
+                <h4 class="fw-bold">Reservation History</h4>
                 <div>
                     <button class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-filter"></i></button>
                     <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-sort-down"></i></button>
