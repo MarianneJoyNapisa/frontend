@@ -33,36 +33,6 @@
     ViewData["CurrentPage"] = currentPage;
 }
 
-<style>
-    .facility-card {
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        background-color: var(--primary);
-        color: white;
-    }
-
-    .facility-img {
-        height: 100%;
-        object-fit: cover;
-        max-height: 150px;
-    }
-
-    .badge {
-        padding: 0.5em 0.8em;
-        border-radius: 4px;
-    }
-
-    .table th {
-        font-weight: 500;
-        color: #555;
-    }
-
-    .table td {
-        padding: 12px 8px;
-    }
-</style>
-
 <div class="row">
     @* Breadcrumb navigatin *@
     <nav aria-label="breadcrumb">
@@ -71,9 +41,9 @@
             <li class="breadcrumb-item active" aria-current="page">Facilities</li>
         </ol>
     </nav>
-    
-    @* <!-- Reservation Content --> *@
-    <div class="col-12">
+
+    @* <!-- Left Side: Facilities --> *@
+    <div class="col-md-4">
         <div class="facilities mb-4">
             <h2>Facilities</h2>
             <div class="container-fluid p-0">
@@ -82,22 +52,21 @@
                     {
                         @foreach (var facility in Model.Facilities)
                         {
-                            @* <!-- Facility Cards --> *@
+                            @* <!-- Facility --> *@
                             <div class="col-12">
                                 <a asp-page="/Reservation/Facility" asp-route-facilityId="@facility.FacilityId" class="ghost-link">
                                     <div class="card facility-card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col">
-                                                    <img src="@Url.Content($"~/{@facility.FacilityImage}")" 
-                                                        class="img-fluid facility-img" 
+                                        <div class="row g-0">
+                                            <div class="col-md-4">
+                                                <img src="@Url.Content($"~/{@facility.FacilityImage}")" 
+                                                        class="img-fluid facility-img rounded-start"
                                                         alt="@facility.Name">
-                                                </div>
-                                                <div class="col-9 d-flex justify-content-evenly flex-column">
-                                                    <h5 class="card-title mb-1 fw-bold">₱ @string.Format("{0:N0}", facility.PricePerHour)/hr</h5>
-                                                    <h6 class="card-subtitle mb-1 text-capitalize">@facility.Name</h6>
-                                                        <p class="card-text small text-capitalize">
-                                                        <i class="bi bi-geo-alt"></i> @facility.Address</p>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="card-body">
+                                                    <h5 class="card-title mb-1">₱ @string.Format("{0:N0}", facility.PricePerHour)/hr</h5>
+                                                    <h6 class="card-subtitle mb-1">@facility.Name</h6>
+                                                    <p class="card-text"><small class="text-muted">@facility.Address</small></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -109,20 +78,35 @@
                     else
                     {
                         <div class="col-12">
-                            <p class="text-center">No facilities available.</p>
+                            <p class="text-center card-subtitle">No facilities available.</p>
                         </div>
                     }
-                </div>
-            </div>  
-        </div>
 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* <!-- Right Side: Reservation Log and History --> *@
+    <div class="col-md-8">
         @* <!-- Reservation Log Section --> *@
         <div class="reservation-log mb-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2 class="fw-bold">Reservation Log</h2>
+                <h2>Reservation Log</h2>
                 <div>
-                    <button class="btn btn-sm btn-primary me-1"><i class="bi bi-filter"></i></button>
-                    <button class="btn btn-sm btn-primary"><i class="bi bi-sort-down"></i></button>
+                    <button class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-filter"></i></button>
+                    <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-sort-down"></i></button>
+                </div>
+            </div>
+            
+            <div class="mb-3 d-flex gap-2">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search">
+                    <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
+                </div>
+                <div class="input-group" style="max-width: 200px;">
+                    <input type="text" class="form-control" placeholder="Select Date" aria-label="Date">
+                    <button class="btn btn-outline-secondary" type="button"><i class="bi bi-calendar"></i></button>
                 </div>
             </div>
 
@@ -145,23 +129,21 @@
                             {
                                 <tr>
                                     <td>
-                                        <span class="text-capitalize">@reservation.FacilityRequest?.Facility?.Name</span>
+                                        @(reservation.FacilityRequest?.Facility?.Name)
                                         <br>
                                         <small class="text-muted">ID/@reservation.FacilityRequest?.FacilityRequestId</small>
                                     </td>
                                     <td>
-                                        @reservation.Event?.EventDate?.ToString("MMM. dd, yyyy")
+                                        @(reservation.Event?.EventDate?.ToString("MMM. dd, yyyy") ?? "n.d")
                                         <br>
                                         <small class="text-muted">
                                             @(reservation.Event?.EventTimeStart?.ToString("h:mm tt") ?? "--:--") - 
                                             @(reservation.Event?.EventTimeEnd?.ToString("h:mm tt") ?? "--:--")
                                         </small>
                                     </td>
-                                    <td>@reservation.Event?.GuestCapacity</td>
-                                    <td><span class="text-capitalize">@reservation.Event?.EventType</span></td>
-                                    <td>
-                                        <span class="badge bg-warning">@reservation.FacilityRequest?.Status</span>
-                                    </td>
+                                    <td>@reservation.Event?.GuestCapacity Guests</td>
+                                    <td>@reservation.Event?.EventType</td>
+                                    <td><span class="badge bg-warning">@reservation.FacilityRequest?.Status</span></td>
                                     <td>
                                         <button class="btn btn-sm btn-link text-info"><i class="bi bi-info-circle"></i></button>
                                         <button class="btn btn-sm btn-link text-danger"><i class="bi bi-x-lg"></i></button>
@@ -172,24 +154,37 @@
                     </table>
                 </div>
             }
-            else 
+            else
             {
-                <div class="alert alert-info">
-                    No pending reservations.
+                <div class="col-12">
+                    <p class="text-center card-subtitle">No pending reservations.</p>
                 </div>
             }
+            <div class="text-center">
+                <button class="btn btn-outline-primary">Show More</button>
+            </div>
         </div>
 
         <!-- Reservation History Section -->
         <div class="reservation-history mt-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2 class="fw-bold">Reservation History</h2>
+                <h2>Reservation History</h2>
                 <div>
-                    <button class="btn btn-sm btn-primary me-1"><i class="bi bi-filter"></i></button>
-                    <button class="btn btn-sm btn-primary"><i class="bi bi-sort-down"></i></button>
+                    <button class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-filter"></i></button>
+                    <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-sort-down"></i></button>
                 </div>
             </div>
-
+            
+            <div class="mb-3 d-flex gap-2">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search">
+                    <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
+                </div>
+                <div class="input-group" style="max-width: 200px;">
+                    <input type="text" class="form-control" placeholder="Select Date" aria-label="Date">
+                    <button class="btn btn-outline-secondary" type="button"><i class="bi bi-calendar"></i></button>
+                </div>
+            </div>
             @if (Model.HistoricalReservations.Any())
             {
                 <div class="table-responsive">
@@ -209,20 +204,20 @@
                             {
                                 <tr>
                                     <td>
-                                        <span class="text-capitalize">@reservation.FacilityRequest?.Facility?.Name</span>
+                                        @(reservation.FacilityRequest?.Facility?.Name)
                                         <br>
                                         <small class="text-muted">ID/@reservation.FacilityRequest?.FacilityRequestId</small>
                                     </td>
                                     <td>
-                                        @reservation.Event?.EventDate?.ToString("MMM. dd, yyyy")
+                                        @(reservation.Event?.EventDate?.ToString("MMM. dd, yyyy") ?? "n.d")
                                         <br>
                                         <small class="text-muted">
                                             @(reservation.Event?.EventTimeStart?.ToString("h:mm tt") ?? "--:--") - 
                                             @(reservation.Event?.EventTimeEnd?.ToString("h:mm tt") ?? "--:--")
                                         </small>
                                     </td>
-                                    <td>@reservation.Event?.GuestCapacity</td>
-                                    <td><span class="text-capitalize">@reservation.Event?.EventType</span></td>
+                                    <td>@reservation.Event?.GuestCapacity Guests</td>
+                                    <td>@reservation.Event?.EventType</td>
                                     <td>
                                         <span class="badge 
                                             @(reservation.FacilityRequest?.Status == RequestStatus.Approved ? "bg-success" :
@@ -232,21 +227,65 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <button class="btn btn-sm btn-link text-info"><i class="bi bi-info-circle"></i></button>
-                                        <button class="btn btn-sm btn-link text-danger"><i class="bi bi-x-lg"></i></button>
+                                        <button class="btn btn-sm btn-primary">Feedback</button>
                                     </td>
                                 </tr>
                             }
+                            
                         </tbody>
                     </table>
                 </div>
             }
-            else 
+            else
             {
-                <div class="alert alert-info">
-                    You currently have not made any reservations at all. Try scheduling a reservation now!
+                <div class="col-12">
+                    <p class="text-center card-subtitle">You currently have not made any reservations at all. Try scheduling a reservation now!</p>
                 </div>
             }
+            <div class="text-center">
+                <button class="btn btn-outline-primary">Show More</button>
+            </div>
         </div>
     </div>
 </div>
+
+<style>
+    .facility-card {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        margin-bottom: 15px;
+    }
+
+    .facility-img {
+        height: 100%;
+        object-fit: cover;
+        max-height: 150px;
+    }
+
+    .badge {
+        padding: 0.5em 0.8em;
+        border-radius: 4px;
+    }
+
+    .table th {
+        font-weight: 500;
+        color: #555;
+    }
+
+    .table td {
+        padding: 12px 8px;
+    }
+    .btn-primary {
+        background-color: #3a6ea5;
+        border-color: #3a6ea5;
+    }
+    .btn-outline-primary {
+        color: #3a6ea5;
+        border-color: #3a6ea5;
+    }
+    .btn-outline-primary:hover {
+        background-color: #3a6ea5;
+        border-color: #3a6ea5;
+    }
+</style>

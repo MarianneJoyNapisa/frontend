@@ -7,12 +7,12 @@ namespace HomeownersMS.Models
 {
     public enum EventType
     {
-        birthday,
-        wedding,
-        meeting,
-        party,
-        workshop,
-        others
+        Birthday,
+        Wedding,
+        Meeting,
+        Party,
+        Workshop,
+        Others
     }
 
     public class AdditionalServiceDetails
