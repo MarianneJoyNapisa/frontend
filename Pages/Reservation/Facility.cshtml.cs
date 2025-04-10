@@ -8,6 +8,7 @@ using System.Security.Claims;
 
 namespace HomeownersMS.Pages.Reservation
 {
+    [Authorize(Roles="admin,resident")]
     public class FacilityModel : PageModel 
     {
         private readonly HomeownersContext _context;
@@ -51,6 +52,7 @@ namespace HomeownersMS.Pages.Reservation
             if (userId != null && int.TryParse(userId, out int residentId))
             {
                 // Check if user has reserved this facility before
+                // AnyAsync returns a bool
                 CanReview = await _context.FacilityRequests
                     .AnyAsync(fr => fr.ResidentId == residentId && 
                                   fr.FacilityId == facilityId && 
