@@ -1,0 +1,67 @@
+@page
+@model HomeownersMS.Pages_Admin_Announcements.CreateModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["HeaderTitle"] = "Create Announcement";
+    ViewData["Title"] = "Create Announcement";
+    ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
+}
+
+<div class="container-fluid">
+    <h2>Create Announcement</h2>
+    <form method="post" id="createForm">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="NewAnnouncement.CreatedBy" value="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" required />
+        <input type="hidden" asp-for="NewAnnouncement.CreatedAt" value="@DateTime.Now" />
+        
+        <div class="form-group">
+            <label asp-for="NewAnnouncement.Title" class="control-label"></label>
+            <input asp-for="NewAnnouncement.Title" class="form-control" required />
+            <span asp-validation-for="NewAnnouncement.Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="NewAnnouncement.Content" class="control-label"></label>
+            <textarea asp-for="NewAnnouncement.Content" class="form-control" rows="5" required></textarea>
+            <span asp-validation-for="NewAnnouncement.Content" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="NewAnnouncement.EventDate" class="control-label"></label>
+                    <input asp-for="NewAnnouncement.EventDate" type="date" class="form-control" required />
+                    <span asp-validation-for="NewAnnouncement.EventDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="NewAnnouncement.EventTime" class="control-label"></label>
+                    <input asp-for="NewAnnouncement.EventTime" type="time" class="form-control" required />
+                    <span asp-validation-for="NewAnnouncement.EventTime" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="NewAnnouncement.BlocksAffected" class="control-label"></label>
+            <input asp-for="NewAnnouncement.BlocksAffected" class="form-control" required />
+            <span asp-validation-for="NewAnnouncement.BlocksAffected" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="NewAnnouncement.Office" class="control-label"></label>
+            <input asp-for="NewAnnouncement.Office" class="form-control" required />
+            <span asp-validation-for="NewAnnouncement.Office" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="NewAnnouncement.ContactNumber" class="control-label"></label>
+            <input asp-for="NewAnnouncement.ContactNumber" class="form-control" required />
+            <span asp-validation-for="NewAnnouncement.ContactNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group text-end mt-3">
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a asp-page="./Announcements" class="btn btn-secondary">Go back</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

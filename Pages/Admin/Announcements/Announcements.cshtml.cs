@@ -23,84 +23,42 @@ namespace HomeownersMS.Pages_Admin_Announcements
         public IList<Announcement> Announcement { get; set; } = default!;
 
         [BindProperty]
+        public IList<Announcement> TodayAnnouncements { get; set; } = new List<Announcement>();
+        public IList<Announcement> YesterdayAnnouncements { get; set; } = new List<Announcement>();
+        public IList<Announcement> WeekAnnouncements { get; set; } = new List<Announcement>();
+        public IList<Announcement> MonthAnnouncements { get; set; } = new List<Announcement>();
+
+        [BindProperty]
         public Announcement NewAnnouncement { get; set; } = new();
 
         public async Task OnGetAsync()
         {
-            Announcement = await _context.Announcements
+            var now = DateTime.Now;
+            var today = DateOnly.FromDateTime(now);
+            var yesterday = today.AddDays(-1);
+            var weekStart = today.AddDays(-7);
+            var monthStart = today.AddMonths(-1);
+
+            var announcements = await _context.Announcements
                 .Include(a => a.Admin)
                 .OrderByDescending(a => a.CreatedAt)
                 .ToListAsync();
-        }
 
-        public async Task<IActionResult> OnPostCreateAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+            TodayAnnouncements = announcements
+                .Where(a => a.EventDate == today)
+                .ToList();
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId != null)
-            {
-                NewAnnouncement.CreatedBy = int.Parse(userId);
-                var admin = await _context.Admins.FindAsync(NewAnnouncement.CreatedBy);
-                if (admin != null)
-                {
-                    NewAnnouncement.Admin = admin;
-                }
-            }
+            YesterdayAnnouncements = announcements
+                .Where(a => a.EventDate == yesterday)
+                .ToList();
 
-            NewAnnouncement.CreatedAt = DateTime.Now;
-            _context.Announcements.Add(NewAnnouncement);
-            await _context.SaveChangesAsync();
+            WeekAnnouncements = announcements
+                .Where(a => a.EventDate >= weekStart && a.EventDate < monthStart)
+                .ToList();
 
-            return RedirectToPage();
-        }
-
-        
-
-        public async Task<IActionResult> OnPostEditAsync(int AnnouncementId)
-        {
-            var announcement = await _context.Announcements.FindAsync(AnnouncementId);
-            if (announcement == null)
-            {
-                return NotFound();
-            }
-
-            // Manually bind each property
-            announcement.Title = Request.Form["Title"];
-            announcement.Content = Request.Form["Content"];
-            announcement.EventDate = DateOnly.Parse(Request.Form["EventDate"]);
-            announcement.EventTime = TimeOnly.Parse(Request.Form["EventTime"]);
-            announcement.BlocksAffected = Request.Form["BlocksAffected"];
-            announcement.Office = Request.Form["Office"];
-            if (int.TryParse(Request.Form["ContactNumber"], out int contactNumber))
-            {
-                announcement.ContactNumber = contactNumber;
-            }
-            else
-            {
-                announcement.ContactNumber = null; // Handle invalid input gracefully
-            }
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AnnouncementExists(AnnouncementId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return RedirectToPage();
+            MonthAnnouncements = announcements
+                .Where(a => a.EventDate < monthStart)
+                .ToList();
         }
 
         public async Task<IActionResult> OnPostDeleteAsync(int id)
@@ -127,22 +85,6 @@ namespace HomeownersMS.Pages_Admin_Announcements
             }
 
             return Partial("_DetailsPartial", announcement);
-        }
-
-        public async Task<IActionResult> OnGetEditPartialAsync(int id)
-        {
-            var announcement = await _context.Announcements.FindAsync(id);
-            if (announcement == null)
-            {
-                return NotFound();
-            }
-
-            return Partial("_EditPartial", announcement);
-        }
-
-        private bool AnnouncementExists(int id)
-        {
-            return _context.Announcements.Any(a => a.AnnouncementId == id);
         }
     }
 }

@@ -2,7 +2,11 @@
 @model HomeownersMS.Pages_Admin_Admins.EditModel
 
 @{
-    ViewData["Title"] = "Edit";
+    Layout = "_AdminLayout";
+    ViewData["HeaderTitle"] = "User Management";
+    ViewData["Title"] = "Edit Admin";
+    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+    ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
 }
 
 <h1>Edit</h1>

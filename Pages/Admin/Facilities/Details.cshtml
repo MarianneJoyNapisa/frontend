@@ -2,7 +2,10 @@
 @model HomeownersMS.Pages_Admin_Facilities.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    Layout = "_AdminLayout"; // Use the Admin layout
+    ViewData["HeaderTitle"] = "Facilities Management";
+    ViewData["Title"] = "Facility Details";
+    ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
 }
 
 <h1>Details</h1>

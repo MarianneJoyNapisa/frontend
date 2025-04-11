@@ -5,9 +5,7 @@
     Layout = "_AdminLayout";
     ViewData["HeaderTitle"] = "User Management";
     ViewData["Title"] = "Admins";
-    var username = HttpContext?.User?.Identity?.Name ?? "Guest";
     var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
-    ViewData["Username"] = username;
     ViewData["CurrentPage"] = currentPage;
 }
 
@@ -58,6 +56,7 @@
                         <th>@Html.DisplayNameFor(model => model.Admin[0].ContactNo)</th>
                         <th>@Html.DisplayNameFor(model => model.Admin[0].Job)</th>
                         <th>@Html.DisplayNameFor(model => model.Admin[0].HireDate)</th>
+                        <th>@Html.DisplayNameFor(model => model.Admin[0].ProfileImage)</th>
                         <th>@Html.DisplayNameFor(model => model.Admin[0].User)</th>
                         <th>Actions</th>
                     </tr>
@@ -72,6 +71,16 @@
                             <td>@Html.DisplayFor(modelItem => item.ContactNo)</td>
                             <td>@Html.DisplayFor(modelItem => item.Job)</td>
                             <td>@Html.DisplayFor(modelItem => item.HireDate)</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.ProfileImage))
+                                {
+                                    <a href="/@item.ProfileImage" target="_blank">@item.ProfileImage</a>
+                                }
+                                else
+                                {
+                                    <span>No Image</span>
+                                }
+                            </td>
                             <td>@(item.User != null ? item.User.UserId : "")</td>
                             <td>
                                 <a asp-page="./Edit" asp-route-id="@item.UserId" title="Edit">

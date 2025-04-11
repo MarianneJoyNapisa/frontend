@@ -2,7 +2,10 @@
 @model HomeownersMS.Pages_Admin_Facilities.CreateModel
 
 @{
-    ViewData["Title"] = "Create";
+    Layout = "_AdminLayout"; // Use the Admin layout
+    ViewData["HeaderTitle"] = "Facilities Management";
+    ViewData["Title"] = "Create Facility";
+    ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
 }
 
 <h1>Create</h1>

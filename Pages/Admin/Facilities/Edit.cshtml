@@ -2,7 +2,10 @@
 @model HomeownersMS.Pages_Admin_Facilities.EditModel
 
 @{
-    ViewData["Title"] = "Edit";
+    Layout = "_AdminLayout"; // Use the Admin layout
+    ViewData["HeaderTitle"] = "Facilities Management";
+    ViewData["Title"] = "Edit Facility";
+    ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
 }
 
 <h1>Edit</h1>

@@ -8,6 +8,7 @@
     Layout = "_AdminLayout";
     ViewData["Title"] = "Manage Reservations";
     ViewData["HeaderTitle"] = "Manage Reservations"; 
+    ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
 }
 
 <div class="container">

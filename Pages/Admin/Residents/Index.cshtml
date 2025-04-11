@@ -4,10 +4,8 @@
 @{
     Layout = "_AdminLayout";
     ViewData["HeaderTitle"] = "User Management";
-    ViewData["Title"] = "Users";
-    var username = HttpContext?.User?.Identity?.Name ?? "Guest";
+    ViewData["Title"] = "Residents";
     var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
-    ViewData["Username"] = username;
     ViewData["CurrentPage"] = currentPage;
 }
 

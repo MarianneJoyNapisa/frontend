@@ -1,0 +1,73 @@
+@page
+@model HomeownersMS.Pages.Profile.ProfileAdminModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["HeaderTitle"] = "Profile";
+    ViewData["Title"] = "Edit Profile";
+    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+    ViewData["CurrentPage"] = currentPage;
+}
+
+<div class="container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <form method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <!-- Profile Image -->
+        <div class="form-group mb-3">
+            <label asp-for="ProfileImage" class="control-label">Profile Image</label>
+            <input type="file" class="form-control" asp-for="ProfileImage">
+            <span asp-validation-for="ProfileImage" class="text-danger"></span>
+        </div>
+
+        <!-- First Name -->
+        <div class="form-group mb-3">
+            <label asp-for="Admin.FName" class="control-label">First Name</label>
+            <input type="text" class="form-control" asp-for="Admin.FName">
+            <span asp-validation-for="Admin.FName" class="text-danger"></span>
+        </div>
+
+        <!-- Last Name -->
+        <div class="form-group mb-3">
+            <label asp-for="Admin.LName" class="control-label">Last Name</label>
+            <input type="text" class="form-control" asp-for="Admin.LName">
+            <span asp-validation-for="Admin.LName" class="text-danger"></span>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group mb-3">
+            <label asp-for="Admin.Email" class="control-label">Email</label>
+            <input type="email" class="form-control" asp-for="Admin.Email">
+            <span asp-validation-for="Admin.Email" class="text-danger"></span>
+        </div>
+
+        <!-- Contact Number -->
+        <div class="form-group mb-3">
+            <label asp-for="Admin.ContactNo" class="control-label">Contact Number</label>
+            <input type="tel" class="form-control" asp-for="Admin.ContactNo">
+            <span asp-validation-for="Admin.ContactNo" class="text-danger"></span>
+        </div>
+
+        <!-- Job Title -->
+        <div class="form-group mb-3">
+            <label asp-for="Admin.Job" class="control-label">Job Title</label>
+            <input type="text" class="form-control" asp-for="Admin.Job">
+            <span asp-validation-for="Admin.Job" class="text-danger"></span>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-group">
+            <input type="submit" value="Save Changes" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

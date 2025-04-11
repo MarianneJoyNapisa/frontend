@@ -192,12 +192,12 @@
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.navItem:hover, .navItem:active {
+.navItem:hover, .navItem:active, .navItem.active {
     background-color: white;
     color: #3c6693 !important;
 }
 
-.navItem:hover i, .navItem:active i {
+.navItem:hover i, .navItem:active i, .navItem.active i {
     color: #3c6693 !important;
 }
 

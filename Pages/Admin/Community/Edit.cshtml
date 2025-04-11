@@ -5,10 +5,7 @@
     Layout = "_AdminLayout"; // Use the Admin layout
     ViewData["HeaderTitle"] = "Community Management";
     ViewData["Title"] = "Community";
-    var username = HttpContext?.User?.Identity?.Name ?? "Guest";
-    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
-    ViewData["Username"] = username;
-    ViewData["CurrentPage"] = currentPage;
+    ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
 }
 
 <h1>Edit</h1>

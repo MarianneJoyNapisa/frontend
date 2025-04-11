@@ -1,124 +1,218 @@
 @page
 @model HomeownersMS.Pages_Admin_Announcements.IndexModel
+@using HomeownersMS.Models
 @using System.Security.Claims
 @{
     Layout = "_AdminLayout";
     ViewData["HeaderTitle"] = "Announcements Management";
     ViewData["Title"] = "Announcements";
+    ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
 }
+
 <div class="container-fluid">
-    <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">Announcements</h6>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
-                <i class="fas fa-plus"></i> Create New
-            </button>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-megaphone fs-3 me-2"></i>
+            <span class="fs-4">Announcements</span>
         </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Event Date</th>
-                            <th>Blocks Affected</th>
-                            <th>Created At</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.Announcement)
-                        {
-                            <tr>
-                                <td>@item.Title</td>
-                                <td>@item.EventDate?.ToString("MM/dd/yyyy") @(item.EventTime.HasValue ? item.EventTime.Value.ToString("hh\\:mm") : "")</td>
-                                <td>@item.BlocksAffected</td>
-                                <td>@item.CreatedAt.ToString("MM/dd/yyyy HH:mm")</td>
-                                <td>
-                                    <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#detailsModal" 
-                                            data-id="@item.AnnouncementId" title="Details">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal" 
-                                            data-id="@item.AnnouncementId" title="Edit">
+        <div>
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search announcements..." aria-label="Search announcements">
+                <button class="btn btn-outline-secondary" type="button">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="accordion mb-4" id="announcementsAccordion">
+        @* <!-- Today's Announcements --> *@
+        <div class="accordion-item border-0 mb-2">
+            <h2 class="accordion-header">
+                <button class="accordion-button bg-light collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseToday" style="background-color: #96c9ff !important">
+                    <i class="bi bi-calendar-day me-2"></i> 
+                    <span class="fw-bold">Today</span>&nbsp;
+                    <span class="badge rounded-pill bg-primary text-light"> @Model.TodayAnnouncements.Count</span>
+                </button>
+            </h2>
+            <div id="collapseToday" class="accordion-collapse collapse" data-bs-parent="#announcementsAccordion">
+                <div class="accordion-body p-0">
+                    @foreach (var item in Model.TodayAnnouncements)
+                    {
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center @GetHeaderColorClass(item)" style="padding: 0.75rem 1.25rem;">
+                                <div class="fw-bold text-light">@item.Title</div>
+                                <div>
+                                    <a asp-page="./Edit" asp-route-id="@item.AnnouncementId" class="btn btn-sm btn-warning me-1 ghost-link" title="Edit">
                                         <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" 
+                                    </a>
+                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" 
                                             data-id="@item.AnnouncementId" title="Delete">
                                         <i class="bi bi-trash"></i>
                                     </button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                                </div>
+                            </div>
+                            <div class="p-3">
+                                <div class="fw-bold mb-2">@(item.EventDate?.ToString("MMM dd, yyyy") ?? "n.d") @(item.EventTime.HasValue ? "@ " + item.EventTime.Value.ToString("hh:mm tt") : "--:--")</div>
+                                <div class="small mb-2"><i class="bi bi-geo-alt"></i> Blocks @item.BlocksAffected</div>
+                                @if (!string.IsNullOrEmpty(item.Office)) 
+                                {
+                                    <div class="small text-primary mb-2">
+                                        <i class="bi bi-telephone"></i> @item.Office - <span class="fw-bold">@item.ContactNumber</span>
+                                    </div>
+                                }
+                                <div>@item.Content</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        
+        @* <!-- Yesterday's Announcements --> *@
+        <div class="accordion-item border-0 mb-2">
+            <h2 class="accordion-header">
+                <button class="accordion-button bg-light collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseYesterday" style="background-color: #96c9ff !important">
+                    <i class="bi bi-calendar-minus me-2"></i> 
+                    <span class="fw-bold">Yesterday</span>&nbsp;
+                    <span class="badge rounded-pill bg-primary text-light">@Model.YesterdayAnnouncements.Count</span>
+                </button>
+            </h2>
+            <div id="collapseYesterday" class="accordion-collapse collapse" data-bs-parent="#announcementsAccordion">
+                <div class="accordion-body p-0">
+                    @foreach (var item in Model.YesterdayAnnouncements)
+                    {
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center @GetHeaderColorClass(item)" style="padding: 0.75rem 1.25rem;">
+                                <div class="fw-bold text-light">@item.Title</div>
+                                <div>
+                                    <a asp-page="./Edit" asp-route-id="@item.AnnouncementId" class="btn btn-sm btn-warning me-1 ghost-link" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" 
+                                            data-id="@item.AnnouncementId" title="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-3">
+                                <div class="fw-bold mb-2">@(item.EventDate?.ToString("MMM dd, yyyy") ?? "n.d") @(item.EventTime.HasValue ? "@ " + item.EventTime.Value.ToString("hh:mm tt") : "--:--")</div>
+                                <div class="small mb-2"><i class="bi bi-geo-alt"></i> Blocks @item.BlocksAffected</div>
+                                @if (!string.IsNullOrEmpty(item.Office)) {
+                                    <div class="small text-primary mb-2">
+                                        <i class="bi bi-telephone"></i> @item.Office - <span class="fw-bold">@item.ContactNumber</span>
+                                    </div>
+                                }
+                                <div>@item.Content</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        
+        @* <!-- Week's Announcements --> *@
+        <div class="accordion-item border-0 mb-2">
+            <h2 class="accordion-header">
+                <button class="accordion-button bg-light collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWeek" style="background-color: #96c9ff !important">
+                    <i class="bi bi-calendar-week me-2"></i> 
+                    <span class="fw-bold">Last Week</span>&nbsp;
+                    <span class="badge rounded-pill bg-primary text-light">@Model.WeekAnnouncements.Count</span>
+                </button>
+            </h2>
+            <div id="collapseWeek" class="accordion-collapse collapse" data-bs-parent="#announcementsAccordion">
+                <div class="accordion-body p-0">
+                    @foreach (var item in Model.WeekAnnouncements)
+                    {
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center @GetHeaderColorClass(item)" style="padding: 0.75rem 1.25rem;">
+                                <div class="fw-bold text-light">@item.Title</div>
+                                <div>
+                                    <a asp-page="./Edit" asp-route-id="@item.AnnouncementId" class="btn btn-sm btn-warning me-1 ghost-link" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" 
+                                            data-id="@item.AnnouncementId" title="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-3">
+                                <div class="fw-bold mb-2">@(item.EventDate?.ToString("MMM dd, yyyy") ?? "n.d") @(item.EventTime.HasValue ? "@ " + item.EventTime.Value.ToString("hh:mm tt") : "--:--")</div>
+                                <div class="small mb-2"><i class="bi bi-geo-alt"></i> Blocks @item.BlocksAffected</div>
+                                @if (!string.IsNullOrEmpty(item.Office)) {
+                                    <div class="small text-primary mb-2">
+                                        <i class="bi bi-telephone"></i> @item.Office - <span class="fw-bold">@item.ContactNumber</span>
+                                    </div>
+                                }
+                                <div>@item.Content</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        
+        @* <!-- Month's Announcements --> *@
+        <div class="accordion-item border-0">
+            <h2 class="accordion-header">
+                <button class="accordion-button bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMonth" style="background-color: #96c9ff !important">
+                    <i class="bi bi-calendar-month me-2"></i> 
+                    <span class="fw-bold">Last Month</span>&nbsp;
+                    <span class="badge rounded-pill bg-primary text-light">@Model.MonthAnnouncements.Count</span>
+                </button>
+            </h2>
+            <div id="collapseMonth" class="accordion-collapse collapse show" data-bs-parent="#announcementsAccordion">
+                <div class="accordion-body p-0">
+                    @foreach (var item in Model.MonthAnnouncements)
+                    {
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center @GetHeaderColorClass(item)" style="padding: 0.75rem 1.25rem;">
+                                <div class="fw-bold text-light">@item.Title</div>
+                                <div>
+                                    <a asp-page="./Edit" asp-route-id="@item.AnnouncementId" class="btn btn-sm btn-warning me-1 ghost-link" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" 
+                                            data-id="@item.AnnouncementId" title="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-3">
+                                <div class="fw-bold mb-2">@(item.EventDate?.ToString("MMM dd, yyyy") ?? "n.d") @(item.EventTime.HasValue ? "@ " + item.EventTime.Value.ToString("hh:mm tt") : "--:--")</div>
+                                <div class="small mb-2"><i class="bi bi-geo-alt"></i> Blocks @item.BlocksAffected</div>
+                                @if (!string.IsNullOrEmpty(item.Office)) {
+                                    <div class="small text-primary mb-2">
+                                        <i class="bi bi-telephone"></i> @item.Office - <span class="fw-bold">@item.ContactNumber</span>
+                                    </div>
+                                }
+                                <div>@item.Content</div>
+                            </div>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Create Modal -->
-<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="createModalLabel">Create Announcement</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="createForm" method="post" asp-page-handler="Create">
-                <div class="modal-body">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="NewAnnouncement.CreatedBy" value="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value" />
-                    <input type="hidden" asp-for="NewAnnouncement.CreatedAt" value="@DateTime.Now" />
-                    <div class="form-group">
-                        <label asp-for="NewAnnouncement.Title" class="control-label"></label>
-                        <input asp-for="NewAnnouncement.Title" class="form-control" />
-                        <span asp-validation-for="NewAnnouncement.Title" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="NewAnnouncement.Content" class="control-label"></label>
-                        <textarea asp-for="NewAnnouncement.Content" class="form-control" rows="5"></textarea>
-                        <span asp-validation-for="NewAnnouncement.Content" class="text-danger"></span>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="NewAnnouncement.EventDate" class="control-label"></label>
-                                <input asp-for="NewAnnouncement.EventDate" type="date" class="form-control" />
-                                <span asp-validation-for="NewAnnouncement.EventDate" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="NewAnnouncement.EventTime" class="control-label"></label>
-                                <input asp-for="NewAnnouncement.EventTime" type="time" class="form-control" />
-                                <span asp-validation-for="NewAnnouncement.EventTime" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="NewAnnouncement.BlocksAffected" class="control-label"></label>
-                        <input asp-for="NewAnnouncement.BlocksAffected" class="form-control" />
-                        <span asp-validation-for="NewAnnouncement.BlocksAffected" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="NewAnnouncement.Office" class="control-label"></label>
-                        <input asp-for="NewAnnouncement.Office" class="form-control" />
-                        <span asp-validation-for="NewAnnouncement.Office" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="NewAnnouncement.ContactNumber" class="control-label"></label>
-                        <input asp-for="NewAnnouncement.ContactNumber" class="form-control" />
-                        <span asp-validation-for="NewAnnouncement.ContactNumber" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Create</button>
-                </div>
-            </form>
-        </div>
+    
+    @* <!-- Create Button --> *@
+    <div class="text-end mb-3">
+        <a asp-page="./Create" class="btn btn-primary ghost-link text-light">
+            <i class="bi bi-plus-lg"></i> Create New
+        </a>
     </div>
 </div>
+
+@functions {
+    string GetHeaderColorClass(Models.Announcement item)
+    {
+        var colors = new[] { "bg-primary", "bg-danger", "bg-success" };
+        var index = item.AnnouncementId % colors.Length;
+        return colors[index];
+    }
+}
+
 <!-- Details Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -136,26 +230,7 @@
         </div>
     </div>
 </div>
-<!-- Edit Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit Announcement</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="editForm" method="post" asp-page-handler="Edit">
-                <div class="modal-body" id="editContent">
-                    <!-- Content will be loaded via AJAX -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+
 <!-- Delete Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -187,48 +262,13 @@
                 var id = button.data('id');
                 $('#detailsContent').load('/Admin/Announcements/Announcements?handler=DetailsPartial&id=' + id);
             });
-            // Edit modal
-            $('#editModal').on('show.bs.modal', function (event) {
-                var button = $(event.relatedTarget);
-                var id = button.data('id');
-                $('#editContent').load('/Admin/Announcements/Announcements?handler=EditPartial&id=' + id);
-            });
             // Delete modal
             $('#deleteModal').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
                 var id = button.data('id');
                 $('#deleteAnnouncementId').val(id);
             });
-            // Handle form submissions via AJAX
-            $('#createForm').on('submit', function(e) {
-                e.preventDefault();
-                $.post($(this).attr('action'), $(this).serialize(), function() {
-                    $('#createModal').modal('hide');
-                    location.reload();
-                }).fail(function(xhr) {
-                    $('#createContent').html(xhr.responseText);
-                });
-            });
-            $('#editForm').on('submit', function(e) {
-                e.preventDefault();
-                var formData = $(this).serializeArray();
-                // Add the AnnouncementId to the form data
-                formData.push({ name: "AnnouncementId", value: $('#editContent').find('[name="AnnouncementId"]').val() });
-                
-                $.ajax({
-                    url: $(this).attr('action'),
-                    type: 'POST',
-                    data: $.param(formData),
-                    success: function() {
-                        $('#editModal').modal('hide');
-                        location.reload();
-                    },
-                    error: function(xhr) {
-                        $('#editContent').html(xhr.responseText);
-                    }
-                });
-            });
-            $('#deleteForm').on('submit', function(e) {
+           $('#deleteForm').on('submit', function(e) {
                 e.preventDefault();
                 $.post($(this).attr('action'), $(this).serialize(), function() {
                     $('#deleteModal').modal('hide');
