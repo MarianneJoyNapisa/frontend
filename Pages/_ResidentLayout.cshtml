@@ -1,3 +1,8 @@
+@using System.Security.Claims
+@using Microsoft.EntityFrameworkCore
+@using HomeownersMS.Data
+@inject HomeownersContext context
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,9 +33,26 @@
     </div>
 
     @{
-        var profileImageUrl = !string.IsNullOrEmpty(ViewData["ProfileImage"]?.ToString()) 
-            ? Url.Content($"~/{ViewData["ProfileImage"]}")
+        var username = Context.User?.Identity?.Name ?? "Guest";
+        // Get the resident's profile image and name directly from the database
+        var (profileImagePath, residentName) = await Task.Run(async () => {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId != null && int.TryParse(userId, out int residentId))
+            {
+                var resident = await context.Residents.FirstOrDefaultAsync(r => r.UserId == residentId);
+                if (resident != null)
+                {
+                    var name = $"{resident.FName} {resident.LName}".Trim();
+                    return (resident.ProfileImage ?? "", name);
+                }
+            }
+            return ("", "Guest");
+        });
+        
+        var profileImageUrl = !string.IsNullOrEmpty(profileImagePath?.ToString()) 
+            ? Url.Content($"~/{profileImagePath}")
             : Url.Content("~/images/default-profile.jpg");
+        ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
     }
 
     <!-- Side Navigation -->
@@ -40,8 +62,8 @@
             <div class="userProfile">
                 <img src="@profileImageUrl" class="profile-avatar"/>
                 <div class="userInfo">
-                    <p class="userName">@ViewData["Username"]</p>
-                    <p class="profile-name">@ViewData["ResidentName"]</p>
+                    <p class="userName">@username</p>
+                    <p class="profile-name">@residentName</p>
                     <p class="userType">Resident</p>
                 </div>
             </div>
@@ -55,12 +77,12 @@
                 <span>Dashboard</span>
             </a>
             <a asp-page="/Announcement/Announcement_Events"
-                class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Announcement/Announcement_Events" ? "active" : "")">
+                class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Announcement/") == true ? "active" : "")">
                 <i class="bi bi-megaphone-fill"></i>
                 <span>Announcements</span>
             </a>
             <a asp-page="/Reservation/Reservation"
-                class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Reservation/Reservation" ? "active" : "")">
+                class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Reservation/") == true ? "active" : "")">
                 <i class="bi bi-calendar-fill"></i>
                 <span>Reservation</span>
             </a>
@@ -70,17 +92,17 @@
                 <span>Billing & Payments</span>
             </a> *@
             <a asp-page="/Service/Service"
-                class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Service/Service" ? "active" : "")">
+                class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Service") == true ? "active" : "")">
                 <i class="bi bi-tools"></i>
                 <span>Service</span>
             </a>
             <a asp-page="/Community/Community"
-                class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Community/Community" ? "active" : "")">
+                class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Community") == true ? "active" : "")">
                 <i class="bi bi-chat-left-text-fill"></i>
                 <span>Community</span>
             </a>
             <a asp-page="/Resources/Resource"
-                class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Resources/Resource" ? "active" : "")">
+                class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Resources") == true ? "active" : "")">
                 <i class="bi bi-file-earmark-text-fill"></i>
                 <span>Resources</span>
             </a>
@@ -93,7 +115,7 @@
 
         <div class="genfunc_navLinks">
             <a asp-page="/Settings"
-                class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Settings" ? "active" : "")">
+                class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Settings") == true ? "active" : "")">
                 <i class="bi bi-gear-fill"></i>
                 <span>Settings</span>
             </a>

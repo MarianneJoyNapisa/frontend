@@ -55,8 +55,7 @@
             ? Url.Content($"~/{profileImagePath}")
             : Url.Content("~/images/default-profile.jpg");
         Console.WriteLine(profileImageUrl);
-        var AdminName = adminName;
-        var Username = username;
+        ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
     }
 
     <!-- Side Navigation -->
@@ -66,8 +65,8 @@
             <div class="userProfile">
                 <img src="@profileImageUrl" class="profile-avatar"/>
                 <div class="userInfo">
-                    <p class="userName">@Username</p>
-                    <p class="profile-name">@AdminName</p>
+                    <p class="userName">@username</p>
+                    <p class="profile-name">@adminName</p>
                     <p class="userType">Admin</p>
                 </div>
             </div>

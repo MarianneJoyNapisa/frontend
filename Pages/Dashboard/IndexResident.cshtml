@@ -1,34 +1,9 @@
 ﻿@page
 @model HomeownersMS.Pages.Dashboard.IndexResidentModel
-@using System.Security.Claims
-@using Microsoft.EntityFrameworkCore
-@using HomeownersMS.Data
-@inject HomeownersContext context
 @{
     Layout = "_ResidentLayout";
     ViewData["HeaderTitle"] = "Dashboard";
     ViewData["Title"] = "Dashboard";
-    var username = HttpContext?.User?.Identity?.Name ?? "Guest";
-    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
-    // Get the resident's profile image and name directly from the database
-    var (profileImagePath, residentName) = await Task.Run(async () => {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (userId != null && int.TryParse(userId, out int residentId))
-        {
-            var resident = await context.Residents.FirstOrDefaultAsync(r => r.UserId == residentId);
-            if (resident != null)
-            {
-                var name = $"{resident.FName} {resident.LName}".Trim();
-                return (resident.ProfileImage ?? "", name);
-            }
-        }
-        return ("", "Guest");
-    });
-    
-    ViewData["ProfileImage"] = profileImagePath;
-    ViewData["ResidentName"] = residentName;
-    ViewData["Username"] = username;
-    ViewData["CurrentPage"] = currentPage;
 }
 
 <!-- Add FullCalendar CSS -->
@@ -99,42 +74,6 @@
         display: inline-block;
     }
 
-    /* Calendar styles */
-    #calendar {
-        height: 100%;
-        min-height: 300px;
-        font-size: 14px;
-    }
-
-    /* Card body should expand to contain calendar */
-    .card-body {
-        display: flex;
-        flex-direction: column;
-        min-height: 350px;
-        /* Minimum height for calendar */
-    }
-
-    /* Responsive adjustments */
-    @@media (max-width: 992px) {
-        #calendar {
-            min-height: 250px;
-        }
-
-        .card-body {
-            min-height: 300px;
-        }
-    }
-
-    @@media (max-width: 768px) {
-        #calendar {
-            min-height: 200px;
-        }
-
-        .card-body {
-            min-height: 250px;
-        }
-    }
-
     /* Custom button styling */
     .show-more-btn {
         background-color: transparent;
@@ -163,12 +102,12 @@
         padding: 12px 15px;
         margin-bottom: 12px;
         background-color: white;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         transition: all 0.2s ease;
     }
 
     .event-card:hover {
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         transform: translateY(-2px);
     }
 
@@ -206,72 +145,189 @@
     }
 
     /* No events message styling */
-    #events-container > p {
+    #events-container>p {
         text-align: center;
         color: #666;
         padding: 10px;
+    }
+
+    .bg-transparent {
+        background-color: transparent !important;
+    }
+
+    .ann-card {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: all 0.2s ease;
+    }
+
+    .ann-card:hover {
+        transform: translate(0, -2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* FullCalendar Custom Styles with Fixed Height */
+    .fc .fc-toolbar-title {
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+
+    .fc .fc-col-header-cell {
+        background-color: transparent !important;
+        padding: 8px 0;
+    }
+
+    .fc .fc-col-header-cell-cushion {
+        color: #6c757d; /* text-muted */
+        text-decoration: none !important;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        font-weight: normal;
+    }
+
+    .fc .fc-button {
+        background-color: transparent !important;
+        border: none !important;
+        color: var(--bs-primary) !important;
+        transition: all 0.2s ease;
+    }
+
+    .fc .fc-button:hover {
+        background-color: var(--bs-primary) !important;
+        color: white !important;
+    }
+
+    /* Fixed height calendar container */
+    #calendar {
+        height: 500px; /* Fixed height */
+    }
+
+    /* Square date cells */
+    .fc .fc-daygrid-day-frame {
+        aspect-ratio: 1/1; /* Perfect square */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2px;
+    }
+
+    .fc .fc-daygrid-day-number {
+        color: #212529; /* black */
+        text-decoration: none !important;
+        font-weight: bold;
+        font-size: 0.85rem;
+    }
+
+    .fc .fc-daygrid-day:hover .fc-daygrid-day-number {
+        cursor: pointer;
+    }
+
+    /* Today's date styling */
+    .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-frame {
+        background-color: var(--bs-danger) !important;
+        border-radius: 50%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .fc .fc-daygrid-day {
+        background-color: transparent !important;
+    }
+    
+
+    #calendar .row td {
+        background: transparent !important;
+    }
+
+    .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+        color: white !important;
+    }
+
+    /* Selected date styling */
+    .fc .fc-daygrid-day.selected .fc-daygrid-day-frame {
+        background-color: var(--bs-primary) !important;
+        border-radius: 50%;
+    }
+
+    .fc .fc-daygrid-day.selected .fc-daygrid-day-number {
+        color: white !important;
+    }
+
+    /* Remove borders and spacing */
+    .fc .fc-scrollgrid {
+        border: none !important;
+    }
+
+    .fc .fc-daygrid-body {
+        border: none !important;
+    }
+
+    .fc .fc-daygrid-day {
+        border: none !important;
     }
 </style>
 
 <div class="row">
     <!-- Announcement Section -->
-    <div class="col-12 col-md-6 col-lg-4">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="m-0">Announcements</h5>
+    <div class="col-lg">
+        <div class="border-0 bg-transparent">
+            <div class="card-header bg-transparent d-flex justify-content-between align-items-center px-0 border-0">
+                <h4 class="m-0">Announcements</h4>
                 <a asp-page="/Announcement/Announcement_Events" class="text-primary">View All</a>
             </div>
-            <div class="card-body">
+            <div class="card-body p-0">
                 <div id="announcementCards">
                     @if (Model.LatestAnnouncements.Any())
                     {
+                        var colorClasses = new[] { "bg-danger", "bg-success", "bg-primary" };
+                        var colorIndex = 0;
+
                         @foreach (var announcement in Model.LatestAnnouncements)
                         {
-                            <div class="ann-Card">
-                                <div class="header">
-                                    @{
-                                        string iconClass = "bi bi-megaphone-fill";
-                                        string iconColor = "#28a745";
-
-                                        if (announcement.Title.Contains("Clean-Up", StringComparison.OrdinalIgnoreCase))
-                                        {
-                                            iconClass = "bi bi-trash-fill";
-                                            iconColor = "#28a745";
-                                        }
-                                        else if (announcement.Title.Contains("Interruption", StringComparison.OrdinalIgnoreCase))
-                                        {
-                                            iconClass = "bi bi-lightning-fill";
-                                            iconColor = "#dc3545";
-                                        }
-                                    }
-                                    <i class="@iconClass icon" style="background-color: @iconColor;"></i>
-                                    <span>@announcement.Title</span>
+                            <div class="card mb-3 border-0 shadow-sm ann-card">
+                                <div
+                                    class="card-header text-white @colorClasses[colorIndex] d-flex justify-content-between align-items-center">
+                                    <span class="text-capitalize">@announcement.Title</span>
                                 </div>
-                                <div class="content">
-                                    @if (announcement.EventDate.HasValue)
-                                    {
-                                        <p><strong>@announcement.EventDate.Value.ToString("MMM dd")</strong></p>
-                                    }
-                                    @if (!string.IsNullOrEmpty(announcement.BlocksAffected))
-                                    {
-                                        <p><strong>Block @announcement.BlocksAffected</strong></p>
-                                    }
-                                    @if (!string.IsNullOrEmpty(announcement.Office))
-                                    {
-                                        <p>@announcement.Office</p>
-                                    }
-                                    @if (announcement.ContactNumber.HasValue)
-                                    {
-                                        <p><a href="tel:@announcement.ContactNumber">@announcement.ContactNumber</a></p>
-                                    }
-                                    <p>@announcement.Content</p>
+                                <div class="card-body">
+                                    <p class="mb-1 fw-bold">
+                                        @if (announcement.EventDate.HasValue)
+                                        {
+                                            <span>@announcement.EventDate.Value.ToString("MMM dd, yyyy") @@</span>
+                                            @if (announcement.EventTime.HasValue)
+                                            {
+                                                <span> @announcement.EventTime.Value.ToString("hh:mm tt")</span>
+                                            }
+                                            else
+                                            {
+                                                <span>--:--</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span>n.d. @@</span>
+                                        }
+                                    </p>
+                                    <p class="mb-1 small text-primary fw-bold">
+                                        <i class="bi bi-geo-alt"></i> Blocks @announcement.BlocksAffected
+                                    </p>
+                                    <p class="mb-2 small text-primary">
+                                        <i class="bi bi-telephone"></i> @announcement.Office - <span
+                                            class="fw-bold">@announcement.ContactNumber</span>
+                                    </p>
+                                    <p class="mb-0">@announcement.Content</p>
                                 </div>
                             </div>
+
+                            colorIndex = (colorIndex + 1) % colorClasses.Length;
                         }
                     }
                     else
                     {
-                        <p>No recent announcements</p>
+                        <div class="card border-0">
+                            <div class="card-body">
+                                <p class="mb-0">No recent announcements</p>
+                            </div>
+                        </div>
                     }
                 </div>
             </div>
@@ -279,14 +335,14 @@
     </div>
 
     <!-- Calendar and Events Section -->
-    <div class="col-12 col-lg-4">
+    <div class="col-lg">
         <!-- Calendar Card -->
         <div class="card">
-            <div class="card-header">
-                <h5 class="m-0">Calendar</h5>
-                <button id="reset-calendar" class="btn btn-sm btn-outline-secondary">Show All</button>
-            </div>
             <div class="card-body">
+                <div class="d-flex flex-row justify-content-between mb-4">
+                    <h5 class="m-0 fw-bold">Event Calendar</h5>
+                    <button id="reset-calendar" class="btn btn-sm btn-outline-secondary">Show All</button>
+                </div>
                 @* Calendar shows here *@
                 <div id="calendar"></div>
             </div>
@@ -294,10 +350,11 @@
 
         <!-- Events -->
         <div class="card mt-4" id="events">
-            <div class="card-header">
-                <h5 class="m-0">Events</h5>
-            </div>
             <div class="card-body">
+                <div class="d-flex flex-column align-items-center mb-4">
+                    <h5 class="m-0 fw-bold">Events</h5>
+                    <p class="text-muted small m-0">Click on a calendar date and your events will show here.</p>
+                </div>
                 <div id="events-container">
                     @if (Model.AllEvents.Any())
                     {
@@ -305,20 +362,21 @@
                         {
                             <div class="event-card" data-event-date="@evt.EventDate?.ToString("yyyy-MM-dd")">
                                 <div class="event-date">
-                                    <strong>@(evt.EventDate.HasValue ? evt.EventDate?.ToString("ddd, MMM dd yyyy") : "n.d")</strong>
-                                </div>
-                                <div class="event-time">
-                                    <strong>
-                                        @(evt.EventTimeStart.HasValue ? evt.EventTimeStart.Value.ToString("h:mm tt") : "--:--")
-                                        @(evt.EventTimeEnd.HasValue ? " - " + evt.EventTimeEnd.Value.ToString("h:mm tt") : "")
-                                    </strong>
-                                </div>
-                                <div class="event-location">
-                                    <i class="bi bi-geo-alt"></i> @evt.FacilityRequest?.Facility?.Name
-                                </div>
-                                <div class="event-title">@evt.Title</div>
-                            </div>
-                        }
+                                    <strong>@(evt.EventDate.HasValue ? evt.EventDate?.ToString("ddd, MMM dd yyyy") :
+                                                                "n.d")</strong>
+                        </div>
+                        <div class="event-time">
+                            <strong>
+                                @(evt.EventTimeStart.HasValue? evt.EventTimeStart.Value.ToString("h:mm tt") : "--:--")
+                                @(evt.EventTimeEnd.HasValue ? " - " + evt.EventTimeEnd.Value.ToString("h:mm tt") : "")
+                            </strong>
+                        </div>
+                        <div class="event-location">
+                            <i class="bi bi-geo-alt"></i> @evt.FacilityRequest?.Facility?.Name
+                        </div>
+                        <div class="event-title">@evt.Title</div>
+                    </div>
+                                        }
                     }
                     else
                     {
@@ -345,10 +403,15 @@
             },
             height: 'auto',
             contentHeight: 'auto',
-            aspectRatio: 1.5, // Better aspect ratio for responsiveness
+            aspectRatio: 1.5,
             dayMaxEventRows: true,
-            firstDay: 1, // Start week on Monday
-            dateClick: function (info) {
+            firstDay: 1,
+            // Add these new options:
+            dayHeaderFormat: { weekday: 'short' }, // Show only 3-letter weekdays
+            dayHeaderContent: function(arg) {
+                return arg.text.slice(0, 3); // Ensure only first 3 letters
+            },
+            dateClick: function(info) {
                 // Remove previous selection
                 document.querySelectorAll('.fc-daygrid-day.selected').forEach(el => {
                     el.classList.remove('selected');
@@ -360,31 +423,30 @@
                 // Load events for selected date via AJAX
                 loadEventsForDate(info.dateStr);
             },
-            datesSet: function () {
-                // Highlight today by default if no date is selected
+            datesSet: function() {
                 @if (!Model.SelectedDate.HasValue)
-                    {
-                        <text>
-                            const today = new Date();
-                            const todayStr = today.toISOString().split('T')[0];
-                            const todayEl = document.querySelector(`.fc-day[data-date="${todayStr}"]`);
-                            if (todayEl) {
-                                todayEl.classList.add('selected');
-                    }
-                        </text>
+                {
+                    <text>
+                        const today = new Date();
+                        const todayStr = today.toISOString().split('T')[0];
+                        const todayEl = document.querySelector(`.fc-day[data-date="${todayStr}"]`);
+                        if (todayEl) {
+                            todayEl.classList.add('selected');
+                        }
+                    </text>
                 }
-                    else
-                    {
-                        <text>
-                    // Highlight the selected date
-                            const selectedDateStr = '@Model.SelectedDate.Value.ToString("yyyy-MM-dd")';
-                            const selectedEl = document.querySelector(`.fc-day[data-date="${selectedDateStr}"]`);
-                            if (selectedEl) {
-                                selectedEl.classList.add('selected');
-                    }
-                        </text>
+                else
+                {
+                    <text>
+                        // Highlight the selected date
+                        const selectedDateStr = '@Model.SelectedDate.Value.ToString("yyyy-MM-dd")';
+                        const selectedEl = document.querySelector(`.fc-day[data-date="${selectedDateStr}"]`);
+                        if (selectedEl) {
+                            selectedEl.classList.add('selected');
+                        }
+                    </text>
                 }
-        }
+            }
         });
 
         calendar.render();
@@ -393,18 +455,18 @@
         function loadEventsForDate(dateStr) {
             const date = new Date(dateStr);
             const formattedDate = date.toISOString().split('T')[0];
-            
+
             fetch(`?handler=FilterEvents&date=${formattedDate}`)
                 .then(response => response.text())
                 .then(html => {
                     document.getElementById('events-container').innerHTML = html;
                     // Add the same hover effects to newly loaded cards
                     document.querySelectorAll('.event-card').forEach(card => {
-                        card.addEventListener('mouseenter', function() {
+                        card.addEventListener('mouseenter', function () {
                             this.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
                             this.style.transform = 'translateY(-2px)';
                         });
-                        card.addEventListener('mouseleave', function() {
+                        card.addEventListener('mouseleave', function () {
                             this.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
                             this.style.transform = 'translateY(0)';
                         });
