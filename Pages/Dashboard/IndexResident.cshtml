@@ -196,10 +196,6 @@
         color: white !important;
     }
 
-    /* Fixed height calendar container */
-    #calendar {
-        height: 500px; /* Fixed height */
-    }
 
     /* Square date cells */
     .fc .fc-daygrid-day-frame {
@@ -264,6 +260,11 @@
     .fc .fc-daygrid-day {
         border: none !important;
     }
+
+    /* custom */
+    .super-small {
+        font-size: x-small;
+    }
 </style>
 
 <div class="row">
@@ -311,10 +312,10 @@
                                         <i class="bi bi-geo-alt"></i> Blocks @announcement.BlocksAffected
                                     </p>
                                     <p class="mb-2 small text-primary">
-                                        <i class="bi bi-telephone"></i> @announcement.Office - <span
+                                        <i class="bi bi-telephone"></i> (@announcement.Office) <span
                                             class="fw-bold">@announcement.ContactNumber</span>
                                     </p>
-                                    <p class="mb-0">@announcement.Content</p>
+                                    <p class="mb-0 text-muted super-small">@announcement.Content</p>
                                 </div>
                             </div>
 
@@ -362,8 +363,7 @@
                         {
                             <div class="event-card" data-event-date="@evt.EventDate?.ToString("yyyy-MM-dd")">
                                 <div class="event-date">
-                                    <strong>@(evt.EventDate.HasValue ? evt.EventDate?.ToString("ddd, MMM dd yyyy") :
-                                                                "n.d")</strong>
+                                    <strong>@(evt.EventDate.HasValue ? evt.EventDate?.ToString("ddd, MMM dd yyyy") : "n.d")</strong>
                         </div>
                         <div class="event-time">
                             <strong>
@@ -376,11 +376,13 @@
                         </div>
                         <div class="event-title">@evt.Title</div>
                     </div>
-                                        }
+                        }
                     }
                     else
                     {
-                        <p>No events</p>
+                        <div class="text-muted small m-3 text-center">
+                            <i class="bi bi-exclamation-circle me-2"></i> No events available for the selected date.
+                        </div>
                     }
                 </div>
             </div>
@@ -391,119 +393,149 @@
 <!-- Add FullCalendar JS -->
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Initialize calendar
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            headerToolbar: {
-                left: 'prev',
-                center: 'title',
-                right: 'next'
-            },
-            height: 'auto',
-            contentHeight: 'auto',
-            aspectRatio: 1.5,
-            dayMaxEventRows: true,
-            firstDay: 1,
-            // Add these new options:
-            dayHeaderFormat: { weekday: 'short' }, // Show only 3-letter weekdays
-            dayHeaderContent: function(arg) {
-                return arg.text.slice(0, 3); // Ensure only first 3 letters
-            },
-            dateClick: function(info) {
-                // Remove previous selection
-                document.querySelectorAll('.fc-daygrid-day.selected').forEach(el => {
-                    el.classList.remove('selected');
+document.addEventListener('DOMContentLoaded', function () {
+    // Initialize calendar
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+            left: 'prev',
+            center: 'title',
+            right: 'next'
+        },
+        height: 'auto',
+        contentHeight: 'auto',
+        aspectRatio: 1.5,
+        dayMaxEventRows: true,
+        firstDay: 1,
+        dayHeaderFormat: { weekday: 'short' }, // Show only 3-letter weekdays
+        dayHeaderContent: function(arg) {
+            return arg.text.slice(0, 3); // Ensure only first 3 letters
+        },
+        dateClick: function(info) {
+            handleDateSelection(info.dateStr, info.dayEl);
+        },
+        dayCellDidMount: function(info) {
+            // Make the date cell focusable
+            const cell = info.el.querySelector('.fc-daygrid-day-frame');
+            if (cell) {
+                // Ensure the dateStr is valid
+                const date = info.date; // FullCalendar provides the `date` property as a Date object
+                const dateStr = date.toISOString().split('T')[0]; // Convert to YYYY-MM-DD format
+
+                // Set attributes for accessibility
+                cell.setAttribute('tabindex', '0'); // Make it focusable
+                cell.setAttribute('role', 'button'); // Indicate it's interactive
+                cell.setAttribute('aria-label', `Select date ${dateStr}`); // Accessibility label
+
+                // Handle Enter or Space key press
+                cell.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault(); // Prevent scrolling or other default behavior
+                        handleDateSelection(dateStr, info.el);
+                    }
                 });
-
-                // Add selection to clicked date
-                info.dayEl.classList.add('selected');
-
-                // Load events for selected date via AJAX
-                loadEventsForDate(info.dateStr);
-            },
-            datesSet: function() {
-                @if (!Model.SelectedDate.HasValue)
-                {
-                    <text>
-                        const today = new Date();
-                        const todayStr = today.toISOString().split('T')[0];
-                        const todayEl = document.querySelector(`.fc-day[data-date="${todayStr}"]`);
-                        if (todayEl) {
-                            todayEl.classList.add('selected');
-                        }
-                    </text>
-                }
-                else
-                {
-                    <text>
-                        // Highlight the selected date
-                        const selectedDateStr = '@Model.SelectedDate.Value.ToString("yyyy-MM-dd")';
-                        const selectedEl = document.querySelector(`.fc-day[data-date="${selectedDateStr}"]`);
-                        if (selectedEl) {
-                            selectedEl.classList.add('selected');
-                        }
-                    </text>
-                }
             }
-        });
-
-        calendar.render();
-
-        // Function to load events for a specific date
-        function loadEventsForDate(dateStr) {
-            const date = new Date(dateStr);
-            const formattedDate = date.toISOString().split('T')[0];
-
-            fetch(`?handler=FilterEvents&date=${formattedDate}`)
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('events-container').innerHTML = html;
-                    // Add the same hover effects to newly loaded cards
-                    document.querySelectorAll('.event-card').forEach(card => {
-                        card.addEventListener('mouseenter', function () {
-                            this.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
-                            this.style.transform = 'translateY(-2px)';
-                        });
-                        card.addEventListener('mouseleave', function () {
-                            this.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
-                            this.style.transform = 'translateY(0)';
-                        });
-                    });
-                })
-                .catch(error => {
-                    console.error('Error loading events:', error);
-                });
+        },
+        datesSet: function() {
+            @if (!Model.SelectedDate.HasValue)
+            {
+                <text>
+                    const today = new Date();
+                    const todayStr = today.toISOString().split('T')[0];
+                    const todayEl = document.querySelector(`.fc-day[data-date="${todayStr}"]`);
+                    if (todayEl) {
+                        todayEl.classList.add('selected');
+                    }
+                </text>
+            }
+            else
+            {
+                // Highlight the selected date
+                <text>
+                    const selectedDateStr = '@Model.SelectedDate.Value.ToString("yyyy-MM-dd")';
+                    const selectedEl = document.querySelector(`.fc-day[data-date="${selectedDateStr}"]`);
+                    if (selectedEl) {
+                        selectedEl.classList.add('selected');
+                    }
+                </text>
+            }
         }
-
-        // Reset button functionality
-        document.getElementById('reset-calendar').addEventListener('click', function () {
-            // Remove all selections
-            document.querySelectorAll('.fc-daygrid-day.selected').forEach(el => {
-                el.classList.remove('selected');
-            });
-
-            // Reload all events
-            fetch('?handler=FilterEvents')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('events-container').innerHTML = html;
-                })
-                .catch(error => {
-                    console.error('Error resetting events:', error);
-                });
-        });
-
-        // Make calendar responsive
-        function handleResize() {
-            calendar.updateSize();
-        }
-
-        // Add resize event listener
-        window.addEventListener('resize', handleResize);
-
-        // Initial size update
-        handleResize();
     });
+    calendar.render();
+
+    // Function to handle date selection
+    function handleDateSelection(dateStr, dayEl) {
+        // Remove previous selection
+        document.querySelectorAll('.fc-daygrid-day.selected').forEach(el => {
+            el.classList.remove('selected');
+        });
+
+        // Add selection to clicked/focused date
+        if (dayEl) {
+            dayEl.classList.add('selected');
+        }
+
+        console.log(dateStr);
+
+        // Load events for selected date via AJAX
+        loadEventsForDate(dateStr);
+    }
+
+    // Function to load events for a specific date
+    function loadEventsForDate(dateStr) {
+        console.log('event dates called');
+        const date = new Date(dateStr);
+        const formattedDate = date.toISOString().split('T')[0];
+
+        fetch(`?handler=FilterEvents&date=${formattedDate}`)
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('events-container').innerHTML = html;
+                // Add the same hover effects to newly loaded cards
+                document.querySelectorAll('.event-card').forEach(card => {
+                    card.addEventListener('mouseenter', function () {
+                        this.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+                        this.style.transform = 'translateY(-2px)';
+                    });
+                    card.addEventListener('mouseleave', function () {
+                        this.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
+                        this.style.transform = 'translateY(0)';
+                    });
+                });
+            })
+            .catch(error => {
+                console.error('Error loading events:', error);
+            });
+    }
+
+    // Reset button functionality
+    document.getElementById('reset-calendar').addEventListener('click', function () {
+        // Remove all selections
+        document.querySelectorAll('.fc-daygrid-day.selected').forEach(el => {
+            el.classList.remove('selected');
+        });
+
+        // Reload all events
+        fetch('?handler=FilterEvents')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('events-container').innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error resetting events:', error);
+            });
+    });
+
+    // Make calendar responsive
+    function handleResize() {
+        calendar.updateSize();
+    }
+
+    // Add resize event listener
+    window.addEventListener('resize', handleResize);
+
+    // Initial size update
+    handleResize();
+});
 </script>

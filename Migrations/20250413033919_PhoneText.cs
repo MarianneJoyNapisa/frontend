@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HomeownersMS.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateReview : Migration
+    public partial class PhoneText : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -152,7 +152,7 @@ namespace HomeownersMS.Migrations
                     EventTime = table.Column<TimeOnly>(type: "TEXT", nullable: true),
                     BlocksAffected = table.Column<string>(type: "TEXT", nullable: true),
                     Office = table.Column<string>(type: "TEXT", nullable: true),
-                    ContactNumber = table.Column<int>(type: "INTEGER", nullable: true),
+                    ContactNumber = table.Column<string>(type: "TEXT", nullable: true),
                     CreatedBy = table.Column<int>(type: "INTEGER", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -346,7 +346,7 @@ namespace HomeownersMS.Migrations
                     EventTimeStart = table.Column<TimeOnly>(type: "TEXT", nullable: true),
                     EventTimeEnd = table.Column<TimeOnly>(type: "TEXT", nullable: true),
                     GuestCapacity = table.Column<int>(type: "INTEGER", nullable: true),
-                    ContactNumber = table.Column<int>(type: "INTEGER", nullable: true),
+                    ContactNumber = table.Column<string>(type: "TEXT", nullable: true),
                     ContactEmail = table.Column<string>(type: "TEXT", nullable: true),
                     ContactName = table.Column<string>(type: "TEXT", nullable: true),
                     AdditionalServices = table.Column<string>(type: "TEXT", nullable: false),

@@ -52,7 +52,13 @@
         </div>
         <div class="form-group">
             <label asp-for="NewAnnouncement.ContactNumber" class="control-label"></label>
-            <input asp-for="NewAnnouncement.ContactNumber" class="form-control" required />
+            <div class="input-group">
+                <span class="input-group-text">+63</span>
+                <input asp-for="NewAnnouncement.ContactNumber" type="text" class="form-control" 
+                    pattern="\d*" maxlength="10" required 
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+            </div>
+            <small class="form-text text-muted">Enter your 10-digit phone number (e.g., 9123456789).</small>
             <span asp-validation-for="NewAnnouncement.ContactNumber" class="text-danger"></span>
         </div>
         <div class="form-group text-end mt-3">

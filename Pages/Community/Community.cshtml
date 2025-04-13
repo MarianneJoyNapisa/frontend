@@ -3,12 +3,44 @@
 @using Microsoft.AspNetCore.Authorization
 @using HomeownersMS.Data
 @using HomeownersMS.Models
+@using Microsoft.AspNetCore.Identity
 @{
     Layout = "_ResidentLayout";
     ViewData["HeaderTitle"] = "Community";
     ViewData["Title"] = "Community";
     var username = HttpContext?.User?.Identity?.Name ?? "Guest";
     ViewData["Username"] = username;
+}
+
+@functions {
+    private string GetProfileImageUrl(User user)
+    {
+        // Default profile image path
+        string defaultProfileImage = "/images/default-profile.jpg";
+
+        // Check if the user is null
+        if (user == null)
+        {
+            return defaultProfileImage;
+        }
+
+        // Determine the user's role and fetch the ProfileImage accordingly
+        if (User.IsInRole("resident") && user.Resident?.ProfileImage != null)
+        {
+            return $"/{user.Resident.ProfileImage}";
+        }
+        else if (User.IsInRole("admin") && user.Admin?.ProfileImage != null)
+        {
+            return $"/{user.Admin.ProfileImage}";
+        }
+        else if (User.IsInRole("staff") && user.Staff?.ProfileImage != null)
+        {
+            return $"/{user.Staff.ProfileImage}";
+        }
+
+        // Fallback to the default profile image
+        return defaultProfileImage;
+    }
 }
 
 <style>
@@ -571,10 +603,10 @@
                     <div class="post-card">
                         <div class="post-header">
                             <div class="user-info">
-                                <div class="user-avatar">
-                                    <img src="https://ui-avatars.com/api/?name=@(post.User?.Username ?? "User")&background=2c5887&color=fff"
-                                        alt="User Avatar" width="40" height="40">
-                                </div>
+                                <img src="@GetProfileImageUrl(post.User)"
+                                    alt="User Avatar" width="40" height="40"
+                                    class="profile-avatar"
+                                    style="border-color: var(--primary); height: 40px; width: 40px; margin-right: 10px;">
                                 <div class="user-details">
                                     <div class="post-author">@post.User?.Username</div>
                                     <div class="badges">
@@ -665,7 +697,7 @@
                                         <div class="d-flex justify-content-between">
                                             <div class="d-flex align-items-center">
                                                 <div class="user-avatar" style="width: 30px; height: 30px;">
-                                                    <img src="https://ui-avatars.com/api/?name=@(comment.User?.Username ?? "User")&background=2c5887&color=fff"
+                                                    <img src="@GetProfileImageUrl(comment.User)"
                                                         alt="User Avatar" width="30" height="30">
                                                 </div>
                                                 <strong class="ms-2">@comment.User?.Username</strong>

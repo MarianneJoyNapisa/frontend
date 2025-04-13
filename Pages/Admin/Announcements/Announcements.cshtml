@@ -8,6 +8,11 @@
     ViewData["Title"] = "Announcements";
     ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
 }
+<style>
+    .super-small {
+        font-size: x-small;
+    }
+</style>
 
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -36,36 +41,45 @@
                 </button>
             </h2>
             <div id="collapseToday" class="accordion-collapse collapse" data-bs-parent="#announcementsAccordion">
-                <div class="accordion-body p-0">
-                    @foreach (var item in Model.TodayAnnouncements)
-                    {
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center @GetHeaderColorClass(item)" style="padding: 0.75rem 1.25rem;">
-                                <div class="fw-bold text-light">@item.Title</div>
-                                <div>
-                                    <a asp-page="./Edit" asp-route-id="@item.AnnouncementId" class="btn btn-sm btn-warning me-1 ghost-link" title="Edit">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" 
-                                            data-id="@item.AnnouncementId" title="Delete">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="p-3">
-                                <div class="fw-bold mb-2">@(item.EventDate?.ToString("MMM dd, yyyy") ?? "n.d") @(item.EventTime.HasValue ? "@ " + item.EventTime.Value.ToString("hh:mm tt") : "--:--")</div>
-                                <div class="small mb-2"><i class="bi bi-geo-alt"></i> Blocks @item.BlocksAffected</div>
-                                @if (!string.IsNullOrEmpty(item.Office)) 
-                                {
-                                    <div class="small text-primary mb-2">
-                                        <i class="bi bi-telephone"></i> @item.Office - <span class="fw-bold">@item.ContactNumber</span>
+            @if (Model.TodayAnnouncements.Any())
+            {
+                        <div class="accordion-body p-0">
+                            @foreach (var item in Model.TodayAnnouncements)
+                            {
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center @GetHeaderColorClass(item)" style="padding: 0.75rem 1.25rem;">
+                                        <div class="fw-bold text-light">@item.Title</div>
+                                        <div>
+                                            <a asp-page="./Edit" asp-route-id="@item.AnnouncementId" class="btn btn-sm btn-warning me-1 ghost-link" title="Edit">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" 
+                                                    data-id="@item.AnnouncementId" title="Delete">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                }
-                                <div>@item.Content</div>
-                            </div>
+                                    <div class="p-3">
+                                        <div class="fw-bold mb-2">@(item.EventDate?.ToString("MMM dd, yyyy") ?? "n.d") @(item.EventTime.HasValue ? "@ " + item.EventTime.Value.ToString("hh:mm tt") : "--:--")</div>
+                                        <div class="small mb-2"><i class="bi bi-geo-alt"></i> Blocks @item.BlocksAffected</div>
+                                        @if (!string.IsNullOrEmpty(item.Office)) 
+                                        {
+                                            <div class="small text-primary mb-2">
+                                                <i class="bi bi-telephone"></i> (@item.Office) <span class="fw-bold">@item.ContactNumber</span>
+                                            </div>
+                                        }
+                                        <div class="text-muted super-small">@item.Content</div>
+                                    </div>
+                                </div>
+                            }
                         </div>
-                    }
+            }
+            else
+            {
+                <div class="text-muted text-center small m-3">
+                    <i class="bi bi-exclamation-circle me-2"></i> No announcements for today.
                 </div>
+            }
             </div>
         </div>
         
@@ -79,37 +93,47 @@
                 </button>
             </h2>
             <div id="collapseYesterday" class="accordion-collapse collapse" data-bs-parent="#announcementsAccordion">
-                <div class="accordion-body p-0">
-                    @foreach (var item in Model.YesterdayAnnouncements)
-                    {
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center @GetHeaderColorClass(item)" style="padding: 0.75rem 1.25rem;">
-                                <div class="fw-bold text-light">@item.Title</div>
-                                <div>
-                                    <a asp-page="./Edit" asp-route-id="@item.AnnouncementId" class="btn btn-sm btn-warning me-1 ghost-link" title="Edit">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" 
-                                            data-id="@item.AnnouncementId" title="Delete">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="p-3">
-                                <div class="fw-bold mb-2">@(item.EventDate?.ToString("MMM dd, yyyy") ?? "n.d") @(item.EventTime.HasValue ? "@ " + item.EventTime.Value.ToString("hh:mm tt") : "--:--")</div>
-                                <div class="small mb-2"><i class="bi bi-geo-alt"></i> Blocks @item.BlocksAffected</div>
-                                @if (!string.IsNullOrEmpty(item.Office)) {
-                                    <div class="small text-primary mb-2">
-                                        <i class="bi bi-telephone"></i> @item.Office - <span class="fw-bold">@item.ContactNumber</span>
+            @if (Model.YesterdayAnnouncements.Any())
+            {
+                        <div class="accordion-body p-0">
+                            @foreach (var item in Model.YesterdayAnnouncements)
+                            {
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center @GetHeaderColorClass(item)" style="padding: 0.75rem 1.25rem;">
+                                        <div class="fw-bold text-light">@item.Title</div>
+                                        <div>
+                                            <a asp-page="./Edit" asp-route-id="@item.AnnouncementId" class="btn btn-sm btn-warning me-1 ghost-link" title="Edit">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" 
+                                                    data-id="@item.AnnouncementId" title="Delete">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                }
-                                <div>@item.Content</div>
-                            </div>
+                                    <div class="p-3">
+                                        <div class="fw-bold mb-2">@(item.EventDate?.ToString("MMM dd, yyyy") ?? "n.d") @(item.EventTime.HasValue ? "@ " + item.EventTime.Value.ToString("hh:mm tt") : "--:--")</div>
+                                        <div class="small mb-2"><i class="bi bi-geo-alt"></i> Blocks @item.BlocksAffected</div>
+                                        @if (!string.IsNullOrEmpty(item.Office)) {
+                                            <div class="small text-primary mb-2">
+                                                <i class="bi bi-telephone"></i> (@item.Office) <span class="fw-bold">@item.ContactNumber</span>
+                                            </div>
+                                        }
+                                        <div class="text-muted super-small">@item.Content</div>
+                                    </div>
+                                </div>
+                            }
                         </div>
-                    }
+            }
+            else
+            {
+                <div class="text-muted text-center small m-3">
+                    <i class="bi bi-exclamation-circle me-2"></i> No announcements yesterday.
                 </div>
+            }
             </div>
         </div>
+        
         
         @* <!-- Week's Announcements --> *@
         <div class="accordion-item border-0 mb-2">
@@ -121,35 +145,44 @@
                 </button>
             </h2>
             <div id="collapseWeek" class="accordion-collapse collapse" data-bs-parent="#announcementsAccordion">
-                <div class="accordion-body p-0">
-                    @foreach (var item in Model.WeekAnnouncements)
-                    {
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center @GetHeaderColorClass(item)" style="padding: 0.75rem 1.25rem;">
-                                <div class="fw-bold text-light">@item.Title</div>
-                                <div>
-                                    <a asp-page="./Edit" asp-route-id="@item.AnnouncementId" class="btn btn-sm btn-warning me-1 ghost-link" title="Edit">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" 
-                                            data-id="@item.AnnouncementId" title="Delete">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
+                @if (Model.WeekAnnouncements.Any())
+                {
+                    <div class="accordion-body p-0">
+                        @foreach (var item in Model.WeekAnnouncements)
+                        {
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center @GetHeaderColorClass(item)" style="padding: 0.75rem 1.25rem;">
+                                    <div class="fw-bold text-light">@item.Title</div>
+                                    <div>
+                                        <a asp-page="./Edit" asp-route-id="@item.AnnouncementId" class="btn btn-sm btn-warning me-1 ghost-link" title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" 
+                                                data-id="@item.AnnouncementId" title="Delete">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="p-3">
+                                    <div class="fw-bold mb-2">@(item.EventDate?.ToString("MMM dd, yyyy") ?? "n.d") @(item.EventTime.HasValue ? "@ " + item.EventTime.Value.ToString("hh:mm tt") : "--:--")</div>
+                                    <div class="small mb-2"><i class="bi bi-geo-alt"></i> Blocks @item.BlocksAffected</div>
+                                    @if (!string.IsNullOrEmpty(item.Office)) {
+                                        <div class="small text-primary mb-2">
+                                            <i class="bi bi-telephone"></i> (@item.Office) <span class="fw-bold">@item.ContactNumber</span>
+                                        </div>
+                                    }
+                                    <div class="text-muted super-small">@item.Content</div>
                                 </div>
                             </div>
-                            <div class="p-3">
-                                <div class="fw-bold mb-2">@(item.EventDate?.ToString("MMM dd, yyyy") ?? "n.d") @(item.EventTime.HasValue ? "@ " + item.EventTime.Value.ToString("hh:mm tt") : "--:--")</div>
-                                <div class="small mb-2"><i class="bi bi-geo-alt"></i> Blocks @item.BlocksAffected</div>
-                                @if (!string.IsNullOrEmpty(item.Office)) {
-                                    <div class="small text-primary mb-2">
-                                        <i class="bi bi-telephone"></i> @item.Office - <span class="fw-bold">@item.ContactNumber</span>
-                                    </div>
-                                }
-                                <div>@item.Content</div>
-                            </div>
-                        </div>
-                    }
-                </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-muted text-center small m-3">
+                        <i class="bi bi-exclamation-circle me-2"></i> No announcements last week.
+                    </div>
+                }
             </div>
         </div>
         
@@ -163,35 +196,44 @@
                 </button>
             </h2>
             <div id="collapseMonth" class="accordion-collapse collapse show" data-bs-parent="#announcementsAccordion">
-                <div class="accordion-body p-0">
-                    @foreach (var item in Model.MonthAnnouncements)
-                    {
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center @GetHeaderColorClass(item)" style="padding: 0.75rem 1.25rem;">
-                                <div class="fw-bold text-light">@item.Title</div>
-                                <div>
-                                    <a asp-page="./Edit" asp-route-id="@item.AnnouncementId" class="btn btn-sm btn-warning me-1 ghost-link" title="Edit">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" 
-                                            data-id="@item.AnnouncementId" title="Delete">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
+                @if (Model.MonthAnnouncements.Any())
+                {
+                    <div class="accordion-body p-0">
+                        @foreach (var item in Model.MonthAnnouncements)
+                        {
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center @GetHeaderColorClass(item)" style="padding: 0.75rem 1.25rem;">
+                                    <div class="fw-bold text-light">@item.Title</div>
+                                    <div>
+                                        <a asp-page="./Edit" asp-route-id="@item.AnnouncementId" class="btn btn-sm btn-warning me-1 ghost-link" title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" 
+                                                data-id="@item.AnnouncementId" title="Delete">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="p-3">
+                                    <div class="fw-bold mb-2">@(item.EventDate?.ToString("MMM dd, yyyy") ?? "n.d") @(item.EventTime.HasValue ? "@ " + item.EventTime.Value.ToString("hh:mm tt") : "--:--")</div>
+                                    <div class="small mb-2"><i class="bi bi-geo-alt"></i> Blocks @item.BlocksAffected</div>
+                                    @if (!string.IsNullOrEmpty(item.Office)) {
+                                        <div class="small text-primary mb-2">
+                                            <i class="bi bi-telephone"></i> (@item.Office) <span class="fw-bold">@item.ContactNumber</span>
+                                        </div>
+                                    }
+                                    <div class="text-muted super-small">@item.Content</div>
                                 </div>
                             </div>
-                            <div class="p-3">
-                                <div class="fw-bold mb-2">@(item.EventDate?.ToString("MMM dd, yyyy") ?? "n.d") @(item.EventTime.HasValue ? "@ " + item.EventTime.Value.ToString("hh:mm tt") : "--:--")</div>
-                                <div class="small mb-2"><i class="bi bi-geo-alt"></i> Blocks @item.BlocksAffected</div>
-                                @if (!string.IsNullOrEmpty(item.Office)) {
-                                    <div class="small text-primary mb-2">
-                                        <i class="bi bi-telephone"></i> @item.Office - <span class="fw-bold">@item.ContactNumber</span>
-                                    </div>
-                                }
-                                <div>@item.Content</div>
-                            </div>
-                        </div>
-                    }
-                </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-muted text-center small m-3">
+                        <i class="bi bi-exclamation-circle me-2"></i> No announcements last month and beyond.
+                    </div>
+                }
             </div>
         </div>
     </div>

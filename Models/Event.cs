@@ -86,7 +86,7 @@ namespace HomeownersMS.Models
 
         // Contact info
 
-        public int? ContactNumber { get; set; }
+        public string? ContactNumber { get; set; }
 
         public string? ContactEmail { get; set; }
 

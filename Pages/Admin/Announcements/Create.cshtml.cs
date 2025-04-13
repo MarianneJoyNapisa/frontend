@@ -30,6 +30,12 @@ namespace HomeownersMS.Pages_Admin_Announcements
                 return Page();
             }
 
+            // Prepend the Philippine country code (+63) to the phone number
+            if (!string.IsNullOrEmpty(NewAnnouncement.ContactNumber))
+            {
+                NewAnnouncement.ContactNumber = "+63" + NewAnnouncement.ContactNumber.Trim();
+            }
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId != null)
             {

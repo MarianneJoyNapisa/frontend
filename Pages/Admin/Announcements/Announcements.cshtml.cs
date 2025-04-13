@@ -33,8 +33,7 @@ namespace HomeownersMS.Pages_Admin_Announcements
 
         public async Task OnGetAsync()
         {
-            var now = DateTime.Now;
-            var today = DateOnly.FromDateTime(now);
+            DateTime today = DateTime.Today;
             var yesterday = today.AddDays(-1);
             var weekStart = today.AddDays(-7);
             var monthStart = today.AddMonths(-1);
@@ -45,19 +44,19 @@ namespace HomeownersMS.Pages_Admin_Announcements
                 .ToListAsync();
 
             TodayAnnouncements = announcements
-                .Where(a => a.EventDate == today)
+                .Where(a => a.CreatedAt.Date == today.Date)
                 .ToList();
 
             YesterdayAnnouncements = announcements
-                .Where(a => a.EventDate == yesterday)
+                .Where(a => a.CreatedAt.Date == yesterday.Date)
                 .ToList();
 
             WeekAnnouncements = announcements
-                .Where(a => a.EventDate >= weekStart && a.EventDate < monthStart)
+                .Where(a => a.CreatedAt.Date >= weekStart.Date && a.CreatedAt.Date < monthStart.Date)
                 .ToList();
 
             MonthAnnouncements = announcements
-                .Where(a => a.EventDate < monthStart)
+                .Where(a => a.CreatedAt.Date < monthStart.Date)
                 .ToList();
         }
 
