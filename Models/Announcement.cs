@@ -21,7 +21,7 @@ namespace HomeownersMS.Models
 
         public string? Office { get; set; }
 
-        public int? ContactNumber { get; set;}
+        public string? ContactNumber { get; set;}
 
         [ForeignKey("Admin")]
         public int? CreatedBy { get; set; }

@@ -2,7 +2,11 @@
 @model HomeownersMS.Pages_Admin_Residents.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    Layout = "_AdminLayout";
+    ViewData["HeaderTitle"] = "User Management";
+    ViewData["Title"] = "Resident Detauls";
+    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+    ViewData["CurrentPage"] = currentPage;
 }
 
 <h1>Details</h1>

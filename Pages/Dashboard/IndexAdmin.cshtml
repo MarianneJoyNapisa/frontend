@@ -5,8 +5,4 @@
     Layout = "_AdminLayout"; // Use the Admin layout
     ViewData["HeaderTitle"] = "Dashboard";
     ViewData["Title"] = "Dashboard";
-    var username = HttpContext?.User?.Identity?.Name ?? "Guest";
-    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
-    ViewData["Username"] = username;
-    ViewData["CurrentPage"] = currentPage;
 }

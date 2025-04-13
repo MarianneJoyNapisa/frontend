@@ -2,7 +2,11 @@
 @model HomeownersMS.Pages_Admin_Staffs.DeleteModel
 
 @{
-    ViewData["Title"] = "Delete";
+    Layout = "_AdminLayout";
+    ViewData["HeaderTitle"] = "User Management";
+    ViewData["Title"] = "Delete Staff";
+    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+    ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
 }
 
 <h1>Delete</h1>

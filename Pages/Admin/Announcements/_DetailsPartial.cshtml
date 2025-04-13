@@ -1,0 +1,27 @@
+@model HomeownersMS.Models.Announcement
+
+<dl class="row">
+    <dt class="col-sm-3">Title:</dt>
+    <dd class="col-sm-9">@Model.Title</dd>
+
+    <dt class="col-sm-3">Content:</dt>
+    <dd class="col-sm-9">@Model.Content</dd>
+
+    <dt class="col-sm-3">Event Date:</dt>
+    <dd class="col-sm-9">@Model.EventDate?.ToString("MM/dd/yyyy") @(Model.EventTime.HasValue ? Model.EventTime.Value.ToString("hh\\:mm") : "")</dd>
+
+    <dt class="col-sm-3">Blocks Affected:</dt>
+    <dd class="col-sm-9">@Model.BlocksAffected</dd>
+
+    <dt class="col-sm-3">Office:</dt>
+    <dd class="col-sm-9">@Model.Office</dd>
+
+    <dt class="col-sm-3">Contact Number:</dt>
+    <dd class="col-sm-9">@Model.ContactNumber</dd>
+
+    <dt class="col-sm-3">Created By:</dt>
+    <dd class="col-sm-9">@Model.Admin?.FName @Model.Admin?.LName</dd>
+
+    <dt class="col-sm-3">Created At:</dt>
+    <dd class="col-sm-9">@Model.CreatedAt.ToString("MM/dd/yyyy HH:mm")</dd>
+</dl>

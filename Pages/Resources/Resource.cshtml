@@ -4,10 +4,6 @@
     Layout = "_ResidentLayout"; // Use your layout file
     ViewData["HeaderTitle"] = "Resources";
     ViewData["Title"] = "Resources";
-    var username = HttpContext?.User?.Identity?.Name ?? "Guest";
-    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
-    ViewData["Username"] = username;
-    ViewData["CurrentPage"] = currentPage;
 }
 
 <style>
