@@ -60,20 +60,6 @@
         padding: 12px;
     }
 
-    /* Security logs and billing styles */
-    .secTags,
-    .duePrices {
-        font-weight: bold;
-    }
-
-    .secTags {
-        color: white;
-        background-color: #28a745;
-        border-radius: 4px;
-        padding: 2px 6px;
-        display: inline-block;
-    }
-
     /* Custom button styling */
     .show-more-btn {
         background-color: transparent;
@@ -90,11 +76,7 @@
         background-color: #f1f1f1;
     }
 
-    /* Selected date highlight */
-    .fc-daygrid-day.selected {
-        background-color: rgba(0, 123, 255, 0.1);
-    }
-
+    /* Events card */
     /* Event Card Styles */
     .event-card {
         border-left: 4px solid var(--primary);
@@ -149,116 +131,6 @@
         text-align: center;
         color: #666;
         padding: 10px;
-    }
-
-    .bg-transparent {
-        background-color: transparent !important;
-    }
-
-    .ann-card {
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        transition: all 0.2s ease;
-    }
-
-    .ann-card:hover {
-        transform: translate(0, -2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    /* FullCalendar Custom Styles with Fixed Height */
-    .fc .fc-toolbar-title {
-        font-size: 1.1rem;
-        font-weight: bold;
-    }
-
-    .fc .fc-col-header-cell {
-        background-color: transparent !important;
-        padding: 8px 0;
-    }
-
-    .fc .fc-col-header-cell-cushion {
-        color: #6c757d; /* text-muted */
-        text-decoration: none !important;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        font-weight: normal;
-    }
-
-    .fc .fc-button {
-        background-color: transparent !important;
-        border: none !important;
-        color: var(--bs-primary) !important;
-        transition: all 0.2s ease;
-    }
-
-    .fc .fc-button:hover {
-        background-color: var(--bs-primary) !important;
-        color: white !important;
-    }
-
-
-    /* Square date cells */
-    .fc .fc-daygrid-day-frame {
-        aspect-ratio: 1/1; /* Perfect square */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 2px;
-    }
-
-    .fc .fc-daygrid-day-number {
-        color: #212529; /* black */
-        text-decoration: none !important;
-        font-weight: bold;
-        font-size: 0.85rem;
-    }
-
-    .fc .fc-daygrid-day:hover .fc-daygrid-day-number {
-        cursor: pointer;
-    }
-
-    /* Today's date styling */
-    .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-frame {
-        background-color: var(--bs-danger) !important;
-        border-radius: 50%;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .fc .fc-daygrid-day {
-        background-color: transparent !important;
-    }
-    
-
-    #calendar .row td {
-        background: transparent !important;
-    }
-
-    .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
-        color: white !important;
-    }
-
-    /* Selected date styling */
-    .fc .fc-daygrid-day.selected .fc-daygrid-day-frame {
-        background-color: var(--bs-primary) !important;
-        border-radius: 50%;
-    }
-
-    .fc .fc-daygrid-day.selected .fc-daygrid-day-number {
-        color: white !important;
-    }
-
-    /* Remove borders and spacing */
-    .fc .fc-scrollgrid {
-        border: none !important;
-    }
-
-    .fc .fc-daygrid-body {
-        border: none !important;
-    }
-
-    .fc .fc-daygrid-day {
-        border: none !important;
     }
 
     /* custom */
@@ -390,7 +262,7 @@
     </div>
 </div>
 
-<!-- Add FullCalendar JS -->
+<!-- FullCalendar JS -->
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -408,33 +280,47 @@ document.addEventListener('DOMContentLoaded', function () {
         aspectRatio: 1.5,
         dayMaxEventRows: true,
         firstDay: 1,
-        dayHeaderFormat: { weekday: 'short' }, // Show only 3-letter weekdays
+        dayHeaderFormat: { weekday: 'short' },
         dayHeaderContent: function(arg) {
-            return arg.text.slice(0, 3); // Ensure only first 3 letters
+            return arg.text.slice(0, 3);
         },
         dateClick: function(info) {
             handleDateSelection(info.dateStr, info.dayEl);
         },
         dayCellDidMount: function(info) {
-            // Make the date cell focusable
             const cell = info.el.querySelector('.fc-daygrid-day-frame');
             if (cell) {
-                // Ensure the dateStr is valid
-                const date = info.date; // FullCalendar provides the `date` property as a Date object
-                const dateStr = date.toISOString().split('T')[0]; // Convert to YYYY-MM-DD format
+                // Get date in local timezone (not UTC)
+                const date = new Date(info.date);
+                const localDateStr = formatLocalDate(date); // Use helper function
 
-                // Set attributes for accessibility
-                cell.setAttribute('tabindex', '0'); // Make it focusable
-                cell.setAttribute('role', 'button'); // Indicate it's interactive
-                cell.setAttribute('aria-label', `Select date ${dateStr}`); // Accessibility label
+                cell.setAttribute('tabindex', '0');
+                cell.setAttribute('role', 'button');
+                cell.setAttribute('aria-label', `Select date ${localDateStr}`);
 
-                // Handle Enter or Space key press
+                // Add hover class to parent day element
+                info.el.classList.add('fc-day-hoverable');
+
                 cell.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault(); // Prevent scrolling or other default behavior
-                        handleDateSelection(dateStr, info.el);
+                        e.preventDefault();
+                        handleDateSelection(localDateStr, info.el);
                     }
                 });
+
+                // Check if this day has events - use local date string
+                fetch(`?handler=HasEvents&date=${localDateStr}`)
+                    .then(response => response.json())
+                    .then(hasEvents => {
+                        if (hasEvents) {
+                            const dot = document.createElement('div');
+                            dot.className = 'event-dot';
+                            const dayNumber = info.el.querySelector('.fc-daygrid-day-number');
+                            if (dayNumber) {
+                                dayNumber.appendChild(dot);
+                            }
+                        }
+                    });
             }
         },
         datesSet: function() {
@@ -451,7 +337,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             else
             {
-                // Highlight the selected date
                 <text>
                     const selectedDateStr = '@Model.SelectedDate.Value.ToString("yyyy-MM-dd")';
                     const selectedEl = document.querySelector(`.fc-day[data-date="${selectedDateStr}"]`);
@@ -464,27 +349,27 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     calendar.render();
 
-    // Function to handle date selection
+    // Helper function to format date as YYYY-MM-DD in local time
+    function formatLocalDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
     function handleDateSelection(dateStr, dayEl) {
-        // Remove previous selection
         document.querySelectorAll('.fc-daygrid-day.selected').forEach(el => {
             el.classList.remove('selected');
         });
 
-        // Add selection to clicked/focused date
         if (dayEl) {
             dayEl.classList.add('selected');
         }
 
-        console.log(dateStr);
-
-        // Load events for selected date via AJAX
         loadEventsForDate(dateStr);
     }
 
-    // Function to load events for a specific date
     function loadEventsForDate(dateStr) {
-        console.log('event dates called');
         const date = new Date(dateStr);
         const formattedDate = date.toISOString().split('T')[0];
 
@@ -492,50 +377,200 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.text())
             .then(html => {
                 document.getElementById('events-container').innerHTML = html;
-                // Add the same hover effects to newly loaded cards
-                document.querySelectorAll('.event-card').forEach(card => {
-                    card.addEventListener('mouseenter', function () {
-                        this.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
-                        this.style.transform = 'translateY(-2px)';
-                    });
-                    card.addEventListener('mouseleave', function () {
-                        this.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
-                        this.style.transform = 'translateY(0)';
-                    });
-                });
+                addCardHoverEffects();
             })
             .catch(error => {
                 console.error('Error loading events:', error);
             });
     }
 
-    // Reset button functionality
+    function addCardHoverEffects() {
+        document.querySelectorAll('.event-card').forEach(card => {
+            card.addEventListener('mouseenter', function () {
+                this.style.boxShadow = '0 6px 12px rgba(0,0,0,0.12)';
+                this.style.transform = 'translateY(-4px)';
+            });
+            card.addEventListener('mouseleave', function () {
+                this.style.boxShadow = '0 2px 6px rgba(0,0,0,0.08)';
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    }
+
     document.getElementById('reset-calendar').addEventListener('click', function () {
-        // Remove all selections
         document.querySelectorAll('.fc-daygrid-day.selected').forEach(el => {
             el.classList.remove('selected');
         });
 
-        // Reload all events
         fetch('?handler=FilterEvents')
             .then(response => response.text())
             .then(html => {
                 document.getElementById('events-container').innerHTML = html;
+                addCardHoverEffects();
             })
             .catch(error => {
                 console.error('Error resetting events:', error);
             });
     });
 
-    // Make calendar responsive
     function handleResize() {
         calendar.updateSize();
     }
 
-    // Add resize event listener
     window.addEventListener('resize', handleResize);
-
-    // Initial size update
     handleResize();
 });
 </script>
+
+<style>
+    /* Modern FullCalendar Styles */
+    .fc {
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        --fc-border-color: rgba(0, 0, 0, 0.05);
+        --fc-today-bg-color: transparent;
+        --fc-neutral-bg-color: transparent;
+        --fc-highlight-color: rgba(13, 110, 253, 0.1);
+    }
+
+    /* Header styling */
+    .fc .fc-toolbar-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #2d3748;
+    }
+
+    .fc .fc-col-header-cell {
+        background-color: transparent !important;
+        padding: 12px 0;
+    }
+
+    .fc .fc-col-header-cell-cushion {
+        color: #64748b;
+        text-decoration: none !important;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+
+    /* Navigation buttons */
+    .fc .fc-button {
+        background-color: transparent !important;
+        border: none !important;
+        color: #3b82f6 !important;
+        transition: all 0.2s ease;
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 1rem;
+    }
+
+    .fc .fc-button:hover {
+        background-color: #eff6ff !important;
+        color: #2563eb !important;
+        transform: translateY(-1px);
+    }
+
+    .fc .fc-button:active {
+        transform: translateY(0);
+    }
+
+    /* Day cells */
+    .fc .fc-daygrid-day-frame {
+        aspect-ratio: 1/1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 4px;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+    }
+
+    .fc-day-hoverable:hover .fc-daygrid-day-frame {
+        background-color: rgba(59, 130, 246, 0.1) !important;
+        transform: scale(1.05);
+    }
+
+    .fc .fc-daygrid-day-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        color: #1e293b;
+        text-decoration: none !important;
+        font-weight: 500;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+    }
+
+    /* Today's date */
+    .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-frame {
+        background-color: #3b82f6 !important;
+        box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
+    }
+
+    .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+        color: white !important;
+        font-weight: 600;
+    }
+
+    /* Selected date */
+    .fc .fc-daygrid-day.selected .fc-daygrid-day-frame {
+        background-color: #3b82f6 !important;
+        box-shadow: 0 3px 8px rgba(59, 130, 246, 0.4);
+        transform: scale(1.05);
+    }
+
+    .fc .fc-daygrid-day.selected .fc-daygrid-day-number {
+        color: white !important;
+        font-weight: 600;
+    }
+
+    /* Remove borders and spacing */
+    .fc .fc-scrollgrid {
+        border: none !important;
+    }
+
+    .fc .fc-daygrid-body {
+        border: none !important;
+    }
+
+    .fc .fc-daygrid-day {
+        border: none !important;
+    }
+
+    /* Month divider */
+    .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
+        min-height: 0;
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .fc .fc-toolbar-title {
+            font-size: 1rem;
+        }
+        
+        .fc .fc-col-header-cell-cushion {
+            font-size: 0.7rem;
+        }
+        
+        .fc .fc-daygrid-day-number {
+            font-size: 0.8rem;
+        }
+    }
+
+    /* event dot indicator */
+    .event-dot {
+        width: 6px;
+        height: 6px;
+        background-color: #3b82f6;
+        border-radius: 50%;
+        display: inline-block;
+        margin-left: 4px;
+        vertical-align: middle;
+    }
+
+    .fc-daygrid-day.fc-day-today .event-dot,
+    .fc-daygrid-day.selected .event-dot {
+        background-color: white;
+    }
+</style>
