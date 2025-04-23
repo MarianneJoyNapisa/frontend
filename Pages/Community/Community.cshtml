@@ -665,23 +665,21 @@
                                     }
                                     <button type="button" class="btn-vote upvote-btn @(userVote == true ? "active" : "")"
                                         data-post-id="@post.CommunityPostId" data-is-upvote="true">
-                                        <i class="fas fa-arrow-up"></i> <span class="upvote-count">@post.Votes.Count(v =>
-                                                                                v.IsUpvote == true)</span>
-                            </button>
-                            <span class="net-votes" data-post-id="@post.CommunityPostId">@(post.Votes.Count(v =>
+                                        <i class="fas fa-arrow-up"></i>
+                                    </button>
+                                    <span class="net-votes" data-post-id="@post.CommunityPostId">@(post.Votes.Count(v =>
                                                                 v.IsUpvote == true) - post.Votes.Count(v => v.IsUpvote == false))</span>
-                            <button type="button" class="btn-vote downvote-btn @(userVote == false ? "active" : "")"
-                                data-post-id="@post.CommunityPostId" data-is-upvote="false">
-                                <i class="fas fa-arrow-down"></i> <span class="downvote-count">@post.Votes.Count(v =>
-                                                                        v.IsUpvote == false)</span>
-                            </button>
-                        </span>
-                    </div>
-                    <div class="post-meta">
-                        <span class="badge badge-primary">@(post.Comments?.Count ?? 0) comments</span>
-                        <span class="badge badge-secondary">@post.CreatedAt.ToString("g")</span>
-                    </div>
-                </div>
+                                    <button type="button" class="btn-vote downvote-btn @(userVote == false ? "active" : "")"
+                                        data-post-id="@post.CommunityPostId" data-is-upvote="false">
+                                        <i class="fas fa-arrow-down"></i>
+                                    </button>
+                                </span>
+                          </div>
+                            <div class="post-meta">
+                                <span class="badge badge-primary">@(post.Comments?.Count ?? 0) comments</span>
+                                <span class="badge badge-secondary">@post.CreatedAt.ToString("g")</span>
+                            </div>
+                        </div>
 
                         @* <!-- Comments Section --> *@
                         <div class="comments-section mt-3">
