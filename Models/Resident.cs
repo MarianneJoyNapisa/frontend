@@ -19,9 +19,9 @@ namespace HomeownersMS.Models
 
         public virtual User User { get; set; }
 
-        public virtual ICollection<ServiceRequest> ServiceRequests { get; set; } = new List<ServiceRequest>();
-
         public virtual FacilityReview? FacilityReview { get; set; }
+
+        // public ICollection<ServiceRequest> ServiceRequest { get; set; } = new List<ServiceRequest>();
 
         public Resident()
         {

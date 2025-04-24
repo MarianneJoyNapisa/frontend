@@ -398,18 +398,22 @@ namespace HomeownersMS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime?>("AvailableDateTimeEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("AvailableDateTimeStart")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("StaffId")
+                    b.Property<int?>("ServiceCategory")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
                         .HasColumnType("TEXT");
 
                     b.HasKey("ServiceId");
-
-                    b.HasIndex("StaffId");
 
                     b.ToTable("Service", (string)null);
                 });
@@ -420,10 +424,13 @@ namespace HomeownersMS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("RequestedAt")
+                    b.Property<string>("IssueDescription")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("RequestedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("RequestedBy")
@@ -435,9 +442,6 @@ namespace HomeownersMS.Migrations
                     b.Property<int?>("Status")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Title")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("ServiceRequestId");
 
                     b.HasIndex("RequestedBy");
@@ -445,6 +449,31 @@ namespace HomeownersMS.Migrations
                     b.HasIndex("ServiceId");
 
                     b.ToTable("ServiceRequest", (string)null);
+                });
+
+            modelBuilder.Entity("HomeownersMS.Models.ServiceStaff", b =>
+                {
+                    b.Property<int>("ServiceStaffId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("StaffId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ServiceStaffId");
+
+                    b.HasIndex("StaffId");
+
+                    b.HasIndex("ServiceId", "StaffId")
+                        .IsUnique();
+
+                    b.ToTable("ServiceStaff", (string)null);
                 });
 
             modelBuilder.Entity("HomeownersMS.Models.Staff", b =>
@@ -603,8 +632,7 @@ namespace HomeownersMS.Migrations
                 {
                     b.HasOne("HomeownersMS.Models.Facility", "Facility")
                         .WithMany("FacilityReviews")
-                        .HasForeignKey("FacilityId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("FacilityId");
 
                     b.HasOne("HomeownersMS.Models.Resident", "Resident")
                         .WithMany()
@@ -641,31 +669,40 @@ namespace HomeownersMS.Migrations
                     b.Navigation("Admin");
                 });
 
-            modelBuilder.Entity("HomeownersMS.Models.Service", b =>
-                {
-                    b.HasOne("HomeownersMS.Models.Staff", "Staff")
-                        .WithMany("Services")
-                        .HasForeignKey("StaffId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("Staff");
-                });
-
             modelBuilder.Entity("HomeownersMS.Models.ServiceRequest", b =>
                 {
                     b.HasOne("HomeownersMS.Models.Resident", "Resident")
-                        .WithMany("ServiceRequests")
+                        .WithMany()
                         .HasForeignKey("RequestedBy")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("HomeownersMS.Models.Service", "Service")
-                        .WithMany("ServiceRequests")
+                        .WithMany()
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Resident");
 
                     b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("HomeownersMS.Models.ServiceStaff", b =>
+                {
+                    b.HasOne("HomeownersMS.Models.Service", "Service")
+                        .WithMany("ServiceStaff")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HomeownersMS.Models.Staff", "Staff")
+                        .WithMany("ServiceStaff")
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Service");
+
+                    b.Navigation("Staff");
                 });
 
             modelBuilder.Entity("HomeownersMS.Models.Staff", b =>
@@ -694,18 +731,16 @@ namespace HomeownersMS.Migrations
             modelBuilder.Entity("HomeownersMS.Models.Resident", b =>
                 {
                     b.Navigation("FacilityReview");
-
-                    b.Navigation("ServiceRequests");
                 });
 
             modelBuilder.Entity("HomeownersMS.Models.Service", b =>
                 {
-                    b.Navigation("ServiceRequests");
+                    b.Navigation("ServiceStaff");
                 });
 
             modelBuilder.Entity("HomeownersMS.Models.Staff", b =>
                 {
-                    b.Navigation("Services");
+                    b.Navigation("ServiceStaff");
                 });
 
             modelBuilder.Entity("HomeownersMS.Models.User", b =>

@@ -4,6 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HomeownersMS.Models
 {
+    public enum ServiceCategory {
+        repairsAndMaintenance,
+        cleaningServices,
+        landscapingMaintenance,
+        otherServices
+    }
     public class Service 
     {
         [Key]
@@ -12,12 +18,15 @@ namespace HomeownersMS.Models
 
         public string? Description { get; set; }
 
-        [ForeignKey("Staff")]
-        public int? StaffId { get; set; }
+        public ServiceCategory? ServiceCategory { get; set; }
 
-        public virtual Staff? Staff { get; set; }
+        public DateTime? AvailableDateTimeStart { get; set; }
+        public DateTime? AvailableDateTimeEnd { get; set; }
 
-        public virtual ICollection<ServiceRequest> ServiceRequests { get; set; } = new List<ServiceRequest>();
+        // Many-to-many to Staff
+        public ICollection<ServiceStaff> ServiceStaff { get; set; } = new List<ServiceStaff>();
+
+        // public ICollection<ServiceRequest> ServiceRequest { get; set; } = new List<ServiceRequest>();
     }
 }
 

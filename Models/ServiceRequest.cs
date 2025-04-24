@@ -16,13 +16,14 @@ namespace HomeownersMS.Models
         [Key]
         public int ServiceRequestId { get; set; }
 
-        public string? Title { get; set; }
 
-        public string? Description { get; set; }
+        public string? IssueDescription { get; set; }
 
         public Statuses? Status { get; set; }
 
-        public DateTime RequestedAt { get; set; } = DateTime.Now;
+        public DateTime? RequestedAt { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         [ForeignKey("Resident")]
         public int? RequestedBy { get; set; }
