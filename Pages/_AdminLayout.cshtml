@@ -44,10 +44,10 @@
                 if (admin != null)
                 {
                     var name = $"{admin.FName} {admin.LName}".Trim();
-                    return (admin.ProfileImage ?? "/images/default-profile.jpg", name);
+                    return (admin.ProfileImage ?? "", name);
                 }
             }
-            return ("/images/default-profile.jpg", "Guest");
+            return ("", "Guest");
         });
         Console.WriteLine(profileImagePath);
         

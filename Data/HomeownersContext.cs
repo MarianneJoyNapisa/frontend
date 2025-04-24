@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using HomeownersMS.Models;
-using System.Text.Json; // For JSON serialization
+using System.Text.Json;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor; // For JSON serialization
 
 namespace HomeownersMS.Data
 {
@@ -19,6 +20,7 @@ namespace HomeownersMS.Data
         public DbSet<Staff> Staffs { get; set; } = default!;
         public DbSet<Admin> Admins { get; set; } = default!;
         public DbSet<Service> Services { get; set; } = default!;
+        public DbSet<ServiceStaff> ServiceStaffs { get; set; } = default!;
         public DbSet<ServiceRequest> ServiceRequests { get; set; } = default!;
         public DbSet<Facility> Facilities { get; set; } = default!;
         public DbSet<FacilityReview> FacilityReviews { get; set; } = default!;
@@ -50,29 +52,39 @@ namespace HomeownersMS.Data
                 .HasForeignKey<Resident>(r => r.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Service>()
-                .HasOne(s => s.Staff)
-                .WithMany(st => st.Services)
-                .HasForeignKey(s => s.StaffId)
-                .OnDelete(DeleteBehavior.SetNull);
+            modelBuilder.Entity<ServiceStaff>()
+                .HasKey(ss => ss.ServiceStaffId);
+            
+            // One to many towards Service
+            modelBuilder.Entity<ServiceStaff>()
+                .HasOne(ss => ss.Service)
+                .WithMany(s => s.ServiceStaff)
+                .HasForeignKey(ss => ss.ServiceId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // One to many towards Staff
+            modelBuilder.Entity<ServiceStaff>()
+                .HasOne(ss => ss.Staff)
+                .WithMany(s => s.ServiceStaff)
+                .HasForeignKey(ss => ss.StaffId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Indexing for faster queries? 
+            modelBuilder.Entity<ServiceStaff>()
+                .HasIndex(ss => new { ss.ServiceId, ss.StaffId })
+                .IsUnique();
 
             modelBuilder.Entity<ServiceRequest>()
                 .HasOne(sr => sr.Resident)
-                .WithMany(r => r.ServiceRequests)
+                .WithMany()
                 .HasForeignKey(sr => sr.RequestedBy)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ServiceRequest>()
                 .HasOne(sr => sr.Service)
-                .WithMany(s => s.ServiceRequests)
+                .WithMany()
                 .HasForeignKey(sr => sr.ServiceId)
                 .OnDelete(DeleteBehavior.SetNull);
-
-            modelBuilder.Entity<Facility>()
-                .HasMany(f => f.FacilityReviews)
-                .WithOne(r => r.Facility)
-                .HasForeignKey(r => r.FacilityId)
-                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<FacilityRequest>()
                 .HasOne(fr => fr.Resident)
@@ -178,6 +190,7 @@ namespace HomeownersMS.Data
             modelBuilder.Entity<Staff>().ToTable("Staff");
             modelBuilder.Entity<Admin>().ToTable("Admin");
             modelBuilder.Entity<Service>().ToTable("Service");
+            modelBuilder.Entity<ServiceStaff>().ToTable("ServiceStaff");
             modelBuilder.Entity<ServiceRequest>().ToTable("ServiceRequest");
             modelBuilder.Entity<Facility>().ToTable("Facility");
             modelBuilder.Entity<FacilityRequest>().ToTable("FacilityRequest");

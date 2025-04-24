@@ -52,11 +52,11 @@ namespace HomeownersMS.Pages_Admin_Announcements
                 .ToList();
 
             WeekAnnouncements = announcements
-                .Where(a => a.CreatedAt.Date >= weekStart.Date && a.CreatedAt.Date < monthStart.Date)
+                .Where(a => a.CreatedAt.Date >= weekStart.Date && a.CreatedAt.Date < yesterday.Date)
                 .ToList();
 
             MonthAnnouncements = announcements
-                .Where(a => a.CreatedAt.Date < monthStart.Date)
+                .Where(a => a.CreatedAt.Date < weekStart.Date)
                 .ToList();
         }
 

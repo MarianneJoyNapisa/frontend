@@ -64,7 +64,7 @@ namespace HomeownersMS.Pages.Announcement_Events
                 .ToList();
 
             WeekAgoAnnouncements = announcementsQuery
-                .Where(a => a.CreatedAt.Date >= weekAgo.Date && a.CreatedAt.Date < yesterday.Date)
+                .Where(a => a.CreatedAt.Date < yesterday.Date)
                 .ToList();
         }
     }

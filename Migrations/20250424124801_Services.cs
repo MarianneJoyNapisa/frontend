@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HomeownersMS.Migrations
 {
     /// <inheritdoc />
-    public partial class PhoneText : Migration
+    public partial class Services : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,6 +26,23 @@ namespace HomeownersMS.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Facility", x => x.FacilityId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Service",
+                columns: table => new
+                {
+                    ServiceId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(type: "TEXT", nullable: true),
+                    Description = table.Column<string>(type: "TEXT", nullable: true),
+                    ServiceCategory = table.Column<int>(type: "INTEGER", nullable: true),
+                    AvailableDateTimeStart = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    AvailableDateTimeEnd = table.Column<DateTime>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Service", x => x.ServiceId);
                 });
 
             migrationBuilder.CreateTable(
@@ -298,8 +315,7 @@ namespace HomeownersMS.Migrations
                         name: "FK_FacilityReview_Facility_FacilityId",
                         column: x => x.FacilityId,
                         principalTable: "Facility",
-                        principalColumn: "FacilityId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "FacilityId");
                     table.ForeignKey(
                         name: "FK_FacilityReview_Resident_ResidentId",
                         column: x => x.ResidentId,
@@ -314,24 +330,60 @@ namespace HomeownersMS.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Service",
+                name: "ServiceRequest",
                 columns: table => new
                 {
-                    ServiceId = table.Column<int>(type: "INTEGER", nullable: false)
+                    ServiceRequestId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(type: "TEXT", nullable: true),
-                    Description = table.Column<string>(type: "TEXT", nullable: true),
-                    StaffId = table.Column<int>(type: "INTEGER", nullable: true)
+                    IssueDescription = table.Column<string>(type: "TEXT", nullable: true),
+                    Status = table.Column<int>(type: "INTEGER", nullable: true),
+                    RequestedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    RequestedBy = table.Column<int>(type: "INTEGER", nullable: true),
+                    ServiceId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Service", x => x.ServiceId);
+                    table.PrimaryKey("PK_ServiceRequest", x => x.ServiceRequestId);
                     table.ForeignKey(
-                        name: "FK_Service_Staff_StaffId",
+                        name: "FK_ServiceRequest_Resident_RequestedBy",
+                        column: x => x.RequestedBy,
+                        principalTable: "Resident",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ServiceRequest_Service_ServiceId",
+                        column: x => x.ServiceId,
+                        principalTable: "Service",
+                        principalColumn: "ServiceId",
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServiceStaff",
+                columns: table => new
+                {
+                    ServiceStaffId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ServiceId = table.Column<int>(type: "INTEGER", nullable: false),
+                    StaffId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceStaff", x => x.ServiceStaffId);
+                    table.ForeignKey(
+                        name: "FK_ServiceStaff_Service_ServiceId",
+                        column: x => x.ServiceId,
+                        principalTable: "Service",
+                        principalColumn: "ServiceId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ServiceStaff_Staff_StaffId",
                         column: x => x.StaffId,
                         principalTable: "Staff",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -369,36 +421,6 @@ namespace HomeownersMS.Migrations
                         principalTable: "User",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ServiceRequest",
-                columns: table => new
-                {
-                    ServiceRequestId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(type: "TEXT", nullable: true),
-                    Description = table.Column<string>(type: "TEXT", nullable: true),
-                    Status = table.Column<int>(type: "INTEGER", nullable: true),
-                    RequestedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    RequestedBy = table.Column<int>(type: "INTEGER", nullable: true),
-                    ServiceId = table.Column<int>(type: "INTEGER", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ServiceRequest", x => x.ServiceRequestId);
-                    table.ForeignKey(
-                        name: "FK_ServiceRequest_Resident_RequestedBy",
-                        column: x => x.RequestedBy,
-                        principalTable: "Resident",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ServiceRequest_Service_ServiceId",
-                        column: x => x.ServiceId,
-                        principalTable: "Service",
-                        principalColumn: "ServiceId",
-                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateIndex(
@@ -474,11 +496,6 @@ namespace HomeownersMS.Migrations
                 column: "CreatedBy");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Service_StaffId",
-                table: "Service",
-                column: "StaffId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ServiceRequest_RequestedBy",
                 table: "ServiceRequest",
                 column: "RequestedBy");
@@ -487,6 +504,17 @@ namespace HomeownersMS.Migrations
                 name: "IX_ServiceRequest_ServiceId",
                 table: "ServiceRequest",
                 column: "ServiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceStaff_ServiceId_StaffId",
+                table: "ServiceStaff",
+                columns: new[] { "ServiceId", "StaffId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceStaff_StaffId",
+                table: "ServiceStaff",
+                column: "StaffId");
         }
 
         /// <inheritdoc />
@@ -514,6 +542,9 @@ namespace HomeownersMS.Migrations
                 name: "ServiceRequest");
 
             migrationBuilder.DropTable(
+                name: "ServiceStaff");
+
+            migrationBuilder.DropTable(
                 name: "CommunityPost");
 
             migrationBuilder.DropTable(
@@ -526,13 +557,13 @@ namespace HomeownersMS.Migrations
                 name: "Service");
 
             migrationBuilder.DropTable(
+                name: "Staff");
+
+            migrationBuilder.DropTable(
                 name: "Facility");
 
             migrationBuilder.DropTable(
                 name: "Resident");
-
-            migrationBuilder.DropTable(
-                name: "Staff");
 
             migrationBuilder.DropTable(
                 name: "User");
