@@ -5,14 +5,14 @@
 
 @{
     Layout = "_ResidentLayout"; 
-    ViewData["HeaderTitle"] = "Facilities";
-    ViewData["Title"] = @Model.Facility?.Name ?? "Facilities";    
+    ViewData["HeaderTitle"] = "Reservation";
+    ViewData["Title"] = @Model.Facility?.Name ?? "Facility";    
 }
 
 <style>
     .facility-hero {
         position: relative;
-        height: 70vh;
+        height: 300px;
         overflow: hidden;
         margin-bottom: 2rem;
     }
@@ -30,7 +30,7 @@
         right: 0;
         background: rgba(0, 0, 0, 0.7);
         color: white;
-        padding: 2rem;
+        padding: 1rem;
     }
     
     .rating-stars {
@@ -62,21 +62,35 @@
     }
 </style>
 
-<div class="container-fluid px-0">
+<div class="container">
+
+    @* Breadcrumb navigatin *@
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a asp-page="/Reservation/Reservation">Reservation</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@(Model.Facility?.Name ?? "Facility")</li>
+        </ol>
+    </nav>
+
     @if (Model.Facility != null)
     {
         @* <!-- Facility Hero Section --> *@
         <div class="facility-hero">
             <img src="@Url.Content($"~/{Model.Facility.FacilityImage}")" alt="@Model.Facility.Name" />
             <div class="facility-overlay">
-                <h1 class="display-4">@Model.Facility.Name</h1>
-                <p class="lead">
-                    <i class="fas fa-map-marker-alt"></i> @Model.Facility.Address
-                </p>
-                <h4>₱@(Convert.ToDecimal(Model.Facility.PricePerHour).ToString("N0")) / hour</h4>
-                <a asp-page="/Reservation/Reserve" asp-route-facilityId="@Model.Facility.FacilityId" class="btn btn-primary btn-lg mt-3">
-                    Reserve Now
-                </a>
+                <div class="row">
+                    <div class="col-6">
+                        <h4>@Model.Facility.Name</h4>
+                        <h6 class="text-capitalize"><i class="fas fa-map-marker-alt"></i> @Model.Facility.Address</h6>
+                        <a asp-page="/Reservation/Reserve" asp-route-facilityId="@Model.Facility.FacilityId" class="btn btn-primary btn-lg mt-3">
+                            Reserve Now
+                        </a>
+                    </div>
+                    <div class="col-6 d-flex align-items-center justify-content-end">
+                        <h4 class="card-title fw-bold">₱@(Convert.ToDecimal(Model.Facility.PricePerHour).ToString("N0")) / hour</h4>
+                    </div>
+                </div>
             </div>
         </div>
 
