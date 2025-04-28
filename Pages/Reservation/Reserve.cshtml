@@ -4,15 +4,26 @@
 
 @{
     Layout = "_ResidentLayout"; 
-    ViewData["HeaderTitle"] = "Reservation Details";
-    ViewData["Title"] = @Model.Facility.Name ?? "Reservation Details";
+    ViewData["HeaderTitle"] = "Reservation";
+    ViewData["Title"] = @Model.Facility.Name ?? "Reservation Form";
 }
 
 <div class="container">
-    <div asp-validation-summary="All" class="text-danger"></div>    
+    <div asp-validation-summary="All" class="text-danger"></div>   
+
+    @* Breadcrumb navigatin *@
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a asp-page="/Reservation/Reservation">Reservation</a></li>
+            <li class="breadcrumb-item"><a asp-page="/Reservation/Facility" asp-route-facilityId="@Model.Facility.FacilityId">@(Model.Facility?.Name ?? "Facility")</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Reservation Form</li>
+        </ol>
+    </nav>
+
     <div class="row">
         
-        <div class="col-md-6">
+        <div>
             <form method="post">
                 <input type="hidden" asp-for="FacilityRequest.FacilityId" />
                 <input type="hidden" asp-for="FacilityRequest.ResidentId" />

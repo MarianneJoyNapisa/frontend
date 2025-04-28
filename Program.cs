@@ -79,6 +79,13 @@ namespace HomeownersMS
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            builder.Services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthentication();

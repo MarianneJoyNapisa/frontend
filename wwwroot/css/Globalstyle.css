@@ -309,7 +309,7 @@
         padding: 24px 100px;
     }
     .facility-img {
-        max-width: 200px; /* Smaller image for tablets */
+        max-height: 200px; /* Smaller image for tablets */
     }
 }
 
@@ -319,7 +319,7 @@
         padding: 16px 20px;
     }
     .facility-img {
-        max-width: 150px; /* Even smaller for mobile devices */
+        max-height: 140px; /* Even smaller for mobile devices */
     }
 }
 
@@ -366,4 +366,29 @@
     margin: 0;
     color: #ffffff; /* or any color that matches your design */
     opacity: 0.8; /* slightly transparent */
+}
+
+.feedback-btn {
+    transition: all 0.3s ease;
+    /* Animation */
+    transform: translateY(0);
+}
+
+.feedback-btn:hover {
+    background: linear-gradient(135deg, #a777e3, #6e8efb);
+    transform: translateY(-3px);
+}
+
+.feedback-btn:hover i {
+    transform: scale(1.1);
+    color: white;
+}
+  
+.toast {
+    z-index: 1100;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+.toast.show {
+    opacity: 1;
 }

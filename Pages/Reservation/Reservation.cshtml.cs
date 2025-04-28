@@ -4,6 +4,7 @@ using HomeownersMS.Models;
 using HomeownersMS.Data;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HomeownersMS.Pages.Reservation
 {
@@ -79,6 +80,29 @@ namespace HomeownersMS.Pages.Reservation
             }
 
             Facilities = await _context.Facilities.ToListAsync();
+        }
+
+        public async Task<IActionResult> OnPostDeleteRequestAsync(int id)
+        {
+            var request = await _context.FacilityRequests.FindAsync(id);
+            
+            if (request == null)
+            {
+                return RedirectToPage();
+            }
+
+            // Delete associated event if exists
+            var eventToDelete = await _context.Events.FirstOrDefaultAsync(e => e.FacilityRequestId == id);
+            if (eventToDelete != null)
+            {
+                _context.Events.Remove(eventToDelete);
+            }
+            
+            // Delete the facility request
+            _context.FacilityRequests.Remove(request);
+            await _context.SaveChangesAsync();
+            
+            return RedirectToPage();
         }
     }
 }
