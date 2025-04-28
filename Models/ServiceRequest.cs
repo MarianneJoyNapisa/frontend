@@ -21,7 +21,11 @@ namespace HomeownersMS.Models
 
         public Statuses? Status { get; set; }
 
-        public DateTime? RequestedAt { get; set; }
+        public TimeOnly? RequestedTimeStart { get; set; }
+        public TimeOnly? RequestedTimeEnd { get; set; }
+
+        public DateTime? RequestApprovedDateTime { get; set; }
+        
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 

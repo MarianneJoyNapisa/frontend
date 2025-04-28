@@ -3,6 +3,7 @@ using System;
 using HomeownersMS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HomeownersMS.Migrations
 {
     [DbContext(typeof(HomeownersContext))]
-    partial class HomeownersContextModelSnapshot : ModelSnapshot
+    [Migration("20250428114333_ServiceReq")]
+    partial class ServiceReq
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
@@ -398,13 +401,10 @@ namespace HomeownersMS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<TimeOnly?>("AvailableTimeEnd")
+                    b.Property<DateTime?>("AvailableDateTimeEnd")
                         .HasColumnType("TEXT");
 
-                    b.Property<TimeOnly?>("AvailableTimeStart")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("DayRange")
+                    b.Property<DateTime?>("AvailableDateTimeStart")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
@@ -433,17 +433,14 @@ namespace HomeownersMS.Migrations
                     b.Property<string>("IssueDescription")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("RequestApprovedDateTime")
+                    b.Property<DateTime?>("RequestedAtEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("RequestedAtStart")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("RequestedBy")
                         .HasColumnType("INTEGER");
-
-                    b.Property<TimeOnly?>("RequestedTimeEnd")
-                        .HasColumnType("TEXT");
-
-                    b.Property<TimeOnly?>("RequestedTimeStart")
-                        .HasColumnType("TEXT");
 
                     b.Property<int?>("ServiceId")
                         .HasColumnType("INTEGER");
@@ -502,8 +499,8 @@ namespace HomeownersMS.Migrations
                     b.Property<DateOnly>("HireDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("Job")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Job")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("LName")
                         .HasColumnType("TEXT");

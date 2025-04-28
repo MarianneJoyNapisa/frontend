@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HomeownersMS.Migrations
 {
     /// <inheritdoc />
-    public partial class Services : Migration
+    public partial class ServiceReq : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -337,7 +337,8 @@ namespace HomeownersMS.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     IssueDescription = table.Column<string>(type: "TEXT", nullable: true),
                     Status = table.Column<int>(type: "INTEGER", nullable: true),
-                    RequestedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    RequestedAtStart = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    RequestedAtEnd = table.Column<DateTime>(type: "TEXT", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     RequestedBy = table.Column<int>(type: "INTEGER", nullable: true),
                     ServiceId = table.Column<int>(type: "INTEGER", nullable: true)

@@ -1,0 +1,75 @@
+@page
+@model HomeownersMS.Pages_Admin_Services.IndexModel
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["HeaderTitle"] = "Services Management";
+    ViewData["Title"] = "Services Dashboard";
+    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+    ViewData["CurrentPage"] = currentPage;
+}
+
+<div class="container">
+    <h1>Index</h1>
+
+    <p>
+        <a asp-page="Create">Create New</a>
+    </p>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Service[0].Title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Service[0].Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Service[0].ServiceCategory)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Service[0].DayRange)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Service[0].AvailableTimeStart)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Service[0].AvailableTimeEnd)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+        @foreach (var item in Model.Service) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ServiceCategory)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DayRange)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AvailableTimeStart)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AvailableTimeEnd)
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.ServiceId">Edit</a> |
+                        <a asp-page="./Details" asp-route-id="@item.ServiceId">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.ServiceId">Delete</a>
+                    </td>
+                </tr>
+        }
+            </tbody>
+        </table>
+
+    </div>
+</div>

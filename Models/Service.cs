@@ -20,8 +20,9 @@ namespace HomeownersMS.Models
 
         public ServiceCategory? ServiceCategory { get; set; }
 
-        public DateTime? AvailableDateTimeStart { get; set; }
-        public DateTime? AvailableDateTimeEnd { get; set; }
+        public string? DayRange { get; set; } // like Mon-Fri etc.
+        public TimeOnly? AvailableTimeStart { get; set; }
+        public TimeOnly? AvailableTimeEnd { get; set; }
 
         // Many-to-many to Staff
         public ICollection<ServiceStaff> ServiceStaff { get; set; } = new List<ServiceStaff>();

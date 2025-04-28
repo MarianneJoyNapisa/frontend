@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HomeownersMS.Migrations
 {
     [DbContext(typeof(HomeownersContext))]
-    [Migration("20250424124801_Services")]
-    partial class Services
+    [Migration("20250428133030_ServiceRequest")]
+    partial class ServiceRequest
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -401,10 +401,13 @@ namespace HomeownersMS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("AvailableDateTimeEnd")
+                    b.Property<TimeOnly?>("AvailableTimeEnd")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("AvailableDateTimeStart")
+                    b.Property<TimeOnly?>("AvailableTimeStart")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DayRange")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
@@ -433,11 +436,17 @@ namespace HomeownersMS.Migrations
                     b.Property<string>("IssueDescription")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("RequestedAt")
+                    b.Property<DateTime?>("RequestApprovedDateTime")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("RequestedBy")
                         .HasColumnType("INTEGER");
+
+                    b.Property<TimeOnly?>("RequestedTimeEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<TimeOnly?>("RequestedTimeStart")
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("ServiceId")
                         .HasColumnType("INTEGER");
@@ -496,8 +505,8 @@ namespace HomeownersMS.Migrations
                     b.Property<DateOnly>("HireDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Job")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("Job")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("LName")
                         .HasColumnType("TEXT");

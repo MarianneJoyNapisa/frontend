@@ -14,7 +14,7 @@ namespace HomeownersMS.Data
             context.Database.Migrate();
 
             // Check if the Users and Admin tables already contain data
-            if (context.Users.Any() || context.Admins.Any())
+            if (context.Users.Any() || context.Admins.Any() || context.Residents.Any() || context.Staffs.Any() || context.Services.Any() )
             {
                 return; // DB has already been seeded
             }
@@ -92,11 +92,134 @@ namespace HomeownersMS.Data
                 LName = "Smith",
                 Email = "staff@example.com",
                 ContactNo = "09123456789",
-                Job = "Maintenance",
+                Job = StaffJob.Maintenance,
                 HireDate = DateOnly.FromDateTime(DateTime.Now)
             };
 
             context.Staffs.Add(staff);
+            context.SaveChanges();
+
+            // ========== CREATE SERVICES ==========
+            var services = new List<Service>
+            {
+                // Repairs and Maintenance
+                new Service
+                {
+                    Title = "Plumbing Repairs",
+                    Description = "Fixing leaks, clogs, and other plumbing issues.",
+                    ServiceCategory = ServiceCategory.repairsAndMaintenance,
+                    DayRange = "Mon-Fri",
+                    AvailableTimeStart = new TimeOnly(6, 0), // 6:00 AM
+                    AvailableTimeEnd = new TimeOnly(18, 0)  // 6:00 PM
+                },
+                new Service
+                {
+                    Title = "Carpentry and Custom Building",
+                    Description = "Custom furniture, repairs, and woodwork.",
+                    ServiceCategory = ServiceCategory.repairsAndMaintenance,
+                    DayRange = "Mon-Fri",
+                    AvailableTimeStart = new TimeOnly(6, 0),
+                    AvailableTimeEnd = new TimeOnly(18, 0)
+                },
+                new Service
+                {
+                    Title = "Electrical Services",
+                    Description = "Electrical repairs, installations, and maintenance.",
+                    ServiceCategory = ServiceCategory.repairsAndMaintenance,
+                    DayRange = "Mon-Fri",
+                    AvailableTimeStart = new TimeOnly(6, 0),
+                    AvailableTimeEnd = new TimeOnly(18, 0)
+                },
+
+                // Cleaning Services
+                new Service
+                {
+                    Title = "House Cleaning",
+                    Description = "General house cleaning services.",
+                    ServiceCategory = ServiceCategory.cleaningServices,
+                    DayRange = "Mon-Fri",
+                    AvailableTimeStart = new TimeOnly(6, 0),
+                    AvailableTimeEnd = new TimeOnly(18, 0)
+                },
+                new Service
+                {
+                    Title = "Laundry Services",
+                    Description = "Washing, drying, and folding clothes.",
+                    ServiceCategory = ServiceCategory.cleaningServices,
+                    DayRange = "Mon-Fri",
+                    AvailableTimeStart = new TimeOnly(6, 0),
+                    AvailableTimeEnd = new TimeOnly(18, 0)
+                },
+                new Service
+                {
+                    Title = "Pet Cleaning",
+                    Description = "Cleaning and grooming services for pets.",
+                    ServiceCategory = ServiceCategory.cleaningServices,
+                    DayRange = "Mon-Fri",
+                    AvailableTimeStart = new TimeOnly(6, 0),
+                    AvailableTimeEnd = new TimeOnly(18, 0)
+                },
+
+                // Landscaping Maintenance
+                new Service
+                {
+                    Title = "Gardening",
+                    Description = "Plant care, weeding, and landscaping.",
+                    ServiceCategory = ServiceCategory.landscapingMaintenance,
+                    DayRange = "Mon-Fri",
+                    AvailableTimeStart = new TimeOnly(6, 0),
+                    AvailableTimeEnd = new TimeOnly(18, 0)
+                },
+                new Service
+                {
+                    Title = "Outdoor Repairs",
+                    Description = "Repairs for outdoor furniture and structures.",
+                    ServiceCategory = ServiceCategory.landscapingMaintenance,
+                    DayRange = "Mon-Fri",
+                    AvailableTimeStart = new TimeOnly(6, 0),
+                    AvailableTimeEnd = new TimeOnly(18, 0)
+                },
+                new Service
+                {
+                    Title = "Lights Installation",
+                    Description = "Installing and maintaining outdoor lighting.",
+                    ServiceCategory = ServiceCategory.landscapingMaintenance,
+                    DayRange = "Mon-Fri",
+                    AvailableTimeStart = new TimeOnly(6, 0),
+                    AvailableTimeEnd = new TimeOnly(18, 0)
+                },
+
+                // Other Services
+                new Service
+                {
+                    Title = "Pest Control",
+                    Description = "Eliminating pests and ensuring a pest-free environment.",
+                    ServiceCategory = ServiceCategory.otherServices,
+                    DayRange = "Mon-Fri",
+                    AvailableTimeStart = new TimeOnly(6, 0),
+                    AvailableTimeEnd = new TimeOnly(18, 0)
+                },
+                new Service
+                {
+                    Title = "Moving & Setup Help",
+                    Description = "Assistance with moving and setting up furniture.",
+                    ServiceCategory = ServiceCategory.otherServices,
+                    DayRange = "Mon-Fri",
+                    AvailableTimeStart = new TimeOnly(6, 0),
+                    AvailableTimeEnd = new TimeOnly(18, 0)
+                },
+                new Service
+                {
+                    Title = "Emergency Services",
+                    Description = "24/7 emergency assistance for urgent needs.",
+                    ServiceCategory = ServiceCategory.otherServices,
+                    DayRange = "Mon-Fri",
+                    AvailableTimeStart = new TimeOnly(6, 0),
+                    AvailableTimeEnd = new TimeOnly(18, 0)
+                }
+            };
+
+            context.Services.AddRange(services);
             context.SaveChanges();
         }
     }

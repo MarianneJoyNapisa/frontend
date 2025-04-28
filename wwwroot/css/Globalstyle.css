@@ -392,3 +392,7 @@
 .toast.show {
     opacity: 1;
 }
+
+.accordion-bg-color {
+    background-color: #96c9ff !important;
+}

@@ -44,6 +44,12 @@ namespace HomeownersMS
             // Add Exception Filter for Dev Mode
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+            builder.Services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -78,12 +84,6 @@ namespace HomeownersMS
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
-            builder.Services.AddSession(options => {
-                options.IdleTimeout = TimeSpan.FromMinutes(20);
-                options.Cookie.HttpOnly = true;
-                options.Cookie.IsEssential = true;
-            });
 
             app.UseSession();
             app.UseRouting();
@@ -156,3 +156,5 @@ git stash clear             // delete all stash
 
 
 */
+
+

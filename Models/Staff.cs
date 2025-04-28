@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json.Linq;
 
 namespace HomeownersMS.Models
 {
+    public enum StaffJob
+    {
+        Maintenance,
+        Janitorial
+    }
     public class Staff
     {
         [Key, ForeignKey("User")]
@@ -13,7 +19,7 @@ namespace HomeownersMS.Models
         public string? FName { get; set; }
         public string? Email { get; set; }
         public string? ContactNo { get; set; }
-        public string? Job { get; set; }
+        public StaffJob? Job { get; set; }
         public DateOnly HireDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
         public string? ProfileImage { get; set; }
         public virtual User? User { get; set; }
