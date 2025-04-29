@@ -95,7 +95,7 @@
                 <i class="bi bi-calendar-check-fill"></i>
                 <span>Reservations</span>
             </a>
-            <a asp-page="/Admin/Services/Index" class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Admin/Services/Index") == true ? "active" : "")">
+            <a asp-page="/Admin/Services/Index" class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Admin/Services") == true ? "active" : "")">
                 <i class="bi bi-person-fill-gear"></i>
                 <span>Services Management</span>
             </a>

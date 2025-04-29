@@ -3,9 +3,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using HomeownersMS.Data;
 using HomeownersMS.Models;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace HomeownersMS.Pages_Admin_Announcements
 {
+    [Authorize(Roles="admin")]
+
     public class CreateModel : PageModel
     {
         private readonly HomeownersContext _context;

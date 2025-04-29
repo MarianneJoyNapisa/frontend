@@ -4,9 +4,12 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HomeownersMS.Pages.Announcement_Events
 {
+    [Authorize(Roles="admin,resident")]
+
     public class Announcement_EventsModel : PageModel
     {
         private readonly HomeownersMS.Data.HomeownersContext _context;

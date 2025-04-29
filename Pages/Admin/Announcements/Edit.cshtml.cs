@@ -2,9 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using HomeownersMS.Data;
 using HomeownersMS.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HomeownersMS.Pages_Admin_Announcements
 {
+    [Authorize(Roles="admin")]
+
     public class EditModel : PageModel
     {
         private readonly HomeownersContext _context;

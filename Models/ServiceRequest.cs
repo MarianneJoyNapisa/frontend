@@ -21,6 +21,7 @@ namespace HomeownersMS.Models
 
         public Statuses? Status { get; set; }
 
+        public DateOnly? RequestedDate { get; set; }
         public TimeOnly? RequestedTimeStart { get; set; }
         public TimeOnly? RequestedTimeEnd { get; set; }
 
@@ -31,6 +32,12 @@ namespace HomeownersMS.Models
 
         [ForeignKey("Resident")]
         public int? RequestedBy { get; set; }
+
+        // General Information Fields
+
+        public string? FullName { get; set; }
+        public string? Email { get; set; }
+        public string? PhoneNumber { get; set; }
 
         [ForeignKey("Service")]
         public int? ServiceId { get; set; }

@@ -5,8 +5,8 @@
     Layout = "_AdminLayout";
     ViewData["HeaderTitle"] = "Services Management";
     ViewData["Title"] = "Services Edit";
-    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
-    ViewData["CurrentPage"] = currentPage;
+    ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
+
 }
 
 <h1>Edit</h1>

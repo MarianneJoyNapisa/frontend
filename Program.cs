@@ -147,7 +147,13 @@ sqlite:
 dotnet add package Microsoft.EntityFrameworkCore.Sqlite
 dotnet add package Microsoft.EntityFrameworkCore.Design
 
+pagination:
+dotnet add package X.PagedList.Mvc.Core
 
+dotnet add package X.PagedList --version 8.4.0
+dotnet add package X.PagedList.Mvc.Core --version 8.4.0
+
+dotnet list package
 
 git operations:
 

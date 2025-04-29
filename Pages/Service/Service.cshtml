@@ -20,7 +20,40 @@
     .empty-container:hover {
         background-color: #eaeaea !important;
     }
+
+   .service-btn {
+        color: white;
+   }
+
+   .pagination {
+        margin-top: 20px;
+    }
+
+    .page-item.active .page-link {
+        background-color: #3c6693;
+        border-color: #3c6693;
+    }
+
+    .page-link {
+        color: #3c6693;
+    }
+
+    .page-item.disabled .page-link {
+        color: #6c757d;
+    }
+
+    table td {
+        font-size: small;
+    }
 </style>
+
+@if (ViewData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @ViewData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 
 <div class="container">
     <div class="accordion mb-5" id="servicesAccordion">
@@ -43,9 +76,9 @@
                                 <p>@service.DayRange, @service.AvailableTimeStart?.ToString("h:mm tt") - @service.AvailableTimeEnd?.ToString("h:mm tt")</p>
                                 <p>Response: Within 24 hours</p>
                                 <p>Cost: Included in HOA fees</p>
-                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#requestModal" data-service-id="@service.ServiceId">
+                                <a class="btn btn-primary service-btn btn-sm ghost-link" href="/Service/ServiceRequest?serviceId=@service.ServiceId">
                                     <i class="fas fa-plus"></i> Request service
-                                </button>
+                                </a>
                             </div>
                         }
                     }
@@ -79,9 +112,9 @@
                                 <p>@service.DayRange, @service.AvailableTimeStart?.ToString("h:mm tt") - @service.AvailableTimeEnd?.ToString("h:mm tt")</p>
                                 <p>Response: Within 24 hours</p>
                                 <p>Cost: Included in HOA fees</p>
-                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#requestModal" data-service-id="@service.ServiceId">
+                                <a class="btn btn-primary btn-sm service-btn ghost-link" href="/Service/ServiceRequest?serviceId=@service.ServiceId">
                                     <i class="fas fa-plus"></i> Request service
-                                </button>
+                                </a>
                             </div>
                         }
                     }
@@ -115,9 +148,9 @@
                                 <p>@service.DayRange, @service.AvailableTimeStart?.ToString("h:mm tt") - @service.AvailableTimeEnd?.ToString("h:mm tt")</p>
                                 <p>Response: Within 24 hours</p>
                                 <p>Cost: Included in HOA fees</p>
-                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#requestModal" data-service-id="@service.ServiceId">
+                                <a class="btn btn-primary btn-sm service-btn ghost-link" href="/Service/ServiceRequest?serviceId=@service.ServiceId">
                                     <i class="fas fa-plus"></i> Request service
-                                </button>
+                                </a>
                             </div>
                         }
                     }
@@ -151,9 +184,9 @@
                                 <p>@service.DayRange, @service.AvailableTimeStart?.ToString("h:mm tt") - @service.AvailableTimeEnd?.ToString("h:mm tt")</p>
                                 <p>Response: Within 24 hours</p>
                                 <p>Cost: Included in HOA fees</p>
-                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#requestModal" data-service-id="@service.ServiceId">
+                                <a class="btn btn-primary btn-sm service-btn ghost-link" href="/Service/ServiceRequest?serviceId=@service.ServiceId">
                                     <i class="fas fa-plus"></i> Request service
-                                </button>
+                                </a>
                             </div>
                         }
                     }
@@ -193,7 +226,9 @@
                     <thead>
                         <tr>
                             <th>Service</th>
+                            <th>Request Date</th>
                             <th>Time started</th>
+                            <th>Status</th>
                             <th>Approved at</th>
                             <th>Actions</th>
                         </tr>
@@ -206,8 +241,23 @@
                                     @request.Service?.Title
                                     <div class="text-muted small">ID/@request.ServiceRequestId</div>
                                 </td>
+                                <td>@request.RequestedDate?.ToString("MM/dd/yyyy")</td>
                                 <td>@request.RequestedTimeStart?.ToString("h:mm tt")</td>
-                                <td>@request.RequestApprovedDateTime?.ToString("MM/dd/yyyy hh:mm tt")</td>
+                                <td>
+                                    @switch (request.Status)
+                                    {
+                                        case Statuses.pending:
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                            break;
+                                        case Statuses.inProgress:
+                                            <span class="badge bg-info text-light">In Progress</span>
+                                            break;
+                                        default:
+                                            <span class="badge bg-secondary text-light">N/A</span>
+                                            break;
+                                    }
+                                </td>
+                                <td>@(request.RequestApprovedDateTime?.ToString("MM/dd/yyyy hh:mm tt") ?? "N/A")</td>
                                 <td>
                                     <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#detailsModal" 
                                             data-title="@request.Service?.Title" 
@@ -223,19 +273,6 @@
                     </tbody>
                 </table>
             </div>
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Previous</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
         }
         else
         {
@@ -271,8 +308,10 @@
                     <thead>
                         <tr>
                             <th>Service</th>
+                            <th>Request Date</th>
                             <th>Time started</th>
                             <th>Time ended</th>
+                            <th>Status</th>
                             <th>Approved at</th>
                             <th>Actions</th>
                         </tr>
@@ -285,9 +324,24 @@
                                     @request.Service?.Title
                                     <div class="text-muted small">ID/@request.ServiceRequestId</div>
                                 </td>
+                                <td>@request.RequestedDate?.ToString("MM/dd/yyyy")</td>
                                 <td>@request.RequestedTimeStart?.ToString("h:mm tt")</td>
                                 <td>@request.RequestedTimeEnd?.ToString("h:mm tt")</td>
-                                <td>@request.RequestApprovedDateTime?.ToString("MM/dd/yyyy hh:mm tt")</td>
+                                <td>
+                                    @switch (request.Status)
+                                    {
+                                        case Statuses.completed:
+                                            <span class="badge bg-success text-light">Completed</span>
+                                            break;
+                                        case Statuses.cancelled:
+                                            <span class="badge bg-danger text-light">Cancelled</span>
+                                            break;
+                                        default:
+                                            <span class="badge bg-secondary text-light">N/A</span>
+                                            break;
+                                    }
+                                </td>
+                                <td>@(request.RequestApprovedDateTime?.ToString("MM/dd/yyyy hh:mm tt") ?? "N/A")</td>
                                 <td>
                                     <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#detailsModal" 
                                             data-title="@request.Service?.Title" 
@@ -303,19 +357,6 @@
                     </tbody>
                 </table>
             </div>
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Previous</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
         }
         else
         {

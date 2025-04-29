@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HomeownersMS.Migrations
 {
     [DbContext(typeof(HomeownersContext))]
-    [Migration("20250428133030_ServiceRequest")]
+    [Migration("20250429091500_ServiceRequest")]
     partial class ServiceRequest
     {
         /// <inheritdoc />
@@ -433,7 +433,16 @@ namespace HomeownersMS.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("IssueDescription")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("RequestApprovedDateTime")
@@ -441,6 +450,9 @@ namespace HomeownersMS.Migrations
 
                     b.Property<int?>("RequestedBy")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateOnly?>("RequestedDate")
+                        .HasColumnType("TEXT");
 
                     b.Property<TimeOnly?>("RequestedTimeEnd")
                         .HasColumnType("TEXT");

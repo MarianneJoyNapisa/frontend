@@ -4,9 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using HomeownersMS.Data;
+using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace HomeownersMS.Pages.Service
 {
+    [Authorize(Roles="admin,resident")]
     public class ServiceModel(HomeownersContext context) : PageModel
     {
         private readonly HomeownersContext _context = context;
@@ -14,9 +17,11 @@ namespace HomeownersMS.Pages.Service
         public List<Models.Service> Services { get; set; } = new List<Models.Service>();
         public List<ServiceRequest> CurrentRequests { get; set; } = new List<ServiceRequest>();
         public List<ServiceRequest> HistoricalRequests { get; set; } = new List<ServiceRequest>();
-
-        public async Task OnGetAsync()
+        
+        // Pagination properties
+        public async Task OnGetAsync(bool? success)
         {
+
             // Get services from database
             Services = await _context.Services
                 .Include(s => s.ServiceStaff)
@@ -29,12 +34,17 @@ namespace HomeownersMS.Pages.Service
                 .OrderByDescending(r => r.CreatedAt)
                 .ToListAsync();
 
-            // Get historical requests (completed or cancelled)
+            // Get historical requests (completed or cancelled) with pagination
             HistoricalRequests = await _context.ServiceRequests
                 .Include(r => r.Service)
                 .Where(r => r.Status == Statuses.completed || r.Status == Statuses.cancelled)
                 .OrderByDescending(r => r.CreatedAt)
                 .ToListAsync();
+
+            if (success == true)
+            {
+                ViewData["SuccessMessage"] = "Your service request has been submitted successfully!";
+            }
         }
     }
 }
