@@ -45,6 +45,81 @@
     table td {
         font-size: small;
     }
+    .btn-icon {
+        background: transparent;
+        border: none;
+        color: #0d6efd; /* Bootstrap primary color */
+        padding: 0.375rem;
+        border-radius: 50%;
+        width: 2rem;
+        height: 2rem;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .btn-icon i {
+        font-size: 1.25rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-icon:hover {
+        background: rgba(13, 110, 253, 0.1);
+        transform: scale(1.1);
+    }
+
+    .btn-icon:hover i {
+        color: #0b5ed7; /* Slightly darker blue */
+        transform: rotate(15deg);
+    }
+
+    .btn-icon::after {
+        content: '';
+        position: absolute;
+        top: -5px;
+        left: -5px;
+        right: -5px;
+        bottom: -5px;
+        border: 2px solid rgba(13, 110, 253, 0.3);
+        border-radius: 50%;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .btn-icon:hover::after {
+        opacity: 1;
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+    }
+
+    .btn-finished {
+        color: #198754; /* Bootstrap success color */
+        margin-left: 0.5rem; /* Space between buttons */
+    }
+
+    .btn-finished:hover {
+        background: rgba(25, 135, 84, 0.1);
+    }
+
+    .btn-finished:hover i {
+        color: #157347; /* Slightly darker green */
+    }
+
+    .btn-finished::after {
+        border-color: rgba(25, 135, 84, 0.3);
+    }
+
+    /* Optional: Add a pulse animation when hovering */
+    @@keyframes pulseFinished {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+
+    .btn-finished:hover i {
+        animation: pulseFinished 0.5s ease;
+    }
 </style>
 
 @if (ViewData["SuccessMessage"] != null)
@@ -259,14 +334,32 @@
                                 </td>
                                 <td>@(request.RequestApprovedDateTime?.ToString("MM/dd/yyyy hh:mm tt") ?? "N/A")</td>
                                 <td>
-                                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#detailsModal" 
-                                            data-title="@request.Service?.Title" 
+                                    <div class="d-flex flex-row">
+                                        <button class="btn btn-icon" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#detailsModal"
+                                            data-title="@request.Service?.Title"
                                             data-id="@request.ServiceRequestId"
                                             data-time="@request.RequestedTimeStart?.ToString("h:mm tt")"
                                             data-approved="@request.RequestApprovedDateTime?.ToString("MM/dd/yyyy hh:mm tt")"
-                                            data-description="@request.IssueDescription">
-                                        <i class="fas fa-info-circle"></i> Details
-                                    </button>
+                                            data-description="@request.IssueDescription"
+                                            title="View Details">
+                                        <i class="fas fa-info-circle"></i>
+                                        </button>
+                                        @if (request.Status == Statuses.inProgress)
+                                        {
+                                            <form method="post" asp-page-handler="MarkAsCompleted" class="d-inline" id="completeForm">
+                                                <input type="hidden" name="serviceRequestId" id="completeServiceRequestId" value="@request.ServiceRequestId" />
+                                                <button type="button" class="btn btn-icon btn-finished" 
+                                                        title="Mark as Finished"
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#confirmCompleteModal"
+                                                        data-request-id="@request.ServiceRequestId">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                    </div>
                                 </td>
                             </tr>
                         }
@@ -425,6 +518,26 @@
     </div>
 </div>
 
+<!-- Bootstrap 5.3 Confirmation Modal -->
+<div class="modal fade" id="confirmCompleteModal" tabindex="-1" aria-labelledby="confirmCompleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header text-dark">
+                <h5 class="modal-title" id="confirmCompleteModalLabel">Confirm Completion</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to mark this service request as completed?</p>
+                <p class="small text-muted">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" id="confirmCompleteButton">Yes, Mark as Completed</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
         // Request Modal
@@ -450,6 +563,37 @@
             modal.find('#detailTime').text(time);
             modal.find('#detailApproved').text(approved);
             modal.find('#detailDescription').text(description);
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const confirmCompleteModal = document.getElementById('confirmCompleteModal');
+            const confirmCompleteButton = document.getElementById('confirmCompleteButton');
+            const completeForm = document.getElementById('completeForm');
+            const completeServiceRequestId = document.getElementById('completeServiceRequestId');
+            
+            if (confirmCompleteModal) {
+                confirmCompleteModal.addEventListener('show.bs.modal', function(event) {
+                    // Button that triggered the modal
+                    const button = event.relatedTarget;
+                    // Extract request ID from data-request-id attribute
+                    const requestId = button.getAttribute('data-request-id');
+                    // Update the hidden input value
+                    completeServiceRequestId.value = requestId;
+                });
+                
+                confirmCompleteButton.addEventListener('click', function() {
+                    completeForm.submit();
+                });
+            }
+            
+            // Show success message if exists
+            @if (ViewData["SuccessMessage"] != null)
+            {
+                <text>
+                    const toast = new bootstrap.Toast(document.getElementById('successToast'));
+                    toast.show();
+                </text>
+            }
         });
     </script>
 }

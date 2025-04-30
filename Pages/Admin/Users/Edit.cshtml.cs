@@ -51,7 +51,7 @@ namespace HomeownersMS.Pages.Admin.Users
             UserList = user;
             ViewData["AdminId"] = new SelectList(_context.Set<HomeownersMS.Models.Admin>(), "AdminId", "FName");
             ViewData["ResidentId"] = new SelectList(_context.Set<Resident>(), "ResidentId", "FName");
-            ViewData["StaffId"] = new SelectList(_context.Set<Staff>(), "StaffId", "FName");
+            ViewData["StaffId"] = new SelectList(_context.Set<Models.Staff>(), "StaffId", "FName");
             return Page();
         }
 

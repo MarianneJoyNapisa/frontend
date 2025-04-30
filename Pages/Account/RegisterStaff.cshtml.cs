@@ -82,7 +82,7 @@ namespace HomeownersMS.Pages.Account
             };
 
             // Create the Staff entity
-            var staff = new Staff
+            var staff = new Models.Staff
             {
                 LName = UserInput.LName,
                 FName = UserInput.FName,

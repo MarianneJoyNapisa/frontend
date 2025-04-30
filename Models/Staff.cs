@@ -9,7 +9,8 @@ namespace HomeownersMS.Models
     public enum StaffJob
     {
         Maintenance,
-        Janitorial
+        Janitorial,
+        Special
     }
     public class Staff
     {
@@ -25,7 +26,7 @@ namespace HomeownersMS.Models
         public virtual User? User { get; set; }
 
         // Many-to-many to Service
-        public ICollection<ServiceStaff> ServiceStaff { get; set; } = new List<ServiceStaff>();
+        // public ICollection<ServiceStaff> ServiceStaff { get; set; } = new List<ServiceStaff>();
 
         // public ICollection<ServiceRequest> ServiceRequest { get; set; } = new List<ServiceRequest>();
 

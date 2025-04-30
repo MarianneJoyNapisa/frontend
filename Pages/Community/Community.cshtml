@@ -5,7 +5,24 @@
 @using HomeownersMS.Models
 @using Microsoft.AspNetCore.Identity
 @{
-    Layout = "_ResidentLayout";
+    // Dynamic Layout Selection
+    if (User.IsInRole("admin"))
+    {
+        Layout = "_AdminLayout";
+    }
+    else if (User.IsInRole("staff"))
+    {
+        Layout = "_StaffLayout";
+    }
+    else if (User.IsInRole("resident"))
+    {
+        Layout = "_ResidentLayout";
+    }
+    else
+    {
+        Layout = "_Layout"; // Fallback layout
+    }
+
     ViewData["HeaderTitle"] = "Community";
     ViewData["Title"] = "Community";
     var username = HttpContext?.User?.Identity?.Name ?? "Guest";
@@ -401,104 +418,6 @@
         margin-left: 8px;
     }
 
-    /* Contacts sidebar */
-    .contacts-card {
-        background-color: #fff;
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 20px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-        border: 1px solid #eee;
-    }
-
-    .contacts-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 15px;
-    }
-
-    .contacts-title {
-        font-size: 1.2rem;
-        font-weight: bold;
-        color: #2c5887;
-    }
-
-    .contacts-search {
-        position: relative;
-        margin-bottom: 15px;
-    }
-
-    .contacts-search input {
-        width: 100%;
-        padding: 8px 30px 8px 10px;
-        border: 1px solid #ddd;
-        border-radius: 20px;
-        font-size: 14px;
-    }
-
-    .contacts-search i {
-        position: absolute;
-        right: 10px;
-        top: 8px;
-        color: #777;
-    }
-
-    .contact-item {
-        display: flex;
-        align-items: center;
-        padding: 10px 0;
-        border-bottom: 1px solid #eee;
-    }
-
-    .contact-item:last-child {
-        border-bottom: none;
-    }
-
-    .contact-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        margin-right: 10px;
-        overflow: hidden;
-    }
-
-    .contact-info {
-        flex: 1;
-    }
-
-    .contact-name {
-        font-weight: bold;
-        margin-bottom: 2px;
-    }
-
-    .contact-role {
-        font-size: 0.8rem;
-        color: #6c757d;
-    }
-
-    .contact-status {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background-color: #28a745;
-    }
-
-    .contact-status.offline {
-        background-color: #6c757d;
-    }
-
-    .contact-status.away {
-        background-color: #ffc107;
-    }
-
-    .contacts-category {
-        font-size: 0.9rem;
-        color: #6c757d;
-        margin: 15px 0 5px 0;
-        text-transform: uppercase;
-    }
-
     /*  Upvote/downvote styles */
     .btn-vote {
         background: none;
@@ -758,100 +677,6 @@
         </div>
     </div>
 
-    @* <!-- Contacts Sidebar --> *@
-    <div class="community-sidebar">
-        <div class="contacts-card">
-            <div class="contacts-header">
-                <div class="contacts-title">Contacts</div>
-                <div><i class="fas fa-ellipsis-h"></i></div>
-            </div>
-
-            <div class="contacts-search">
-                <input type="text" placeholder="Search contacts...">
-                <i class="fas fa-search"></i>
-            </div>
-
-            <div class="contacts-category">Online</div>
-
-            <div class="contact-item">
-                <div class="contact-avatar">
-                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=2c5887&color=fff" alt="User Avatar"
-                        width="40" height="40">
-                </div>
-                <div class="contact-info">
-                    <div class="contact-name">John Doe</div>
-                    <div class="contact-role">Property Manager</div>
-                </div>
-                <div class="contact-status"></div>
-            </div>
-
-            <div class="contact-item">
-                <div class="contact-avatar">
-                    <img src="https://ui-avatars.com/api/?name=Jane+Smith&background=2c5887&color=fff" alt="User Avatar"
-                        width="40" height="40">
-                </div>
-                <div class="contact-info">
-                    <div class="contact-name">Jane Smith</div>
-                    <div class="contact-role">Maintenance</div>
-                </div>
-                <div class="contact-status"></div>
-            </div>
-
-            <div class="contact-item">
-                <div class="contact-avatar">
-                    <img src="https://ui-avatars.com/api/?name=Mike+Johnson&background=2c5887&color=fff"
-                        alt="User Avatar" width="40" height="40">
-                </div>
-                <div class="contact-info">
-                    <div class="contact-name">Mike Johnson</div>
-                    <div class="contact-role">Resident</div>
-                </div>
-                <div class="contact-status away"></div>
-            </div>
-
-            <div class="contacts-category">Offline</div>
-
-            <div class="contact-item">
-                <div class="contact-avatar">
-                    <img src="https://ui-avatars.com/api/?name=Sarah+Williams&background=2c5887&color=fff"
-                        alt="User Avatar" width="40" height="40">
-                </div>
-                <div class="contact-info">
-                    <div class="contact-name">Sarah Williams</div>
-                    <div class="contact-role">Resident</div>
-                </div>
-                <div class="contact-status offline"></div>
-            </div>
-
-            <div class="contact-item">
-                <div class="contact-avatar">
-                    <img src="https://ui-avatars.com/api/?name=Robert+Brown&background=2c5887&color=fff"
-                        alt="User Avatar" width="40" height="40">
-                </div>
-                <div class="contact-info">
-                    <div class="contact-name">Robert Brown</div>
-                    <div class="contact-role">Security</div>
-                </div>
-                <div class="contact-status offline"></div>
-            </div>
-        </div>
-
-        @* <!-- Additional sidebar content can go here --> *@
-        <div class="contacts-card">
-            <div class="contacts-header">
-                <div class="contacts-title">Quick Links</div>
-            </div>
-            <div class="contact-item">
-                <i class="fas fa-file-alt me-2"></i> Community Guidelines
-            </div>
-            <div class="contact-item">
-                <i class="fas fa-phone-alt me-2"></i> Emergency Contacts
-            </div>
-            <div class="contact-item">
-                <i class="fas fa-calendar-alt me-2"></i> Events Calendar
-            </div>
-        </div>
-    </div>
 </div>
 
 <!-- Add edit modal -->

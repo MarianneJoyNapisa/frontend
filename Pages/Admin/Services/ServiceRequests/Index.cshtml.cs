@@ -20,6 +20,7 @@ namespace HomeownersMS.Pages.Admin.Services.ServiceRequests
             ServiceRequests = await _context.ServiceRequests
                 .Include(sr => sr.Service)
                 .Include(sr => sr.Resident)
+                .Include(sr => sr.Staff)
                 .OrderByDescending(sr => sr.CreatedAt)
                 .ToListAsync();
         }

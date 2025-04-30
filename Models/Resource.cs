@@ -11,12 +11,17 @@ namespace HomeownersMS.Models
 
         public string? Title { get; set; } 
 
-        public string? Content { get; set; }
+        public string? Description { get; set; }
+
+        public bool IsEnabled { get; set; } = true;
+
+        [Url]
+        public string? Url { get; set; }
 
         [ForeignKey("Admin")]
         public int? CreatedBy { get; set; }
 
-        public DateOnly CreatedAt { get; set; } = DateOnly.FromDateTime(DateTime.Now);
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public virtual Admin? Admin { get; set; }
     }

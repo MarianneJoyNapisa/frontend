@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using HomeownersMS.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace HomeownersMS.Pages.Service
@@ -24,7 +25,6 @@ namespace HomeownersMS.Pages.Service
 
             // Get services from database
             Services = await _context.Services
-                .Include(s => s.ServiceStaff)
                 .ToListAsync();
 
             // Get current requests (pending or in progress)
@@ -45,6 +45,24 @@ namespace HomeownersMS.Pages.Service
             {
                 ViewData["SuccessMessage"] = "Your service request has been submitted successfully!";
             }
+        }
+
+        public async Task<IActionResult> OnPostMarkAsCompletedAsync(int serviceRequestId)
+        {
+            var request = await _context.ServiceRequests
+                .FirstOrDefaultAsync(r => r.ServiceRequestId == serviceRequestId);
+
+            if (request == null)
+            {
+                return NotFound();
+            }
+
+            request.Status = Statuses.completed;
+            request.RequestApprovedDateTime = DateTime.Now;
+            
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage(new { success = true });
         }
     }
 }

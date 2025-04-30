@@ -6,13 +6,15 @@
 
 @{
     Layout = "_AdminLayout";
-    ViewData["Title"] = "Manage Reservations";
-    ViewData["HeaderTitle"] = "Manage Reservations"; 
-    ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
+    ViewData["Title"] = "Reservations Management";
+    ViewData["HeaderTitle"] = "Reservations"; 
 }
 
 <div class="container">
-    <h2>Facility Reservation Requests</h2>
+    <h2>Reservation Requests</h2>
+    <p>
+        <a asp-page="../Facilities/Index">Return to Facilities Management</a>
+    </p>
     
     @if (Model.Reservations.Any())
     {
@@ -87,8 +89,10 @@
     }
     else
     {
-        <div class="alert alert-info">
-            No reservation requests found.
+        <div class="text-center py-5 bg-light rounded-1 transition-all empty-container mb-3" style="transition: 0.3s; border-radius: 6px !important; font-size: small !important;">
+            <i class="fas fa-history fa-3x text-muted mb-3"></i>
+            <h6 class="text-muted">No reservations</h6>
+            <p class="text-muted">There are currently no reservations submitted by residents.</p>
         </div>
     }
 </div>

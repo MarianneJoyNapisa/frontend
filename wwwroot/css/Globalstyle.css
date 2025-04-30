@@ -396,3 +396,7 @@
 .accordion-bg-color {
     background-color: #96c9ff !important;
 }
+
+.empty-container:hover {
+    background-color: #eaeaea !important;
+}

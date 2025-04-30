@@ -1,7 +1,7 @@
 @page
 @model HomeownersMS.Pages.Resources.ResourceModel
 @{
-    Layout = "_ResidentLayout"; // Use your layout file
+    Layout = "_ResidentLayout";
     ViewData["HeaderTitle"] = "Resources";
     ViewData["Title"] = "Resources";
 }
@@ -31,11 +31,22 @@
     .icon {
         margin-right: 5px;
     }
+    .resource-table {
+        margin-top: 30px;
+    }
+    .resource-link {
+        color: #0d6efd;
+        text-decoration: none;
+    }
+    .resource-link:hover {
+        text-decoration: underline;
+    }
 </style>
 
 <h2 class="mb-4 text-center">Community Resources</h2>
 
 <div class="resources-container">
+    <!-- Static Accordion Section -->
     <div class="accordion" id="resourceAccordion">
         <!-- How to Pay -->
         <div class="accordion-item">
@@ -94,5 +105,56 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Dynamic Resources Table -->
+    <div class="resource-table">
+        <h5 class="mb-3 fw-bold">Available Resources</h5>
+        
+        @if (Model.Resources != null && Model.Resources.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Link</th>
+                            <th>Posted On</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var resource in Model.Resources)
+                        {
+                            <tr>
+                                <td>@resource.Title</td>
+                                <td>@resource.Description</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(resource.Url))
+                                    {
+                                        <a href="@resource.Url" target="_blank" class="resource-link">
+                                            <i class="fas fa-external-link-alt"></i> Open Resource
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">No link provided</span>
+                                    }
+                                </td>
+                                <td>@resource.CreatedAt.ToString("MMM dd, yyyy")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5 bg-light rounded-1 transition-all empty-container" style="transition: 0.3s; border-radius: 6px !important; font-size: small !important;">
+                <i class="fas fa-history fa-3x text-muted mb-3"></i>
+                <h6 class="text-muted">No resources</h6>
+                <p class="text-muted">There are currently no resources published by the administrators.</p>
+            </div>
+        }
     </div>
 </div>

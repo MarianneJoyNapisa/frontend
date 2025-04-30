@@ -1,0 +1,29 @@
+@page
+@using Microsoft.AspNetCore.Identity
+@model HomeownersMS.Pages.Settings.IndexModel
+@{
+    // Dynamic Layout Selection
+    if (User.IsInRole("admin"))
+    {
+        Layout = "_AdminLayout";
+    }
+    else if (User.IsInRole("staff"))
+    {
+        Layout = "_StaffLayout";
+    }
+    else if (User.IsInRole("resident"))
+    {
+        Layout = "_ResidentLayout";
+    }
+    else
+    {
+        Layout = "_Layout"; // Fallback layout
+    }
+
+    ViewData["HeaderTitle"] = "Settings";
+    ViewData["Title"] = "Settings";
+    var username = HttpContext?.User?.Identity?.Name ?? "Guest";
+    ViewData["Username"] = username;
+}
+
+<div class="container"></div>

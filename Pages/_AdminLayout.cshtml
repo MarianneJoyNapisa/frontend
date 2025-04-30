@@ -16,6 +16,7 @@
     <title>@ViewData["Title"] | Blue Peak Living</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet" href="~/css/GLobalstyle.css" />
 </head>
 
@@ -28,7 +29,7 @@
         <h3 class="m-0">
             <a class="ghost-link" asp-page="/Dashboard/Index">@ViewData["HeaderTitle"]</a>
         </h3>
-        <i class="bi bi-bell fs-4 p-2"></i>
+        <a class="ghost-link"></a>
     </div>
 
     @{
@@ -85,40 +86,36 @@
                     ViewData["CurrentPage"]?.ToString()?.StartsWith("/Admin/Staffs") == true || 
                     ViewData["CurrentPage"]?.ToString()?.StartsWith("/Admin/Admins") == true ? "active" : "")">
                 <i class="bi bi-people-fill"></i>
-                <span>User Management</span>
+                <span>Users</span>
             </a>
             <a asp-page="/Admin/Facilities/Index" class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Admin/Facilities") == true ? "active" : "")">
                 <i class="bi bi-calendar-fill"></i>
-                <span>Facilities Management</span>
-            </a>
-            <a asp-page="/Admin/Reservations/ManageReservations" class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Admin/Reservations") == true ? "active" : "")">
-                <i class="bi bi-calendar-check-fill"></i>
                 <span>Reservations</span>
             </a>
             <a asp-page="/Admin/Services/Index" class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Admin/Services") == true ? "active" : "")">
                 <i class="bi bi-person-fill-gear"></i>
-                <span>Services Management</span>
+                <span>Services</span>
             </a>
             <a asp-page="/Admin/Announcements/Announcements" class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Admin/Announcements") == true ? "active" : "")">
                 <i class="bi bi-megaphone-fill"></i>
                 <span>Announcements</span>
-            </a>
-            <a asp-page="#" class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Resources") == true ? "active" : "")">
-                <i class="bi bi-bar-chart-fill"></i>
-                <span>Report & Analytics</span>
             </a>
             <a asp-page="/Admin/Community/Index" class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Admin/Community") == true ? "active" : "")">
                 <i class="bi bi-chat-left-text-fill"></i>
                 <span>Community</span>
             </a>
             <a asp-page="#" class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Resources") == true ? "active" : "")">
+                <i class="bi bi-bar-chart-fill"></i>
+                <span>Report & Analytics</span>
+            </a>
+            <a asp-page="/Admin/Resources/Index" class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Admin/Resources") == true ? "active" : "")">
                 <i class="bi bi-file-earmark-text-fill"></i>
                 <span>Resources</span>
             </a>
         </div>
 
         <div class="genfunc_navLinks">
-            <a asp-page="#" class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Settings") == true ? "active" : "")">
+            <a asp-page="/Settings/Index" class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Settings") == true ? "active" : "")">
                 <i class="bi bi-gear-fill"></i>
                 <span>Settings</span>
             </a>

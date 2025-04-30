@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HomeownersMS.Migrations
 {
     [DbContext(typeof(HomeownersContext))]
-    [Migration("20250429091500_ServiceRequest")]
-    partial class ServiceRequest
+    [Migration("20250430093025_ResourceIsEnabled")]
+    partial class ResourceIsEnabled
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -376,16 +376,22 @@ namespace HomeownersMS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Content")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateOnly>("CreatedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("CreatedBy")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool?>("IsEnabled")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Url")
                         .HasColumnType("TEXT");
 
                     b.HasKey("ResourceId");
@@ -463,6 +469,9 @@ namespace HomeownersMS.Migrations
                     b.Property<int?>("ServiceId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("StaffAcceptedBy")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int?>("Status")
                         .HasColumnType("INTEGER");
 
@@ -472,32 +481,9 @@ namespace HomeownersMS.Migrations
 
                     b.HasIndex("ServiceId");
 
+                    b.HasIndex("StaffAcceptedBy");
+
                     b.ToTable("ServiceRequest", (string)null);
-                });
-
-            modelBuilder.Entity("HomeownersMS.Models.ServiceStaff", b =>
-                {
-                    b.Property<int>("ServiceStaffId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("StaffId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ServiceStaffId");
-
-                    b.HasIndex("StaffId");
-
-                    b.HasIndex("ServiceId", "StaffId")
-                        .IsUnique();
-
-                    b.ToTable("ServiceStaff", (string)null);
                 });
 
             modelBuilder.Entity("HomeownersMS.Models.Staff", b =>
@@ -705,24 +691,12 @@ namespace HomeownersMS.Migrations
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("Resident");
-
-                    b.Navigation("Service");
-                });
-
-            modelBuilder.Entity("HomeownersMS.Models.ServiceStaff", b =>
-                {
-                    b.HasOne("HomeownersMS.Models.Service", "Service")
-                        .WithMany("ServiceStaff")
-                        .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("HomeownersMS.Models.Staff", "Staff")
-                        .WithMany("ServiceStaff")
-                        .HasForeignKey("StaffId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("StaffAcceptedBy")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Resident");
 
                     b.Navigation("Service");
 
@@ -755,16 +729,6 @@ namespace HomeownersMS.Migrations
             modelBuilder.Entity("HomeownersMS.Models.Resident", b =>
                 {
                     b.Navigation("FacilityReview");
-                });
-
-            modelBuilder.Entity("HomeownersMS.Models.Service", b =>
-                {
-                    b.Navigation("ServiceStaff");
-                });
-
-            modelBuilder.Entity("HomeownersMS.Models.Staff", b =>
-                {
-                    b.Navigation("ServiceStaff");
                 });
 
             modelBuilder.Entity("HomeownersMS.Models.User", b =>

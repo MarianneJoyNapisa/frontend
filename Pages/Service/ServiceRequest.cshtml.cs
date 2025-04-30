@@ -66,6 +66,7 @@ namespace HomeownersMS.Pages.Service
 
             // Set additional fields
             ServiceRequest.Status = Statuses.pending;
+            ServiceRequest.StaffAcceptedBy = null;
             ServiceRequest.CreatedAt = DateTime.Now;
             
             // Set resident ID if logged in
@@ -80,6 +81,10 @@ namespace HomeownersMS.Pages.Service
                     ServiceRequest.RequestedBy = resident.UserId;
                 }
             }
+
+            Console.WriteLine("\nStatus: " + ServiceRequest.Status);
+            Console.WriteLine("StaffAcceptedBy: " + ServiceRequest.StaffAcceptedBy);
+            Console.WriteLine("RequestedBy: " + ServiceRequest.RequestedBy);
 
             _context.ServiceRequests.Add(ServiceRequest);
             await _context.SaveChangesAsync();

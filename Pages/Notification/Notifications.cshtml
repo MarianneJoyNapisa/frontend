@@ -4,10 +4,6 @@
     Layout = "_ResidentLayout"; // Use the Resident layout
     ViewData["HeaderTitle"] = "Notifications";
     ViewData["Title"] = "Notifications";
-    var username = HttpContext?.User?.Identity?.Name ?? "Guest";
-    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
-    ViewData["Username"] = username;
-    ViewData["CurrentPage"] = currentPage;
 }
 <style>
     .notification-Card {

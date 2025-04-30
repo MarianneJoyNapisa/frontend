@@ -9,14 +9,9 @@ using System.Security.Claims;
 namespace HomeownersMS.Pages.Reservation
 {
     [Authorize(Roles="admin,resident")]
-    public class FacilityModel : PageModel 
+    public class FacilityModel(HomeownersContext context) : PageModel 
     {
-        private readonly HomeownersContext _context;
-
-        public FacilityModel(HomeownersContext context)
-        {
-            _context = context;
-        }
+        private readonly HomeownersContext _context = context;
 
         [BindProperty]
         public Facility? Facility { get; set; }

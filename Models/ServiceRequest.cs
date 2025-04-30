@@ -33,6 +33,9 @@ namespace HomeownersMS.Models
         [ForeignKey("Resident")]
         public int? RequestedBy { get; set; }
 
+        [ForeignKey("Staff")]
+        public int? StaffAcceptedBy { get; set; }
+
         // General Information Fields
 
         public string? FullName { get; set; }
@@ -43,6 +46,8 @@ namespace HomeownersMS.Models
         public int? ServiceId { get; set; }
 
         public virtual Resident? Resident { get; set; }
+
+        public virtual Staff? Staff { get; set; }
 
         public virtual Service? Service { get; set; }
     }

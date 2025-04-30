@@ -221,6 +221,54 @@ namespace HomeownersMS.Data
 
             context.Services.AddRange(services);
             context.SaveChanges();
+
+            // ========== CREATE FACILITIES ==========
+            var facilities = new List<Facility>
+            {
+                new Facility
+                {
+                    Name = "Function Hall",
+                    Description = "A spacious hall perfect for events, parties, and gatherings. Capacity: 200 people.",
+                    PricePerHour = 1500.00f,
+                    // FacilityImage = "/images/facilities/function-hall.jpg",
+                    Address = "Clubhouse, 1st Floor"
+                },
+                new Facility
+                {
+                    Name = "Basketball Court",
+                    Description = "Standard-sized basketball court with bleachers. Open for games and tournaments.",
+                    PricePerHour = 500.00f,
+                    // FacilityImage = "/images/facilities/basketball-court.jpg",
+                    Address = "Sports Complex"
+                },
+                new Facility
+                {
+                    Name = "Swimming Pool",
+                    Description = "Olympic-sized swimming pool with lifeguard on duty during operating hours.",
+                    PricePerHour = 300.00f,
+                    // FacilityImage = "/images/facilities/swimming-pool.jpg",
+                    Address = "Recreation Area"
+                },
+                new Facility
+                {
+                    Name = "Tennis Court",
+                    Description = "Professional tennis court with lighting for night games.",
+                    PricePerHour = 400.00f,
+                    // FacilityImage = "/images/facilities/tennis-court.jpg",
+                    Address = "Sports Complex"
+                },
+                new Facility
+                {
+                    Name = "Fitness Gym",
+                    Description = "Fully equipped gym with cardio and weight training equipment.",
+                    PricePerHour = 200.00f,
+                    // FacilityImage = "/images/facilities/gym.jpg",
+                    Address = "Clubhouse, 2nd Floor"
+                }
+            };
+
+            context.Facilities.AddRange(facilities);
+            context.SaveChanges();
         }
     }
 }

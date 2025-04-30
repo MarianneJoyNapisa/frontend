@@ -20,7 +20,6 @@ namespace HomeownersMS.Data
         public DbSet<Staff> Staffs { get; set; } = default!;
         public DbSet<Admin> Admins { get; set; } = default!;
         public DbSet<Service> Services { get; set; } = default!;
-        public DbSet<ServiceStaff> ServiceStaffs { get; set; } = default!;
         public DbSet<ServiceRequest> ServiceRequests { get; set; } = default!;
         public DbSet<Facility> Facilities { get; set; } = default!;
         public DbSet<FacilityReview> FacilityReviews { get; set; } = default!;
@@ -52,33 +51,18 @@ namespace HomeownersMS.Data
                 .HasForeignKey<Resident>(r => r.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<ServiceStaff>()
-                .HasKey(ss => ss.ServiceStaffId);
-            
-            // One to many towards Service
-            modelBuilder.Entity<ServiceStaff>()
-                .HasOne(ss => ss.Service)
-                .WithMany(s => s.ServiceStaff)
-                .HasForeignKey(ss => ss.ServiceId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // One to many towards Staff
-            modelBuilder.Entity<ServiceStaff>()
-                .HasOne(ss => ss.Staff)
-                .WithMany(s => s.ServiceStaff)
-                .HasForeignKey(ss => ss.StaffId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // Indexing for faster queries? 
-            modelBuilder.Entity<ServiceStaff>()
-                .HasIndex(ss => new { ss.ServiceId, ss.StaffId })
-                .IsUnique();
-
             modelBuilder.Entity<ServiceRequest>()
                 .HasOne(sr => sr.Resident)
                 .WithMany()
                 .HasForeignKey(sr => sr.RequestedBy)
                 .OnDelete(DeleteBehavior.Cascade);
+
+                // Add this configuration for the Staff relationship
+            modelBuilder.Entity<ServiceRequest>()
+                .HasOne(sr => sr.Staff)
+                .WithMany()
+                .HasForeignKey(sr => sr.StaffAcceptedBy)
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<ServiceRequest>()
                 .HasOne(sr => sr.Service)
@@ -190,7 +174,6 @@ namespace HomeownersMS.Data
             modelBuilder.Entity<Staff>().ToTable("Staff");
             modelBuilder.Entity<Admin>().ToTable("Admin");
             modelBuilder.Entity<Service>().ToTable("Service");
-            modelBuilder.Entity<ServiceStaff>().ToTable("ServiceStaff");
             modelBuilder.Entity<ServiceRequest>().ToTable("ServiceRequest");
             modelBuilder.Entity<Facility>().ToTable("Facility");
             modelBuilder.Entity<FacilityRequest>().ToTable("FacilityRequest");
@@ -204,3 +187,29 @@ namespace HomeownersMS.Data
         }
     }
 }
+
+// public DbSet<ServiceStaff> ServiceStaffs { get; set; } = default!;
+
+// modelBuilder.Entity<ServiceStaff>()
+//     .HasKey(ss => ss.ServiceStaffId);
+
+// // One to many towards Service
+// modelBuilder.Entity<ServiceStaff>()
+//     .HasOne(ss => ss.Service)
+//     .WithMany(s => s.ServiceStaff)
+//     .HasForeignKey(ss => ss.ServiceId)
+//     .OnDelete(DeleteBehavior.Cascade);
+
+// // One to many towards Staff
+// modelBuilder.Entity<ServiceStaff>()
+//     .HasOne(ss => ss.Staff)
+//     .WithMany(s => s.ServiceStaff)
+//     .HasForeignKey(ss => ss.StaffId)
+//     .OnDelete(DeleteBehavior.Cascade);
+
+// // Indexing for faster queries? 
+// modelBuilder.Entity<ServiceStaff>()
+//     .HasIndex(ss => new { ss.ServiceId, ss.StaffId })
+//     .IsUnique();
+
+// modelBuilder.Entity<ServiceStaff>().ToTable("ServiceStaff");

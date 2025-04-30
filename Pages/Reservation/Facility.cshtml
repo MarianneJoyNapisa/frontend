@@ -77,7 +77,7 @@
     {
         @* <!-- Facility Hero Section --> *@
         <div class="facility-hero">
-            <img src="@Url.Content($"~/{Model.Facility.FacilityImage}")" alt="@Model.Facility.Name" />
+            <img src="@(string.IsNullOrEmpty(Model.Facility.FacilityImage) ? "https://placehold.co/600x400" : Url.Content($"~/{Model.Facility.FacilityImage}"))" />
             <div class="facility-overlay">
                 <div class="row">
                     <div class="col-6">
