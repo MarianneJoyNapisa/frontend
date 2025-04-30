@@ -1,0 +1,65 @@
+@page "{id:int}"
+@model HomeownersMS.Pages_Admin_Announcements.EditModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["HeaderTitle"] = "Edit Announcement";
+    ViewData["Title"] = "Edit Announcement";
+    ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
+}
+
+<div class="container-fluid">
+    <h2>Edit Announcement</h2>
+    <form method="post" id="editForm">
+        <input type="hidden" asp-for="Announcement.AnnouncementId" />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Announcement.Title" class="control-label"></label>
+            <input asp-for="Announcement.Title" class="form-control" required />
+            <span asp-validation-for="Announcement.Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Announcement.Content" class="control-label"></label>
+            <textarea asp-for="Announcement.Content" class="form-control" rows="5" required></textarea>
+            <span asp-validation-for="Announcement.Content" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Announcement.EventDate" class="control-label"></label>
+                    <input asp-for="Announcement.EventDate" type="date" class="form-control" required />
+                    <span asp-validation-for="Announcement.EventDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Announcement.EventTime" class="control-label"></label>
+                    <input asp-for="Announcement.EventTime" type="time" class="form-control" required />
+                    <span asp-validation-for="Announcement.EventTime" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Announcement.BlocksAffected" class="control-label"></label>
+            <input asp-for="Announcement.BlocksAffected" class="form-control" required />
+            <span asp-validation-for="Announcement.BlocksAffected" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Announcement.Office" class="control-label"></label>
+            <input asp-for="Announcement.Office" class="form-control" required />
+            <span asp-validation-for="Announcement.Office" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Announcement.ContactNumber" class="control-label"></label>
+            <input asp-for="Announcement.ContactNumber" class="form-control" required />
+            <span asp-validation-for="Announcement.ContactNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group text-end mt-3">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a asp-page="./Announcements" class="btn btn-secondary">Go back</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

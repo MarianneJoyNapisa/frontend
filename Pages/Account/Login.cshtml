@@ -1,0 +1,138 @@
+﻿@page
+@model HomeownersMS.Pages.Account.LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;  // Remove layout for a standalone page
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    
+    <!-- <link rel="stylesheet" href="~/css/GLobalstyle.css"> -->
+    <link rel="stylesheet" href="~/css/_global.css">
+    
+    <title>Login | Blue Peak Living</title>
+
+    <style>
+        body {  
+            background-image: url('../images/HomeOwners_bgc.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #login_container {
+            background-color: rgb(255, 255, 255, 0.5); /* white semi-transparent container*/
+        }
+        #logo {
+            max-width: 100px; /* Adjust the size of the logo */
+            height: auto;
+        }
+        #bluepeak{
+            color: var(--primary-color); /* website name text color */
+        }
+        #living{
+            color: var(--cta-color); /* website name text color */
+        }
+    </style>
+
+</head>
+<body class="login container">
+
+    <div id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+    <div class="text-center rounded-3 col-10 col-sm-10 p-4 p-sm-5 col-md-7 col-lg-5 col-xl-5 col-xxl-5" id="login_container">
+        <img src="~/images/Housing_Logo.png" alt="Logo" class="img-fluid" id="logo" />
+        <div class="container d-flex justify-content-center">
+            <p class="fw-bold fs-6 bluecolor" id="bluepeak">BluePeak</p>
+            <p class="ps-1 fw-bold fs-6 redcolor" id="living">Living</p>
+        </div>
+        <h3 class="mb-4 fw-bold fs-sm-2">LOGIN</h3>
+        <form method="post" class="d-grid gap-3 mb-4" id="LoginForm">
+
+            <div class="input-group">
+                <input asp-for="LoginInput.Username" placeholder="Enter your Username" class="form-control" autocomplete="off"/>                 
+                <span asp-validation-for="LoginInput.Username" class="field_validation"></span>
+            </div>
+
+            <div class="input-group">
+                <input asp-for="LoginInput.Password" type="password" placeholder="Enter your Password" class="form-control" autocomplete="off"/>
+                <span asp-validation-for="LoginInput.Password" class="field_validation"></span>
+            </div>
+            
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    document.getElementById("LoginForm").reset();
+                });
+            </script>
+
+            <button type="submit" class="btn btn-primary w-100 mt-3" id="loginButton">Login</button>
+        </form>
+        
+        <!-- Render validation errors as hidden data attributes -->
+        @if (!ViewData.ModelState.IsValid)
+        {
+            foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <div class="toast-message" data-message="@error.ErrorMessage"></div>
+            }
+        }
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Check if there's a toast message in TempData
+            const toastMessage = '@TempData["ToastMessage"]';
+            if (toastMessage) {
+                // Determine the toast background color based on the message
+                let toastClass = "text-bg-danger"; // Default to red for failure
+                if (toastMessage === "Login successful.") {
+                    toastClass = "text-bg-success"; // Green for success
+                }
+
+                const toastHtml = `
+                    <div class="toast align-items-center ${toastClass} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                ${toastMessage}
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>`;
+                $('#toastContainer').append(toastHtml);
+
+                // Initialize and show the toast
+                const toastElement = $('#toastContainer .toast').last();
+                const toast = new bootstrap.Toast(toastElement[0]);
+                toast.show();
+                
+                // If the login was successful, delay and redirect to the index page
+                if (toastMessage === "Login successful.") {
+                    setTimeout(function () {
+                        window.location.href = '/Index'; // Redirect to the index page
+                    }, 3000); // 3-second delay
+                }
+            }
+        });
+    </script>
+
+</body> 
+</html>

@@ -1,0 +1,68 @@
+@page
+@model HomeownersMS.Pages_Admin_Staffs.DeleteModel
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["HeaderTitle"] = "User Management";
+    ViewData["Title"] = "Delete Staff";
+    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+    ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Staff</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Staff.LName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Staff.LName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Staff.FName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Staff.FName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Staff.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Staff.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Staff.ContactNo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Staff.ContactNo)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Staff.Job)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Staff.Job)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Staff.HireDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Staff.HireDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Staff.User)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Staff.User.UserId)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="Staff.UserId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

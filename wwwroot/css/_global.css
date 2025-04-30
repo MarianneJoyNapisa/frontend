@@ -1,0 +1,278 @@
+:root {
+  /* Deep Blue for main navigation, branding */
+  --primary-color: #3C6693; 
+  
+  /* Light Blue for secondary buttons, links */
+  --secondary-color: #96ADD6; 
+
+  /* Warm Coral Red for CTA buttons, important actions */
+  --cta-color: #E85234;  
+
+  /* Soft Pinkish Beige for highlights, badges */
+  --secondary-accent: #F9B8AF;  
+
+  /* Light Creamy Beige for backgrounds */
+  --background-color: #F2EEE9;  
+
+  /* Text Colors */
+  --primary-text-color: #333333; /* Main body text color */
+  --secondary-text-color: #7A7A7A; /* Secondary text color */
+  --accent-text-color: #E85234; /* Accent text color for links, buttons */
+  --placeholder-text-color: #B0B0B0; /* Placeholder text color */
+  --light-text-color: #FFFFFF; /* Light text color for dark backgrounds */
+}
+
+
+body {
+  color: var(--primary-text-color); /* default body text color */
+  background-color: var(--background-color); /* interface background color */
+
+  /* font-style and size */
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem; /* base font size = 16px */
+
+  /* Ensure Full Viewport Height */
+  height: 100vh;
+  min-width: 360px;
+  margin: 0;
+  padding: 0;
+
+}
+
+.mainSection {
+  margin-top: 60px; /* Space below the fixed header */
+  padding: 36px 140px; /* Default for large screens */
+}
+
+/*----------------------------- FONT STYLES -----------------------------*/
+
+h1, h2, h3, h4, h5, h6 { /* headings */
+  color: var(--accent-text-color); 
+}
+
+p { /* paragraphs */
+  color: var(--primary-text-color); 
+}
+
+a { /* links */
+  color: var(--accent-text-color);  
+}
+
+a:hover { /* links on hover */
+  color: #B33A2A; 
+}
+
+input::placeholder {  /* input placeholders */
+  color: var(--placeholder-text-color);
+}
+
+.dark-bg-text { /* dark background text */
+  color: var(--light-text-color); 
+}
+
+.field_validation{ /* error messages */
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: #dc3545;
+  display: block;
+  text-align: left;
+  padding-left: 0.5rem;
+}
+
+/*----------------------------- BUTTON STYLES -----------------------------*/
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff !important;
+}
+
+.btn-primary:hover {
+  background-color: #33597A;
+  border-color: #33597A;
+  color: #fff;
+}
+
+/* .btn-primary:active {
+  background-color: #fff !important;
+  border-color: var(--primary-color) !important;
+  color: var(--primary-color) !important;
+} */
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background-color: #6C8DC6;
+  border-color: #6C8DC6;
+  color: #fff;
+}
+
+/* .btn-secondary:active {
+  background-color: #fff !important;
+  border-color: var(--secondary-color) !important;
+  color: var(--secondary-color) !important;
+} */
+
+.btn-input-icon{
+  background-color: #fff !important;
+  color: var(--primary-text-color) !important;
+  border-color: #ced4da !important;
+  border-left: 0px !important;
+}
+.btn-input-icon:hover{
+  background-color: #fff !important;
+  color: var(--primary-color) !important;
+  border-color: #ced4da !important;
+  border-left: 0px !important;
+}
+.btn-input-icon:active{
+  background-color: #fff !important;
+  color: var(--primary-color) !important;
+  border-color: #ced4da !important;
+  border-left: 0px !important;
+}
+
+.btn-primary,
+.btn-secondary {
+  transition: 
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+}
+
+/*----------------------------- TOAST NOTIF STYLES -----------------------------*/
+
+#toastContainer {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.toast {
+  transition: opacity 0.3s ease;
+}
+
+/* Adjust size on medium screens */
+@media (max-width: 768px) {
+  .mainSection {
+      padding: 24px 100px;
+  }
+  .facility-img {
+      max-height: 200px; /* Smaller image for tablets */
+  }
+}
+
+/* Adjust size on small screens */
+@media (max-width: 576px) {
+  .mainSection {
+      padding: 16px 20px;
+  }
+  .facility-img {
+      max-height: 140px; /* Even smaller for mobile devices */
+  }
+}
+
+/*----------------------------- ACCORDION STYLES -----------------------------*/
+.accordion-button {
+  background-color: #fff;
+  color: var(--primary-text-color);
+  border: none;
+  box-shadow: none;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.accordion-button:hover {
+  background-color: #f7f7f7;
+  color: var(--primary-color);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.accordion-button:not(.collapsed) {
+  color: #fff;
+  background-color: var(--secondary-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.accordion-button:not(.collapsed)  .badge{
+  color: var(--secondary-color);
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+.accordion-body {
+  background-color: #fafafa;
+  border-radius: 0 0 8px 8px;
+  padding: 1rem 1.25rem;
+  color: var(--primary-text-color);
+  transition: all 0.3s ease-in-out;
+}
+
+.accordion-item {
+  border: none;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.badge{
+  background-color: var(--primary-color);
+  color: var(--background-color);
+  border-radius: 24px;
+  font-size: 0.8rem;
+}
+
+/*----------------------------- CARD STYLES -----------------------------*/
+.fw-lighter{
+  font-size: 12px;
+  color: var(--secondary-color);
+}
+
+/*----------------------------- INPUT FIELDS STYLES -----------------------------*/
+.datepicker{
+  width: 200px;
+}
+.datepicker::placeholder{
+  color: var(--placeholder-text-color);
+}
+.form-label{
+  margin-bottom: 4px;
+  color: var(--secondary-text-color);
+}
+
+.form-control{
+  color: var(--primary-text-color);
+}
+
+.form-control::placeholder {
+  color: var(--placeholder-text-color);
+}
+.form-select::placeholder {
+  color: var(--placeholder-text-color) !important;
+}
+/*----------------------------- RATING STYLES -----------------------------*/
+.rating-stars {
+  color: #ffc107;
+  font-size: 1.5rem;
+}
+
+.rating-stars .empty {
+  color: #ced4da !important; /* Grey color for empty stars */
+}
+
+.rating-stars i {
+  cursor: pointer; /* Show pointer cursor for clickable stars */
+}

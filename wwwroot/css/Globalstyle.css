@@ -1,0 +1,145 @@
+:root {
+    --primary-color: #3c6693;
+    --secondary-color: #082340;
+    --tertiary-color: #a8dadc;
+    --accent-color:  #c02121;
+
+    --interface-color: #f2f2f2;
+    --neutral-color: #ffffff; /* text color, neutral button color */
+
+    --box-shadow: 0px 4px 10px rgba(76, 63, 114, 0.5); /* button hover color */
+}
+
+
+
+#announcementSection {
+    margin-bottom: 24px;
+}
+
+.Title-ViewAll {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+#announcementCards {
+    display: flex;
+    /* flex-wrap: wrap; */
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ann-Card {
+    flex: 1 1 calc(50% - 8px);
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+}
+.ann-Card .icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    color: white;
+}
+
+.ann-Card .header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#tableSummaries {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+#upcomingbillsSummary, #securityLogs {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+}
+
+#calendarSection, #timelineSection {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+.timeline {
+    position: relative;
+    padding-left: 20px;
+    border-left: 2px solid #007bff;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.timeline-date {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.timeline-event {
+    margin-left: 10px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    #announcementCards {
+        flex-direction: column;
+    }
+
+    .ann-Card {
+        flex: 1 1 100%;
+    }
+}
+
+
+
+/* Adjust size on medium screens */
+@media (max-width: 768px) {
+    .mainSection {
+        padding: 24px 100px;
+    }
+    .facility-img {
+        max-height: 200px; /* Smaller image for tablets */
+    }
+}
+
+/* Adjust size on small screens */
+@media (max-width: 576px) {
+    .mainSection {
+        padding: 16px 20px;
+    }
+    .facility-img {
+        max-height: 140px; /* Even smaller for mobile devices */
+    }
+}
+
+.feedback-btn {
+    transition: all 0.3s ease;
+    /* Animation */
+    transform: translateY(0);
+}
+
+.feedback-btn:hover {
+    background: linear-gradient(135deg, #a777e3, #6e8efb);
+    transform: translateY(-3px);
+}
+
+.feedback-btn:hover i {
+    transform: scale(1.1);
+    color: white;
+}

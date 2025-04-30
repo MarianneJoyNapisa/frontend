@@ -1,0 +1,68 @@
+@page
+@model HomeownersMS.Pages_Admin_Facilities.IndexModel
+
+@{
+    Layout = "_AdminLayout"; // Use the Admin layout
+    ViewData["HeaderTitle"] = "Facilities Management";
+    ViewData["Title"] = "Facilities";
+    ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
+}
+
+<h1>Facilities</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+
+
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Facility[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Facility[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Facility[0].PricePerHour)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Facility[0].Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Facility[0].FacilityImage)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Facility)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>@item.PricePerHour</td>
+                <td>@item.Address</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.FacilityImage))
+                    {
+                        <a href="/@item.FacilityImage" target="_blank">@item.FacilityImage</a>
+                    }
+                    else
+                    {
+                        <span>No Image</span>
+                    }
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.FacilityId">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.FacilityId">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.FacilityId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>

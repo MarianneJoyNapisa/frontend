@@ -1,0 +1,163 @@
+@using System.Security.Claims
+@using Microsoft.EntityFrameworkCore
+@using HomeownersMS.Data
+@inject HomeownersContext context
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] | Blue Peak Living</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+
+    @*
+    <!-- Flatpickr CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    *@
+
+    <link rel="stylesheet" href="~/css/_global.css" />
+    <link rel="stylesheet" href="~/css/_header.css" />
+    <link rel="stylesheet" href="~/css/_sidenav.css" />
+
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="headerPage">
+        <button class="sideNav_toggleBtn" id="sideNav_toggleBtn">
+            <i class="bi bi-list fs-4 p-2"></i>
+        </button>
+        <h4 class="m-0" >
+            <a class="ghost-link" asp-page="/Dashboard/Index">@ViewData["HeaderTitle"]</a>
+        </h4>
+        <a asp-page="/Notification/Notifications"
+            class="sideNav_toggleBtn @(ViewData["CurrentPage"]?.ToString() == "/Notification/Notifications" ? "active" : "")">
+            <i class="bi bi-bell fs-4 p-2"></i>
+        </a>
+    </div>
+
+    @{
+        var username = Context.User?.Identity?.Name ?? "Guest";
+        // Get the resident's profile image and name directly from the database
+        var (profileImagePath, residentName) = await Task.Run(async () => {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId != null && int.TryParse(userId, out int residentId))
+            {
+                var resident = await context.Residents.FirstOrDefaultAsync(r => r.UserId == residentId);
+                if (resident != null)
+                {
+                    var name = $"{resident.FName} {resident.LName}".Trim();
+                    return (resident.ProfileImage ?? "", name);
+                }
+            }
+            return ("", "Guest");
+        });
+        
+        var profileImageUrl = !string.IsNullOrEmpty(profileImagePath?.ToString()) 
+            ? Url.Content($"~/{profileImagePath}")
+            : Url.Content("~/images/default-profile.jpg");
+        ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
+    }
+
+    <!-- Side Navigation -->
+    <div class="sideNavBar" id="sidenavBar">
+        <!-- User Profile Section -->
+        <a class="ghost-link" asp-page="/Profile/ProfileResident">
+            <div class="userProfile">
+                <img src="@profileImageUrl" class="profile-avatar"/>
+                <div class="userInfo">
+                    <p class="profile-name">@residentName</p>
+                    <p class="user-type">@username</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- Navigation Links -->
+        <div class="mainfunc_navLinks">
+            <a asp-page="/Dashboard/Index"
+                class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Dashboard/IndexResident" ? "active" : "")">
+                <i class="bi bi-house-door-fill"></i>
+                <span>Dashboard</span>
+            </a>
+            <a asp-page="/Announcement/Announcement_Events"
+                class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Announcement/Announcement_Events") == true ? "active" : "")">
+                <i class="bi bi-megaphone-fill"></i> 
+                <span>Announcements</span>  <!-- Announcement Page no more Events included -->
+            </a>
+            <a asp-page="/Reservation/Reservation"
+                class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Reservation/") == true ? "active" : "")">
+                <i class="bi bi-calendar-fill"></i>
+                <span>Facility Reservation</span>
+            </a>
+            @* <a asp-page="/Billings_Payments/Payments"
+                class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Billings_Payments/Payments" ? "active" : "")">
+                <i class="bi bi-credit-card-fill"></i>
+                <span>Billing & Payments</span>
+            </a> *@
+            <a asp-page="/Service/Service"
+                class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Service") == true ? "active" : "")">
+                <i class="bi bi-tools"></i>
+                <span>Service</span>
+            </a>
+            <a asp-page="/Community/Community"
+                class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Community") == true ? "active" : "")">
+                <i class="bi bi-chat-left-text-fill"></i>
+                <span>Community</span>
+            </a>
+            <a asp-page="/Resources/Resource"
+                class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Resources") == true ? "active" : "")">
+                <i class="bi bi-file-earmark-text-fill"></i>
+                <span>Resources</span>
+            </a>
+            @* <a asp-page="/Security/Security"
+                class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Security/Security" ? "active" : "")">
+                <i class="bi bi-shield-shaded"></i>
+                <span>Security</span>
+            </a> *@
+        </div>
+
+        <div class="genfunc_navLinks">
+            <a asp-page="/Settings"
+                class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Settings") == true ? "active" : "")">
+                <i class="bi bi-gear-fill"></i>
+                <span>Settings</span>
+            </a>
+            <a asp-page="/Account/Logout"
+                class="navItem @(ViewData["CurrentPage"]?.ToString() == "/Account/Logout" ? "active" : "")">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Main Content Area -->
+    <div class="container-fluid mainSection">
+        @RenderBody() <!-- This is where the content of Reservation.cshtml will be rendered -->
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/SideNavjs.js"></script>
+    <script src="~/js/Calendar.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

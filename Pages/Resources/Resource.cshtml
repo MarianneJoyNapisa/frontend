@@ -1,0 +1,98 @@
+@page
+@model HomeownersMS.Pages.Resources.ResourceModel
+@{
+    Layout = "_ResidentLayout"; // Use your layout file
+    ViewData["HeaderTitle"] = "Resources";
+    ViewData["Title"] = "Resources";
+}
+
+<style>
+    .resources-container {
+        max-width: 800px;
+        margin: auto;
+    }
+    .resource-card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        margin-bottom: 15px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .resource-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    .accordion-button:not(.collapsed) {
+        background-color: #e9ecef;
+        color: #000;
+    }
+    .icon {
+        margin-right: 5px;
+    }
+</style>
+
+<h2 class="mb-4 text-center">Community Resources</h2>
+
+<div class="resources-container">
+    <div class="accordion" id="resourceAccordion">
+        <!-- How to Pay -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingPay">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePay" aria-expanded="true" aria-controls="collapsePay">
+                    💳 How to Pay
+                </button>
+            </h2>
+            <div id="collapsePay" class="accordion-collapse collapse show" aria-labelledby="headingPay" data-bs-parent="#resourceAccordion">
+                <div class="accordion-body">
+                    <p>You can pay your dues using the following methods:</p>
+                    <ul>
+                        <li><strong>Online Banking:</strong> Transfer via Metrobank, BDO, or GCash.</li>
+                        <li><strong>In-Person:</strong> Visit the admin office for cash or check payments.</li>
+                        <li><strong>Auto-Debit:</strong> Set up a recurring payment through your bank.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- How to Use the System -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingSystem">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSystem" aria-expanded="false" aria-controls="collapseSystem">
+                    🖥️ How to Use the System
+                </button>
+            </h2>
+            <div id="collapseSystem" class="accordion-collapse collapse" aria-labelledby="headingSystem" data-bs-parent="#resourceAccordion">
+                <div class="accordion-body">
+                    <p>Follow these steps to navigate and use the system effectively:</p>
+                    <ol>
+                        <li>Log in using your registered email and password.</li>
+                        <li>Access announcements, community posts, and resources from the dashboard.</li>
+                        <li>Submit service requests for maintenance or assistance.</li>
+                        <li>View and pay your dues online.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Support -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingSupport">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSupport" aria-expanded="false" aria-controls="collapseSupport">
+                    📞 Contact Support
+                </button>
+            </h2>
+            <div id="collapseSupport" class="accordion-collapse collapse" aria-labelledby="headingSupport" data-bs-parent="#resourceAccordion">
+                <div class="accordion-body">
+                    <p>For further assistance, contact us:</p>
+                    <ul>
+                        <li><strong>Email:</strong> support@communityms.com</li>
+                        <li><strong>Phone:</strong> (02) 1234-5678</li>
+                        <li><strong>Office Hours:</strong> Monday - Friday, 9 AM - 5 PM</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

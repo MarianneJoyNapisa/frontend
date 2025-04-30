@@ -1,0 +1,53 @@
+@page
+@model HomeownersMS.Pages_Admin_Facilities.CreateModel
+
+@{
+    Layout = "_AdminLayout"; // Use the Admin layout
+    ViewData["HeaderTitle"] = "Facilities Management";
+    ViewData["Title"] = "Create Facility";
+    ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
+}
+
+<h1>Create</h1>
+
+<h4>Facility</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Facility.Name" class="control-label"></label>
+                <input asp-for="Facility.Name" class="form-control" />
+                <span asp-validation-for="Facility.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Facility.Description" class="control-label"></label>
+                <input asp-for="Facility.Description" class="form-control" />
+                <span asp-validation-for="Facility.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Facility.PricePerHour" class="control-label"></label>
+                <input asp-for="Facility.PricePerHour" class="form-control" />
+                <span asp-validation-for="Facility.PricePerHour" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Facility.Address" class="control-label"></label>
+                <input asp-for="Facility.Address" class="form-control" />
+                <span asp-validation-for="Facility.Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FacilityImage" class="control-label"></label>
+                <input type="file" asp-for="FacilityImage" class="form-control" /> <!-- File input -->
+                <span asp-validation-for="FacilityImage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
