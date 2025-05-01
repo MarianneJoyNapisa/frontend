@@ -13,10 +13,8 @@
         border-radius: 8px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         margin-bottom: 20px;
-        background-color: white;
     }
     .card-header {
-        border-bottom: 1px solid #eee;
         padding: 12px 15px;
         display: flex;
         justify-content: space-between;
@@ -75,12 +73,12 @@
     }
     /* Accordion */
     .accordion-button {
-        background-color: #96c9ff !important;
+        
         color: #000 !important;
         font-weight: bold;
     }
     .accordion-button:not(.collapsed) {
-        background-color: #e9ecef !important;
+        
         color: #000 !important;
     }
     .accordion-body {
@@ -122,7 +120,7 @@
         <!-- Today -->
         <div class="accordion-item border-0 mb-2">
             <h2 class="accordion-header">
-                <button class="accordion-button bg-light collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseToday" style="background-color: #96c9ff !important">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseToday">
                     <i class="bi bi-calendar-day me-2"></i> 
                     <span class="fw-bold">Today</span>&nbsp;
                     <span class="badge rounded-pill bg-primary text-light">@Model.TodayAnnouncements.Count</span>
@@ -183,7 +181,7 @@
         <!-- Yesterday -->
         <div class="accordion-item border-0 mb-2">
             <h2 class="accordion-header">
-                <button class="accordion-button bg-light collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseYesterday" style="background-color: #96c9ff !important">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseYesterday">
                     <i class="bi bi-calendar-minus me-2"></i> 
                     <span class="fw-bold">Yesterday</span>&nbsp;
                     <span class="badge rounded-pill bg-primary text-light">@Model.YesterdayAnnouncements.Count</span>
@@ -244,7 +242,7 @@
         <!-- A Week Ago -->
         <div class="accordion-item border-0">
             <h2 class="accordion-header">
-                <button class="accordion-button bg-light collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWeekAgo" style="background-color: #96c9ff !important">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWeekAgo">
                     <i class="bi bi-calendar-week me-2"></i> 
                     <span class="fw-bold">Last Week</span>&nbsp;
                     <span class="badge rounded-pill bg-primary text-light">@Model.WeekAgoAnnouncements.Count</span>

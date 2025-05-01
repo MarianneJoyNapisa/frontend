@@ -1,6 +1,10 @@
 @page
 @using Microsoft.AspNetCore.Identity
 @model HomeownersMS.Pages.Settings.IndexModel
+@using System.Security.Claims
+@using Microsoft.EntityFrameworkCore
+@using HomeownersMS.Data
+@inject HomeownersContext context
 @{
     // Dynamic Layout Selection
     if (User.IsInRole("admin"))
@@ -24,6 +28,24 @@
     ViewData["Title"] = "Settings";
     var username = HttpContext?.User?.Identity?.Name ?? "Guest";
     ViewData["Username"] = username;
+
+    var (profileImagePath, residentName) = await Task.Run(async () => {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId != null && int.TryParse(userId, out int residentId))
+            {
+                var resident = await context.Residents.FirstOrDefaultAsync(r => r.UserId == residentId);
+                if (resident != null)
+                {
+                    var name = $"{resident.FName} {resident.LName}".Trim();
+                    return (resident.ProfileImage ?? "", name);
+                }
+            }
+            return ("", "Guest");
+        });
+        
+        var profileImageUrl = !string.IsNullOrEmpty(profileImagePath?.ToString()) 
+            ? Url.Content($"~/{profileImagePath}")
+            : Url.Content("~/images/default-profile.jpg");
 }
 
 <div class="container py-4">
@@ -32,7 +54,7 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="d-flex flex-column align-items-center text-center">
-                        <img src="https://ui-avatars.com/api/?name=@username&background=random" alt="User" class="rounded-circle" width="80">
+                        <img src="@profileImageUrl" alt="User" class="rounded-circle" width="80">
                         <div class="mt-3">
                             <h5>@username</h5>
                             <p class="text-muted mb-1">@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value</p>
@@ -121,16 +143,16 @@
                                     <div class="col-md-9">
                                         <div class="color-options d-flex gap-2">
                                             <input type="radio" class="btn-check" name="primaryColor" id="colorBlue" value="blue" autocomplete="off">
-                                            <label class="btn btn-primary rounded-circle color-option" for="colorBlue" style="width: 40px; height: 40px;"></label>
+                                            <label class="btn rounded-circle color-option" for="colorBlue" style="width: 40px; height: 40px; background-color: #3c6693"></label>
 
                                             <input type="radio" class="btn-check" name="primaryColor" id="colorPurple" value="purple" autocomplete="off">
-                                            <label class="btn btn-primary rounded-circle color-option" for="colorPurple" style="width: 40px; height: 40px; background-color: #6f42c1;"></label>
+                                            <label class="btn rounded-circle color-option" for="colorPurple" style="width: 40px; height: 40px; background-color: #6f42c1;"></label>
 
                                             <input type="radio" class="btn-check" name="primaryColor" id="colorGreen" value="green" autocomplete="off">
-                                            <label class="btn btn-primary rounded-circle color-option" for="colorGreen" style="width: 40px; height: 40px; background-color: #198754;"></label>
+                                            <label class="btn rounded-circle color-option" for="colorGreen" style="width: 40px; height: 40px; background-color: #198754;"></label>
 
                                             <input type="radio" class="btn-check" name="primaryColor" id="colorRed" value="red" autocomplete="off">
-                                            <label class="btn btn-primary rounded-circle color-option" for="colorRed" style="width: 40px; height: 40px; background-color: #dc3545;"></label>
+                                            <label class="btn rounded-circle color-option" for="colorRed" style="width: 40px; height: 40px; background-color: #dc3545;"></label>
                                         </div>
                                     </div>
                                 </div>
@@ -293,7 +315,12 @@
             // Color selection immediate effect
             $('input[name="primaryColor"]').change(function() {
                 const color = $(this).val();
-                document.documentElement.style.setProperty('--bs-primary', `var(--bs-${color})`);
+                // Remove all theme classes
+                ['blue', 'purple', 'green', 'red'].forEach(c => {
+                    $('html').removeClass(`theme-${c}`);
+                });
+                // Add selected theme class
+                $('html').addClass(`theme-${color}`);
             });
 
             function loadSettings() {
@@ -347,29 +374,30 @@
 
             function applyAppearanceSettings() {
                 const settings = JSON.parse(localStorage.getItem('appearanceSettings')) || {};
+                const html = document.documentElement;
                 
                 // Dark mode
                 if (settings.darkMode) {
-                    $('html').attr('data-bs-theme', 'dark');
+                    html.setAttribute('data-bs-theme', 'dark');
                 } else {
-                    $('html').attr('data-bs-theme', 'light');
+                    html.removeAttribute('data-bs-theme');
                 }
                 
                 // Primary color
                 if (settings.primaryColor) {
-                    document.documentElement.style.setProperty('--bs-primary', `var(--bs-${settings.primaryColor})`);
+                    // Remove any existing color classes
+                    ['blue', 'purple', 'green', 'red'].forEach(color => {
+                        html.classList.remove(`theme-${color}`);
+                    });
+                    // Add the selected color class
+                    html.classList.add(`theme-${settings.primaryColor}`);
                 }
                 
                 // Layout density
-                if (settings.layoutDensity === 'compact') {
-                    $('body').addClass('compact-layout');
-                    $('body').removeClass('spacious-layout');
-                } else if (settings.layoutDensity === 'spacious') {
-                    $('body').addClass('spacious-layout');
-                    $('body').removeClass('compact-layout');
-                } else {
-                    $('body').removeClass('compact-layout spacious-layout');
-                }
+                ['comfortable', 'compact', 'spacious'].forEach(density => {
+                    html.classList.remove(`density-${density}`);
+                });
+                html.classList.add(`density-${settings.layoutDensity || 'comfortable'}`);
             }
 
             function saveNotificationSettings() {
