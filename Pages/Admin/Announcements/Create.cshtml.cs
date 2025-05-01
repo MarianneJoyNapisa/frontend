@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using HomeownersMS.Data;
 using HomeownersMS.Models;
+using HomeownersMS.Services;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 
@@ -10,14 +11,10 @@ namespace HomeownersMS.Pages_Admin_Announcements
 {
     [Authorize(Roles="admin")]
 
-    public class CreateModel : PageModel
+    public class CreateModel(HomeownersContext context, INotificationService notificationService) : PageModel
     {
-        private readonly HomeownersContext _context;
-
-        public CreateModel(HomeownersContext context)
-        {
-            _context = context;
-        }
+        private readonly HomeownersContext _context = context;
+        private readonly INotificationService _notificationService = notificationService;
 
         [BindProperty]
         public Announcement NewAnnouncement { get; set; } = new();
@@ -54,6 +51,15 @@ namespace HomeownersMS.Pages_Admin_Announcements
             NewAnnouncement.CreatedAt = DateTime.Now;
             _context.Announcements.Add(NewAnnouncement);
             await _context.SaveChangesAsync();
+
+            // Send notification after announcement is created
+            if (NewAnnouncement.AnnouncementId > 0)
+            {
+                await _notificationService.CreateAnnouncementNotification( 
+                    NewAnnouncement,
+                    NewAnnouncement.CreatedBy ?? 0
+                );
+            }
 
             return RedirectToPage("./Announcements");
         }

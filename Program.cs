@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using HomeownersMS.Data;
 using HomeownersMS.Services;
+using HomeownersMS.Hubs;
 
 namespace HomeownersMS
 {
@@ -20,8 +21,12 @@ namespace HomeownersMS
             // Add services to the container.
             builder.Services.AddRazorPages();
 
-            // Register UserService
+            // SignalR and Hub
+            builder.Services.AddSignalR();
+
+            // Register services
             builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped<INotificationService, NotificationService>();
 
             // HTTP Context Accessor
             builder.Services.AddHttpContextAccessor();
@@ -91,6 +96,9 @@ namespace HomeownersMS
             app.UseAuthentication();
             app.UseAuthorization();
 
+            // Add before MapRazorPages()
+            app.MapHub<NotificationHub>("/notificationHub");
+
             app.MapRazorPages();
 
             app.Run();
@@ -152,6 +160,8 @@ dotnet add package X.PagedList.Mvc.Core
 
 dotnet add package X.PagedList --version 8.4.0
 dotnet add package X.PagedList.Mvc.Core --version 8.4.0
+
+dotnet add package Microsoft.AspNetCore.SignalR.Client
 
 dotnet list package
 

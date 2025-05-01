@@ -5,19 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using HomeownersMS.Data;
 
-namespace HomeownersMS.Pages.Announcement_Events
+namespace HomeownersMS.Pages.Announcement
 {
     [Authorize(Roles="admin,resident")]
 
-    public class Announcement_EventsModel : PageModel
+    public class Announcement_EventsModel(HomeownersContext context) : PageModel
     {
-        private readonly HomeownersMS.Data.HomeownersContext _context;
-
-        public Announcement_EventsModel(HomeownersMS.Data.HomeownersContext context)
-        {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-        }
+        private readonly HomeownersContext _context = context;
 
         // Properties to hold filtered announcements
         public List<Models.Announcement> TodayAnnouncements { get; private set; } = new();

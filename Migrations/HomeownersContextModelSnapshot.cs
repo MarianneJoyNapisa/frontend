@@ -336,6 +336,41 @@ namespace HomeownersMS.Migrations
                     b.ToTable("FacilityReview", (string)null);
                 });
 
+            modelBuilder.Entity("HomeownersMS.Models.Notification", b =>
+                {
+                    b.Property<int>("NotificationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("AnnouncementId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("CreatedByUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("NotificationId");
+
+                    b.HasIndex("AnnouncementId");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.ToTable("Notification", (string)null);
+                });
+
             modelBuilder.Entity("HomeownersMS.Models.Resident", b =>
                 {
                     b.Property<int>("UserId")
@@ -534,6 +569,33 @@ namespace HomeownersMS.Migrations
                     b.ToTable("User", (string)null);
                 });
 
+            modelBuilder.Entity("HomeownersMS.Models.UserNotification", b =>
+                {
+                    b.Property<int>("UserNotificationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("NotificationId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("ReadAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("UserNotificationId");
+
+                    b.HasIndex("NotificationId");
+
+                    b.HasIndex("UserId", "IsRead");
+
+                    b.ToTable("UserNotification", (string)null);
+                });
+
             modelBuilder.Entity("HomeownersMS.Models.Admin", b =>
                 {
                     b.HasOne("HomeownersMS.Models.User", "User")
@@ -655,6 +717,23 @@ namespace HomeownersMS.Migrations
                     b.Navigation("Resident");
                 });
 
+            modelBuilder.Entity("HomeownersMS.Models.Notification", b =>
+                {
+                    b.HasOne("HomeownersMS.Models.Announcement", "Announcement")
+                        .WithMany()
+                        .HasForeignKey("AnnouncementId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("HomeownersMS.Models.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Announcement");
+
+                    b.Navigation("CreatedByUser");
+                });
+
             modelBuilder.Entity("HomeownersMS.Models.Resident", b =>
                 {
                     b.HasOne("HomeownersMS.Models.User", "User")
@@ -707,6 +786,25 @@ namespace HomeownersMS.Migrations
                         .HasForeignKey("HomeownersMS.Models.Staff", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HomeownersMS.Models.UserNotification", b =>
+                {
+                    b.HasOne("HomeownersMS.Models.Notification", "Notification")
+                        .WithMany()
+                        .HasForeignKey("NotificationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HomeownersMS.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Notification");
 
                     b.Navigation("User");
                 });

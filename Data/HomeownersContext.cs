@@ -31,6 +31,10 @@ namespace HomeownersMS.Data
         public DbSet<Resource> Resources { get; set; } = default!;
         public DbSet<Event> Events { get; set; } = default!;
 
+        public DbSet<Notification> Notifications { get; set; } = default!;
+
+        public DbSet<UserNotification> UserNotifications { get; set; } = default!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
@@ -169,6 +173,45 @@ namespace HomeownersMS.Data
                 .HasForeignKey(e => e.FacilityRequestId) // Specify the entity type explicitly
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // Notifications
+            modelBuilder.Entity<Notification>(entity =>
+            {
+                entity.HasKey(n => n.NotificationId);
+                
+                // Relationship with Announcement
+                entity.HasOne(n => n.Announcement)
+                    .WithMany()
+                    .HasForeignKey(n => n.AnnouncementId)
+                    .OnDelete(DeleteBehavior.Cascade);
+                
+                // Relationship with User (creator)
+                entity.HasOne(n => n.CreatedByUser)
+                    .WithMany()
+                    .HasForeignKey(n => n.CreatedByUserId)
+                    .OnDelete(DeleteBehavior.SetNull); // Keep notifications if user is deleted
+            });
+
+            modelBuilder.Entity<UserNotification>(entity =>
+            {
+                entity.HasKey(un => un.UserNotificationId);
+                
+                // Relationship with User
+                entity.HasOne(un => un.User)
+                    .WithMany()
+                    .HasForeignKey(un => un.UserId)
+                    .OnDelete(DeleteBehavior.Cascade); // Delete user notifications when user is deleted
+                
+                // Relationship with Notification
+                entity.HasOne(un => un.Notification)
+                    .WithMany()
+                    .HasForeignKey(un => un.NotificationId)
+                    .OnDelete(DeleteBehavior.Cascade); // Delete user notifications when notification is deleted
+                
+                // Index for performance
+                entity.HasIndex(un => new { un.UserId, un.IsRead });
+                entity.HasIndex(un => un.NotificationId);
+            });
+
             modelBuilder.Entity<User>().ToTable("User");
             modelBuilder.Entity<Resident>().ToTable("Resident");
             modelBuilder.Entity<Staff>().ToTable("Staff");
@@ -184,6 +227,10 @@ namespace HomeownersMS.Data
             modelBuilder.Entity<Announcement>().ToTable("Announcement");
             modelBuilder.Entity<Resource>().ToTable("Resource");
             modelBuilder.Entity<Event>().ToTable("Event");
+            // Notifications
+            // Add table mappings
+            modelBuilder.Entity<Notification>().ToTable("Notification");
+            modelBuilder.Entity<UserNotification>().ToTable("UserNotification");
         }
     }
 }

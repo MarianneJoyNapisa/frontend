@@ -16,9 +16,19 @@
     <!-- Add FullCalendar CSS -->
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/GLobalstyle.css" />
+    <style>
+        #notificationList * {
+            font-size: small !important;
+        }
+
+        #notification .dropdown-toggle::after {
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
+    @Html.AntiForgeryToken()
     <!-- Header -->
     <div class="headerPage">
         <button class="sideNav_toggleBtn" id="sideNav_toggleBtn">
@@ -27,10 +37,17 @@
         <h3 class="m-0">
             <a class="ghost-link" asp-page="/Dashboard/Index">@ViewData["HeaderTitle"]</a>
         </h3>
-        <a asp-page="/Notification/Notifications"
-            class="sideNav_toggleBtn @(ViewData["CurrentPage"]?.ToString() == "/Notification/Notifications" ? "active" : "")">
-            <i class="bi bi-bell fs-4 p-2"></i>
-        </a>
+        @* Notification *@
+        <div class="dropdown" id="notification">
+            <button class="btn dropdown-toggle" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-bell fs-4 p-2 text-light"></i>
+                <span id="unreadCount" class="badge bg-danger d-none">0</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" id="notificationList">
+                <li><h6 class="dropdown-header">Notifications</h6></li>
+                <li><a class="dropdown-item" href="#">Loading notifications...</a></li>
+            </ul>
+        </div>
     </div>
 
     @{
@@ -143,5 +160,175 @@
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/notificationHub")
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+
+        connection.start().then(function () {
+            console.log("SignalR Connected");
+            // Join the user's notification group
+            connection.invoke("JoinNotificationGroup", "@User.FindFirstValue(ClaimTypes.NameIdentifier)");
+        }).catch(function (err) {
+            return console.error(err.toString());
+        });
+
+        // Handle received notifications
+        connection.on("ReceiveNotification", function (notification) {
+            updateUnreadCount();
+            addNotificationToDropdown(notification);
+            showToast(notification);
+        });
+
+        // Load initial notifications and count
+        updateUnreadCount();
+        loadNotifications();
+
+        // Mark as read when clicked
+        document.getElementById('notificationList').addEventListener('click', function(e) {
+            let target = e.target;
+            // Find the closest dropdown-item in case clicking on child elements
+            while (target && !target.classList.contains('dropdown-item')) {
+                target = target.parentElement;
+                if (!target) return;
+            }
+            
+            const notificationId = target.dataset.notificationId;
+            if (notificationId) {
+                // Add visual feedback immediately
+                target.classList.remove('fw-bold');
+                
+                // Send the mark-as-read request
+                fetch(`/Notification/MarkAsRead?id=${notificationId}`, { 
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to mark as read');
+                    updateUnreadCount();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Revert visual feedback if failed
+                    target.classList.add('fw-bold');
+                });
+            }
+        });
+    });
+
+    function updateUnreadCount() {
+        fetch('/Notification/GetUnreadCount')
+            .then(response => response.json())
+            .then(count => {
+                const badge = document.getElementById('unreadCount');
+                if (count > 0) {
+                    badge.textContent = count;
+                    badge.classList.remove('d-none');
+                } else {
+                    badge.classList.add('d-none');
+                }
+            });
+    }
+
+    function loadNotifications() {
+        fetch('/Notification/GetRecentNotifications')
+            .then(response => response.json())
+            .then(notifications => {
+                const list = document.getElementById('notificationList');
+                list.innerHTML = '<li><h6 class="dropdown-header">Notifications</h6></li>';
+                
+                if (notifications.length === 0) {
+                    list.innerHTML += '<li><a class="dropdown-item" href="#">No notifications</a></li>';
+                    return;
+                }
+                
+                notifications.forEach(notification => {
+                    const item = document.createElement('li');
+                    const link = document.createElement('a');
+                    link.className = `dropdown-item ${notification.isRead ? '' : 'fw-bold'}`;
+                    link.href = notification.url || '#'; // Use the URL from server
+                    link.dataset.notificationId = notification.notificationId;
+                    
+                    const timeAgo = timeSince(new Date(notification.createdAt));
+                    link.innerHTML = `
+                        <div class="d-flex justify-content-between">
+                            <span>${notification.title}</span>
+                            <small class="text-muted">${timeAgo}</small>
+                        </div>
+                        <small class="text-muted">${notification.message.substring(0, 50)}${notification.message.length > 50 ? '...' : ''}</small>
+                    `;
+                    
+                    item.appendChild(link);
+                    list.appendChild(item);
+                });
+                
+                list.innerHTML += '<li><hr class="dropdown-divider"></li>';
+                list.innerHTML += '<li><a class="dropdown-item text-center" href="/Notification/Notifications">View all</a></li>';
+            });
+    }
+
+    function addNotificationToDropdown(notification) {
+        const list = document.getElementById('notificationList');
+        const header = list.querySelector('h6.dropdown-header');
+        const noItems = list.querySelector('.dropdown-item[href="#"]');
+        
+        if (noItems && noItems.textContent === 'No notifications') {
+            list.removeChild(noItems.parentElement);
+        }
+        
+        const item = document.createElement('li');
+        const link = document.createElement('a');
+        link.className = 'dropdown-item fw-bold';
+        link.href = '#';
+        link.dataset.notificationId = notification.notificationId;
+        
+        const timeAgo = timeSince(new Date(notification.createdAt));
+        link.innerHTML = `
+            <div class="d-flex justify-content-between">
+                <span>${notification.title}</span>
+                <small class="text-muted">${timeAgo}</small>
+            </div>
+            <small class="text-muted">${notification.message.substring(0, 50)}${notification.message.length > 50 ? '...' : ''}</small>
+        `;
+        
+        item.appendChild(link);
+        list.insertBefore(item, header.nextSibling);
+    }
+
+    function markAsRead(notificationId) {
+        fetch(`/Notification/MarkAsRead?id=${notificationId}`, { method: 'POST' })
+            .then(() => {
+                updateUnreadCount();
+                loadNotifications();
+            });
+    }
+
+    function showToast(notification) {
+        // Implement toast notification if desired
+        console.log('New notification:', notification);
+    }
+
+    function timeSince(date) {
+        const seconds = Math.floor((new Date() - date) / 1000);
+        let interval = Math.floor(seconds / 31536000);
+        
+        if (interval >= 1) return interval + "y ago";
+        interval = Math.floor(seconds / 2592000);
+        if (interval >= 1) return interval + "mo ago";
+        interval = Math.floor(seconds / 86400);
+        if (interval >= 1) return interval + "d ago";
+        interval = Math.floor(seconds / 3600);
+        if (interval >= 1) return interval + "h ago";
+        interval = Math.floor(seconds / 60);
+        if (interval >= 1) return interval + "m ago";
+        return Math.floor(seconds) + "s ago";
+    }
+</script>
 
 </html>
