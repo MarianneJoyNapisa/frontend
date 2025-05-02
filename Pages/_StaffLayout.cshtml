@@ -17,6 +17,7 @@
 </head>
 
 <body>
+    @Html.AntiForgeryToken()
     <!-- Header -->
     <div class="headerPage">
         <button class="sideNav_toggleBtn" id="sideNav_toggleBtn">
@@ -110,5 +111,33 @@
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('render!0');
+        // Load appearance settings
+        const settings = JSON.parse(localStorage.getItem('appearanceSettings')) || {};
+        const html = document.documentElement;
+        
+        // Apply dark mode
+        if (settings.darkMode) {
+            html.setAttribute('data-bs-theme', 'dark');
+        }
+        
+        // Apply primary color
+        if (settings.primaryColor) {
+            html.classList.add(`theme-${settings.primaryColor}`);
+        } else {
+            html.classList.add('theme-blue'); // Default
+        }
+        
+        // Apply layout density
+        if (settings.layoutDensity) {
+            html.classList.add(`density-${settings.layoutDensity}`);
+        } else {
+            html.classList.add('density-comfortable'); // Default
+        }
+    });
+</script>
 
 </html>

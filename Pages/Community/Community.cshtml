@@ -108,14 +108,14 @@
         justify-content: space-between;
         align-items: center;
         padding: 10px;
-        background-color: #2c5887;
+        background-color: var(--bs-primary);
         color: white;
         border-radius: 5px;
         margin-bottom: 15px;
     }
 
     .action-buttons button {
-        background-color: #2c5887;
+        background-color: var(--bs-primary);
         color: white;
         border: 1px solid rgba(255, 255, 255, 0.2);
         padding: 8px 12px;
@@ -131,7 +131,7 @@
     }
 
     .post-card {
-        border: 1px solid #eee;
+        border: 1px solid var(--bs-border-color-translucent);
         border-radius: 8px;
         padding: 15px;
         background-color: var(--bs-body-bg-color);
@@ -148,9 +148,10 @@
         width: 100%;
         padding: 10px;
         padding-right: 40px;
-        border: 1px solid #ddd;
         border-radius: 5px;
         font-size: 14px;
+        background-color: var(--bs-body-bg-color);
+        border-color: var(--bs-border-color-translucent);
     }
 
     .search-icon {
@@ -186,7 +187,7 @@
     .see-more {
         display: block;
         text-align: center;
-        background-color: #2c5887;
+        background-color: var(--bs-primary);
         color: white;
         padding: 10px;
         border-radius: 5px;
@@ -202,7 +203,7 @@
         padding: 10px 15px;
         border-radius: 8px;
         margin-bottom: 15px;
-        border: 1px solid #eee;
+        border: 1px solid var(--bs-border-color-translucent);
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
     }
 
@@ -212,7 +213,7 @@
     }
 
     .new-thread-button {
-        background-color: #2c5887;
+        background-color: var(--bs-primary);
         color: white;
         border: none;
         width: 32px;
@@ -289,13 +290,13 @@
 
     /* comment styles */
     .comments-section {
-        border-top: 1px solid #eee;
+        border-top: 1px solid var(--bs-border-color-translucent);
         padding-top: 10px;
         margin-top: 15px;
     }
 
     .comment-card {
-        background-color: #f8f9fa;
+        background-color: var(--bs-body-bg-color);
     }
 
     .comments-list {
@@ -594,10 +595,10 @@
                                     </button>
                                 </span>
                           </div>
-                            <div class="post-meta">
+                            @* <div class="post-meta">
                                 <span class="badge badge-primary">@(post.Comments?.Count ?? 0) comments</span>
                                 <span class="badge badge-secondary">@post.CreatedAt.ToString("g")</span>
-                            </div>
+                            </div> *@
                         </div>
 
                         @* <!-- Comments Section --> *@
@@ -649,7 +650,7 @@
                                     <div class="input-group"
                                         style="border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                                         <textarea name="commentContent" class="form-control" placeholder="Add a comment..." required
-                                            style="padding: 8px 12px; resize: none; height: 20px; border: 1px solid #ced4da; border-right: none;"></textarea>
+                                            style="padding: 8px 12px; resize: none; height: 20px; border: 1px solid var(--bs-border-color-translucent); border-right: none;"></textarea>
                                         <button type="submit" class="btn btn-primary"
                                             style="border-radius: 0 4px 4px 0;">Post</button>
                                     </div>

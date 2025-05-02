@@ -104,7 +104,7 @@
                 <i class="bi bi-chat-left-text-fill"></i>
                 <span>Community</span>
             </a>
-            <a asp-page="#" class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Resources") == true ? "active" : "")">
+            <a asp-page="/Admin/Analytics/Index" class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Admin/Analytics") == true ? "active" : "")">
                 <i class="bi bi-bar-chart-fill"></i>
                 <span>Report & Analytics</span>
             </a>
@@ -141,5 +141,34 @@
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('render!0');
+        // Load appearance settings
+        const settings = JSON.parse(localStorage.getItem('appearanceSettings')) || {};
+        const html = document.documentElement;
+        
+        // Apply dark mode
+        if (settings.darkMode) {
+            html.setAttribute('data-bs-theme', 'dark');
+        }
+        
+        // Apply primary color
+        if (settings.primaryColor) {
+            html.classList.add(`theme-${settings.primaryColor}`);
+        } else {
+            html.classList.add('theme-blue'); // Default
+        }
+        
+        // Apply layout density
+        if (settings.layoutDensity) {
+            html.classList.add(`density-${settings.layoutDensity}`);
+        } else {
+            html.classList.add('density-comfortable'); // Default
+        }
+    });
+</script>
+
 
 </html>
