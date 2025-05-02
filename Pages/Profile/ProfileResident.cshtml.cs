@@ -40,6 +40,7 @@ namespace HomeownersMS.Pages.Profile
         {
             if (!ModelState.IsValid)
             {
+                TempData["ErrorMessage"] = "Please correct the errors in the form.";
                 return Page();
             }
 
@@ -67,42 +68,51 @@ namespace HomeownersMS.Pages.Profile
                 // Handle profile image upload
                 if (ProfileImage != null && ProfileImage.Length > 0)
                 {
-                    // Define the folder to save the image
-                    var uploadsFolder = Path.Combine("wwwroot", "images", "profiles");
+                    try{
+                        // Define the folder to save the image
+                        var uploadsFolder = Path.Combine("wwwroot", "images", "profiles");
 
-                    // Ensure the folder exists
-                    if (!Directory.Exists(uploadsFolder))
-                    {
-                        Directory.CreateDirectory(uploadsFolder);
-                    }
-
-                    // Delete the old image if it exists
-                    if (!string.IsNullOrEmpty(residentToUpdate.ProfileImage))
-                    {
-                        var oldImagePath = Path.Combine("wwwroot", residentToUpdate.ProfileImage);
-                        if (System.IO.File.Exists(oldImagePath))
+                        // Ensure the folder exists
+                        if (!Directory.Exists(uploadsFolder))
                         {
-                            System.IO.File.Delete(oldImagePath);
+                            Directory.CreateDirectory(uploadsFolder);
                         }
+
+                        // Delete the old image if it exists
+                        if (!string.IsNullOrEmpty(residentToUpdate.ProfileImage))
+                        {
+                            var oldImagePath = Path.Combine("wwwroot", residentToUpdate.ProfileImage);
+                            if (System.IO.File.Exists(oldImagePath))
+                            {
+                                System.IO.File.Delete(oldImagePath);
+                            }
+                        }
+
+                        // Generate a unique file name
+                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(ProfileImage.FileName);
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        // Save the file to the server
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await ProfileImage.CopyToAsync(fileStream);
+                        }
+
+                        // Save the new file path to the database (relative path)
+                        residentToUpdate.ProfileImage = Path.Combine("images", "profiles", uniqueFileName);
+                        
+                        Console.WriteLine(residentToUpdate.ProfileImage);
                     }
-
-                    // Generate a unique file name
-                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(ProfileImage.FileName);
-                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                    // Save the file to the server
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    catch (Exception ex)
                     {
-                        await ProfileImage.CopyToAsync(fileStream);
+                        TempData["ErrorMessage"] = "An error occurred while uploading the profile image.";
+                        Console.WriteLine(ex.Message);
+                        return Page();
                     }
-
-                    // Save the new file path to the database (relative path)
-                    residentToUpdate.ProfileImage = Path.Combine("images", "profiles", uniqueFileName);
-                    Console.WriteLine(residentToUpdate.ProfileImage);
                 }
 
                 try
-                {
+                { // Save changes to the database
                     await _context.SaveChangesAsync();
                     TempData["SuccessMessage"] = "Profile updated successfully!";
                     return RedirectToPage();
@@ -110,7 +120,8 @@ namespace HomeownersMS.Pages.Profile
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ResidentExists(Resident.UserId))
-                    {
+                    { // Check if the resident still exists
+                        TempData["ErrorMessage"] = "The resident record no longer exists.";
                         return NotFound();
                     }
                     else

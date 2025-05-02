@@ -1,0 +1,47 @@
+/*----------------------------- HEADER -----------------------------*/
+.headerPage {
+    height: 60px;
+    width: 100%;
+
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1002;
+
+    display: flex;
+    justify-content: space-between; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    
+    padding: 16px;
+    color: #fff;
+    background-color: var(--bs-primary);
+
+    margin: 0;
+}
+
+
+/*----------------------------- HEADER CONTENT STYLES -----------------------------*/
+
+.headerPage h4 {
+    margin: 0; /* Remove default margin */
+    text-align: center; /* Ensure text is centered */
+    flex-grow: 1; /* Allow the title to take up available space */
+}
+
+
+/* the bi-list button */
+.sideNav_toggleBtn {
+    color: #fff;
+    background: none; /* Remove default button background */
+    border: none; /* Remove default button border */
+    cursor: pointer; /* Show pointer cursor on hover */
+}
+
+.sideNav_toggleBtn:hover {
+    color: var(--bs-secondary); /* Change color on hover */
+    transition: color 0.3s ease; /* Smooth transition for color change */
+}
+
+.secondary-on-hover:hover {
+    color: var(--bs-secondary) !important;
+}

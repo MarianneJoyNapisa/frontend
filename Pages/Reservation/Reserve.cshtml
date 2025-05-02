@@ -7,7 +7,34 @@
     ViewData["HeaderTitle"] = "Reservation";
     ViewData["Title"] = @Model.Facility.Name ?? "Reservation Form";
 }
+<style>
+    .form-group{
+        margin-bottom: 1rem;
+    }
+    /* Highlight selected service */
+    .service-item.selected {
+        background-color: #f8f9fa; /* Light gray background */
+        border-color: #007bff; /* Bootstrap primary color */
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Subtle shadow */
+    }
 
+    /* Custom checkbox styling */
+    .form-check-input {
+        width: 1.25rem;
+        height: 1.25rem;
+        margin-right: 0.5rem;
+    }
+
+    .form-check-label {
+        font-size: 1rem;
+    }
+
+    /* Total price styling */
+    #totalPrice {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+</style>
 <div class="container">
     <div asp-validation-summary="All" class="text-danger"></div>   
 
@@ -28,75 +55,86 @@
                 <input type="hidden" asp-for="FacilityRequest.FacilityId" />
                 <input type="hidden" asp-for="FacilityRequest.ResidentId" />
 
-                <!-- Event Details Section -->
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h6 class="fw-bold">Event Information</h6>
-                        <div class="form-group">
-                            <label asp-for="Event.Title" class="control-label">Event Name</label>
-                            <input asp-for="Event.Title" class="form-control" required/>
-                            <span asp-validation-for="Event.Title" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label asp-for="Event.EventType" class="control-label">Event Type</label>
-                            <select asp-for="Event.EventType" class="form-control" 
-                                    asp-items="Html.GetEnumSelectList<EventType>()">
-                                <option value="">-- Select Event Type --</option>
-                            </select>
-                            <span asp-validation-for="Event.EventType" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Event.GuestCapacity" class="control-label">Guest Capacity</label>
-                            <input asp-for="Event.GuestCapacity" class="form-control" required/>
-                            <span asp-validation-for="Event.GuestCapacity" class="text-danger"></span>
-                        </div>
-
-                        <h6 class="fw-bold">Schedule</h6>
-                        <div class="form-group">
-                            <label asp-for="Event.EventDate" class="control-label">Event Date</label>
-                            <input type="date" asp-for="Event.EventDate" class="form-control" required/>
-                            <span asp-validation-for="Event.EventDate" class="text-danger"></span>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
+                <div class="row gx-2">
+                    <!-- Event Details Section -->
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h6 class="fw-bold mb-4">Event Information</h6>
                                 <div class="form-group">
-                                    <label asp-for="Event.EventTimeStart" class="control-label">Starts With</label>
-                                    <input type="time" asp-for="Event.EventTimeStart" class="form-control" required/>
-                                    <span asp-validation-for="Event.EventTimeStart" class="text-danger"></span>
+                                    <label asp-for="Event.Title" class="form-label">Event Name</label>
+                                    <input asp-for="Event.Title" class="form-control" required/>
+                                    <span asp-validation-for="Event.Title" class="text-danger"></span>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
+
                                 <div class="form-group">
-                                    <label asp-for="Event.EventTimeEnd" class="control-label">Ends With</label>
-                                    <input type="time" asp-for="Event.EventTimeEnd" class="form-control" required/>
-                                    <span asp-validation-for="Event.EventTimeEnd" class="text-danger"></span>
+                                    <label asp-for="Event.EventType" class="form-label">Event Type</label>
+                                    <select asp-for="Event.EventType" class="form-control" 
+                                            asp-items="Html.GetEnumSelectList<EventType>()">
+                                        <option value="">-- Select Event Type --</option>
+                                    </select>
+                                    <span asp-validation-for="Event.EventType" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Event.GuestCapacity" class="form-label">Guest Capacity</label>
+                                    <input asp-for="Event.GuestCapacity" class="form-control" required/>
+                                    <span asp-validation-for="Event.GuestCapacity" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
-
                     </div>
+
+                    <!-- Schedule Section -->
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h6 class="fw-bold mb-4">Event Schedule</h6>
+                                <div class="form-group">
+                                    <label asp-for="Event.EventDate" class="form-label">Event Date</label>
+                                    <input type="date" asp-for="Event.EventDate" class="form-control" required/>
+                                    <span asp-validation-for="Event.EventDate" class="text-danger"></span>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Event.EventTimeStart" class="form-label">Starts With</label>
+                                            <input type="time" asp-for="Event.EventTimeStart" class="form-control" required/>
+                                            <span asp-validation-for="Event.EventTimeStart" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Event.EventTimeEnd" class="form-label">Ends With</label>
+                                            <input type="time" asp-for="Event.EventTimeEnd" class="form-control" required/>
+                                            <span asp-validation-for="Event.EventTimeEnd" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                     </div>
                 </div>
+
 
                 <!-- Personal Info Section -->
                 <div class="card mb-3">
                     <div class="card-body">
                         <h6 class="fw-bold">Contact Information</h6>
                         <div class="form-group">
-                            <label class="control-label">Full Name</label>
+                            <label class="form-label">Full Name</label>
                             <input asp-for="FacilityRequest.FullName" class="form-control" required/>
                             <span asp-validation-for="FacilityRequest.FullName" class="text-danger"></span>
                         </div>
                         
                         <div class="form-group">
-                            <label class="control-label">Email Address</label>
+                            <label class="form-label">Email Address</label>
                             <input asp-for="FacilityRequest.EmailAddress" class="form-control" required/>
                             <span asp-validation-for="FacilityRequest.EmailAddress" class="text-danger"></span>
                         </div>
                         
                         <div class="form-group">
-                            <label  class="control-label">Phone Number</label>
+                            <label  class="form-label">Phone Number</label>
                             <input asp-for="FacilityRequest.PhoneNumber" class="form-control" required/>
                             <span asp-validation-for="FacilityRequest.PhoneNumber" class="text-danger"></span>
                         </div>
@@ -137,7 +175,6 @@
         </div>
     </div>
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

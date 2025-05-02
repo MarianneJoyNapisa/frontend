@@ -10,38 +10,51 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] | Blue Peak Living</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <!-- Add FullCalendar CSS -->
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/GLobalstyle.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/_global.css" />
+    <link rel="stylesheet" href="~/css/_header.css" />
+    <link rel="stylesheet" href="~/css/_sidenav.css" />
     <style>
         #notificationList * {
             font-size: small !important;
         }
 
         #notification .dropdown-toggle::after {
+            display: none;
+        }
+        .bell-icon {
+            position: relative;
+        }
+        .bell-icon #unreadCount {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 8px;
             color: white;
         }
     </style>
 </head>
 
 <body>
-    @Html.AntiForgeryToken()
     <!-- Header -->
     <div class="headerPage">
         <button class="sideNav_toggleBtn" id="sideNav_toggleBtn">
             <i class="bi bi-list fs-4 p-2"></i>
         </button>
-        <h3 class="m-0">
-            <a class="ghost-link" asp-page="/Dashboard/Index">@ViewData["HeaderTitle"]</a>
-        </h3>
+        <h2 class="m-0">
+            <a class="ghost-link text-light secondary-on-hover" asp-page="/Dashboard/Index">@ViewData["HeaderTitle"]</a>
+        </h2>
         @* Notification *@
         <div class="dropdown" id="notification">
-            <button class="btn dropdown-toggle" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-bell fs-4 p-2 text-light"></i>
-                <span id="unreadCount" class="badge bg-danger d-none">0</span>
+            <button class="btn dropdown-toggle secondary-on-hover" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-bell fs-4 text-light secondary-on-hover bell-icon">
+                    <span id="unreadCount" class="badge bg-danger d-none">0</span>
+                </i>
             </button>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" id="notificationList">
                 <li><h6 class="dropdown-header">Notifications</h6></li>
@@ -71,8 +84,6 @@
             ? Url.Content($"~/{profileImagePath}")
             : Url.Content("~/images/default-profile.jpg");
         ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
-        ViewData["ProfileImageUrl"] = profileImageUrl;
-        ViewBag.ProfileImageUrl = profileImageUrl;
     }
 
     <!-- Side Navigation -->
@@ -82,9 +93,8 @@
             <div class="userProfile">
                 <img src="@profileImageUrl" class="profile-avatar"/>
                 <div class="userInfo">
-                    <p class="userName">@username</p>
                     <p class="profile-name">@residentName</p>
-                    <p class="userType">Resident</p>
+                    <p class="user-type">@username</p>
                 </div>
             </div>
         </a>
@@ -336,7 +346,7 @@
 
     function showToast(notification) {
         // Implement toast notification if desired
-        console.log('New notification:', notification);
+        console.log(notification);
     }
 
     function timeSince(date) {

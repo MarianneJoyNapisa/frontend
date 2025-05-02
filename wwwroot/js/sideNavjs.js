@@ -55,23 +55,4 @@ document.addEventListener("DOMContentLoaded", function () {
         overlay.classList.remove("active");
         isSideNavOpen = false; // Update state
     });
-
-    // Function to load content dynamically (without full reload)
-    function loadContent(url) {
-        fetch(url)
-            .then(response => response.text())
-            .then(data => {
-                const tempDiv = document.createElement("div");
-                tempDiv.innerHTML = data;
-
-                // Ensure we're only replacing the main content, not the sidebar
-                const newContent = tempDiv.querySelector("#mainContent");
-                if (newContent) {
-                    document.getElementById("mainContent").innerHTML = newContent.innerHTML;
-                }
-
-                history.pushState(null, "", url); // Update URL without refreshing
-            })
-            .catch(error => console.error("Error loading page:", error));
-    }
 });

@@ -3,114 +3,61 @@
 @using HomeownersMS.Models
 @{
     Layout = "_ResidentLayout"; // Use the Resident layout
-    ViewData["HeaderTitle"] = "Announcements Dashboard";
+    ViewData["HeaderTitle"] = "Announcements";
     ViewData["Title"] = "Announcements";
 }
-
 <style>
-    /* General styles */
-    .card {
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
+    .profile-header {
+        position: relative;
+        margin-bottom: 30px;
     }
-    .card-header {
-        padding: 12px 15px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+
+    .profile-banner {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 12px;
+        opacity: 0.9;
     }
-    .card-body {
-        padding: 15px;
-    }
-    /* Announcement cards */
-    .ann-Card {
-        overflow: hidden;
-        padding: 0px;
-        border-radius: 0px !important;
-        box-shadow: none !important;
+
+    .search-filter-container .form-control {
         margin-bottom: 10px;
     }
-    .ann-Card .header {
-        padding: 0.75rem 1.25rem;
-        background-color: #f8f9fa;
-        display: flex;
-        align-items: center;
-    }
-    .ann-Card .header .icon {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 8px;
-        color: white;
-    }
-    .ann-Card .content {
-        padding: 12px;
-    }
-    /* Search and filter container */
-    .search-filter-container {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-    .search-filter-container input,
-    .search-filter-container button {
-        padding: 8px 12px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
-    .search-filter-container button {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        cursor: pointer;
-    }
-    .search-filter-container button:hover {
-        background-color: #0056b3;
-    }
-    /* Accordion */
-    .accordion-button {
-        
-        color: #000 !important;
-        font-weight: bold;
-    }
-    .accordion-button:not(.collapsed) {
-        
-        color: #000 !important;
-    }
-    .accordion-body {
-        padding: 0;
-    }
-    /* No announcements message */
-    .no-announcements {
-        text-align: center;
-        color: #6c757d;
-        font-style: italic;
-        padding: 15px;
-    }
-    .super-small {
-        font-size: x-small;
+    .badge{
+        margin-left: 10px;
     }
 </style>
-
 <!-- Main Content -->
-<div class="container-fluid">
-    <!-- Header Section -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <div class="d-flex align-items-center">
-            <i class="bi bi-megaphone fs-3 me-2"></i>
-            <span class="fs-4">Announcements</span>
-        </div>
-        <div>
-            <form method="get" class="search-filter-container">
-                <input type="text" id="searchBar" name="SearchTerm" placeholder="Search announcements..." class="form-control" value="@Model.SearchTerm">
-                <input type="date" id="datePicker" name="SelectedDate" class="form-control" value="@Model.SelectedDate">
-                <button type="submit" id="filterButton" class="btn btn-primary">Filter</button>
-                <!-- Reset Filters Button -->
-                <a href="@Url.Page("./Announcement_Events")" class="btn btn-secondary">Reset Filters</a>
+<div class="container">
+
+    <div class="profile-header">
+        <!-- Profile Banner -->
+        <img src="~/images/mail_box.jpg" alt="Profile Banner" class="img-fluid profile-banner" />
+
+        <!-- Search + Filter Bar Over Image -->
+        <div class="announcement-overlay">
+            <div class="title d-flex align-items-center mb-3">
+                <i class="bi bi-megaphone-fill me-2 fs-3 text-light"></i>
+                <h3 class="fw-bold text-light m-0">Don't Miss Out: Important News</h3>
+            </div>
+
+            <form method="get" class="row g-2">
+                <div class="col-12">
+                    <div class="input-group">
+                        <input type="text" class="form-control border-end-0" placeholder="Search..." aria-label="Search">
+                        <button class="btn btn-input-icon" type="button"><i class="bi bi-search"></i></button>
+                    </div>                  
+                </div>
+                <div class="col-4 col-md-auto">
+                    <input type="date" id="datePicker" name="SelectedDate" class="form-control datepicker" value="@Model.SelectedDate" />
+                </div>
+                <div class="col-4 col-md-auto d-grid">
+                    <button type="submit" id="filterButton" class="btn btn-primary w-100">Filter</button>
+                </div>
+                <div class="col-4 col-md-auto d-grid">
+                    <a href="@Url.Page("./Announcement_Events")" class="btn btn-secondary w-100">Reset</a>
+                </div>
             </form>
         </div>
     </div>
@@ -122,22 +69,22 @@
             <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseToday">
                     <i class="bi bi-calendar-day me-2"></i> 
-                    <span class="fw-bold">Today</span>&nbsp;
-                    <span class="badge rounded-pill bg-primary text-light">@Model.TodayAnnouncements.Count</span>
+                    <span>Today</span>&nbsp;
+                    <span class="badge">@Model.TodayAnnouncements.Count</span>
                 </button>
             </h2>
             <div id="collapseToday" class="accordion-collapse collapse" data-bs-parent="#announcementAccordion">
-                <div class="accordion-body p-0">
+                <div class="accordion-body">
                     @if (Model.TodayAnnouncements.Any())
                     {
                         @foreach (var announcement in Model.TodayAnnouncements)
                         {
-                            <a asp-page="./Details" asp-route-id="@announcement.AnnouncementId" class="ghost-link">
-                                <div class="ann-Card">
-                                    <div class="header @GetHeaderColorClass(announcement)">
+                            <a class="ghost-link" asp-page="./Details" asp-route-id="@announcement.AnnouncementId">
+                                <div class="card">
+                                    <div class="card-header @GetHeaderColorClass(announcement)">
                                         <span class="fw-bold text-light">@announcement.Title</span>
                                     </div>
-                                    <div class="content p-3">
+                                    <div class="content p-3 card-body">
                                         <p class="mb-1 fw-bold">
                                             @if (announcement.EventDate.HasValue)
                                             {
@@ -171,7 +118,7 @@
                     else
                     {
                         <div class="text-muted text-center small m-3">
-                            <i class="bi bi-exclamation-circle me-1"></i> No announcements today.
+                            <i class="bi bi-exclamation-circle me-2"></i> No announcements today.
                         </div>
                     }
                 </div>
@@ -184,7 +131,7 @@
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseYesterday">
                     <i class="bi bi-calendar-minus me-2"></i> 
                     <span class="fw-bold">Yesterday</span>&nbsp;
-                    <span class="badge rounded-pill bg-primary text-light">@Model.YesterdayAnnouncements.Count</span>
+                    <span class="badge ">@Model.YesterdayAnnouncements.Count</span>
                 </button>
             </h2>
             <div id="collapseYesterday" class="accordion-collapse collapse" data-bs-parent="#announcementAccordion">
@@ -193,40 +140,38 @@
                     {
                         @foreach (var announcement in Model.YesterdayAnnouncements)
                         {
-                            <a href="#" class="ghost-link">
-                                <div class="ann-Card">
-                                    <div class="header @GetHeaderColorClass(announcement)">
-                                        <span class="fw-bold text-light">@announcement.Title</span>
-                                    </div>
-                                    <div class="content p-3">
-                                        <p class="mb-1 fw-bold">
-                                            @if (announcement.EventDate.HasValue)
+                            <div class="card">
+                                <div class="card-header @GetHeaderColorClass(announcement)">
+                                    <span class="fw-bold text-light">@announcement.Title</span>
+                                </div>
+                                <div class="card-body p-3 content">
+                                    <p class="mb-1 fw-bold">
+                                        @if (announcement.EventDate.HasValue)
+                                        {
+                                            <span>@announcement.EventDate.Value.ToString("MMM dd, yyyy") @@</span>
+                                            @if (announcement.EventTime.HasValue)
                                             {
-                                                <span>@announcement.EventDate.Value.ToString("MMM dd, yyyy") @@</span>
-                                                @if (announcement.EventTime.HasValue)
-                                                {
-                                                    <span> @announcement.EventTime.Value.ToString("hh:mm tt")</span>
-                                                }
-                                                else
-                                                {
-                                                    <span>--:--</span>
-                                                }
+                                                <span> @announcement.EventTime.Value.ToString("hh:mm tt")</span>
                                             }
                                             else
                                             {
-                                                <span>n.d. @@</span>
+                                                <span>--:--</span>
                                             }
-                                        </p>
-                                        <p class="mb-1 small text-primary fw-bold">
-                                            <i class="bi bi-geo-alt"></i> Blocks @announcement.BlocksAffected
-                                        </p>
-                                        <p class="mb-2 small text-primary">
-                                            <i class="bi bi-telephone"></i> (@announcement.Office) <span class="fw-bold">@announcement.ContactNumber</span>
-                                        </p>
-                                        <p class="mb-0 text-muted super-small">@announcement.Content</p>
-                                    </div>
+                                        }
+                                        else
+                                        {
+                                            <span>n.d. @@</span>
+                                        }
+                                    </p>
+                                    <p class="mb-1 small text-primary fw-bold">
+                                        <i class="bi bi-geo-alt"></i> Blocks @announcement.BlocksAffected
+                                    </p>
+                                    <p class="mb-2 small text-primary">
+                                        <i class="bi bi-telephone"></i> (@announcement.Office) <span class="fw-bold">@announcement.ContactNumber</span>
+                                    </p>
+                                    <p class="mb-0 text-muted super-small">@announcement.Content</p>
                                 </div>
-                            </a>
+                            </div>
                         }
                     }
                     else
@@ -245,7 +190,7 @@
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWeekAgo">
                     <i class="bi bi-calendar-week me-2"></i> 
                     <span class="fw-bold">Last Week</span>&nbsp;
-                    <span class="badge rounded-pill bg-primary text-light">@Model.WeekAgoAnnouncements.Count</span>
+                    <span class="badge">@Model.WeekAgoAnnouncements.Count</span>
                 </button>
             </h2>
             <div id="collapseWeekAgo" class="accordion-collapse collapse" data-bs-parent="#announcementAccordion">
@@ -254,40 +199,38 @@
                     {
                         @foreach (var announcement in Model.WeekAgoAnnouncements)
                         {
-                            <a href="#" class="ghost-link">
-                                <div class="ann-Card">
-                                    <div class="header @GetHeaderColorClass(announcement)">
-                                        <span class="fw-bold text-light">@announcement.Title</span>
-                                    </div>
-                                    <div class="content p-3">
-                                        <p class="mb-1 fw-bold">
-                                            @if (announcement.EventDate.HasValue)
+                            <div class="card">
+                                <div class="card-header @GetHeaderColorClass(announcement)">
+                                    <span class="fw-bold text-light">@announcement.Title</span>
+                                </div>
+                                <div class="card-body content p-3">
+                                    <p class="mb-1 fw-bold">
+                                        @if (announcement.EventDate.HasValue)
+                                        {
+                                            <span>@announcement.EventDate.Value.ToString("MMM dd, yyyy") @@</span>
+                                            @if (announcement.EventTime.HasValue)
                                             {
-                                                <span>@announcement.EventDate.Value.ToString("MMM dd, yyyy") @@</span>
-                                                @if (announcement.EventTime.HasValue)
-                                                {
-                                                    <span> @announcement.EventTime.Value.ToString("hh:mm tt")</span>
-                                                }
-                                                else
-                                                {
-                                                    <span>--:--</span>
-                                                }
+                                                <span> @announcement.EventTime.Value.ToString("hh:mm tt")</span>
                                             }
                                             else
                                             {
-                                                <span>n.d. @@</span>
+                                                <span>--:--</span>
                                             }
-                                        </p>
-                                        <p class="mb-1 small text-primary fw-bold">
-                                            <i class="bi bi-geo-alt"></i> Blocks @announcement.BlocksAffected
-                                        </p>
-                                        <p class="mb-2 small text-primary">
-                                            <i class="bi bi-telephone"></i> (@announcement.Office) <span class="fw-bold">@announcement.ContactNumber</span>
-                                        </p>
-                                        <p class="mb-0 text-muted super-small">@announcement.Content</p>
-                                    </div>
+                                        }
+                                        else
+                                        {
+                                            <span>n.d. @@</span>
+                                        }
+                                    </p>
+                                    <p class="mb-1 small text-primary fw-bold">
+                                        <i class="bi bi-geo-alt"></i> Blocks @announcement.BlocksAffected
+                                    </p>
+                                    <p class="mb-2 small text-primary">
+                                        <i class="bi bi-telephone"></i> (@announcement.Office) <span class="fw-bold">@announcement.ContactNumber</span>
+                                    </p>
+                                    <p class="mb-0 text-muted super-small">@announcement.Content</p>
                                 </div>
-                            </a>
+                            </div>
                         }
                     }
                     else

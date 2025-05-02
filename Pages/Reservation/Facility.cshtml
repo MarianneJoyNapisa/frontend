@@ -22,30 +22,20 @@
         height: 100%;
         object-fit: cover;
     }
-    
+
     .facility-overlay {
         position: absolute;
         bottom: 0;
         left: 0;
         right: 0;
-        background: rgba(0, 0, 0, 0.7);
+        background: linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0.2));
         color: white;
-        padding: 1rem;
-    }
-    
-    .rating-stars {
-        color: #ffc107;
-        font-size: 1.5rem;
-    }
-    
-    .rating-stars .empty {
-        color: #e4e5e9;
-    }
+        padding: 1.5rem;
+        }
 
-    .rating-stars i {
-        cursor: pointer; /* Show pointer cursor for clickable stars */
+    .facility-overlay .price {
+        font-size: 2rem;
     }
-    
     .review-card {
         border-radius: 8px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -64,15 +54,6 @@
 
 <div class="container">
 
-    @* Breadcrumb navigatin *@
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item"><a asp-page="/Reservation/Reservation">Reservation</a></li>
-            <li class="breadcrumb-item active" aria-current="page">@(Model.Facility?.Name ?? "Facility")</li>
-        </ol>
-    </nav>
-
     @if (Model.Facility != null)
     {
         @* <!-- Facility Hero Section --> *@
@@ -81,25 +62,22 @@
             <div class="facility-overlay">
                 <div class="row">
                     <div class="col-6">
-                        <h4>@Model.Facility.Name</h4>
-                        <h6 class="text-capitalize"><i class="fas fa-map-marker-alt"></i> @Model.Facility.Address</h6>
-                        <a asp-page="/Reservation/Reserve" asp-route-facilityId="@Model.Facility.FacilityId" class="btn btn-primary btn-lg mt-3">
+                        <h4 class="fw-bold">@Model.Facility.Name</h4>
+                        <p class="text-capitalize opacity-75 text-white m-0"><i class="bi bi-geo-alt-fill opacity-75 m-0"></i> @Model.Facility.Address</p>
+                        <a asp-page="/Reservation/Reserve" asp-route-facilityId="@Model.Facility.FacilityId" class="btn btn-primary btn-md mt-3">
                             Reserve Now
                         </a>
                     </div>
                     <div class="col-6 d-flex align-items-center justify-content-end">
-                        <h4 class="card-title fw-bold">₱@(Convert.ToDecimal(Model.Facility.PricePerHour).ToString("N0")) / hour</h4>
+                        <h4 class="card-title fw-bold price">₱@(Convert.ToDecimal(Model.Facility.PricePerHour).ToString("N0")) / hour</h4>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="container">
+        <div class="d-flex">
+            <div class="container">
             @* <!-- Reviews Section --> *@
             <div class="row">
-                <div class="col-md-8">
-                    <h2 class="mb-4">Reviews</h2>
-                    
                     @if (Model.CanReview)
                     {
                         if (Model.HasReviewed)
@@ -143,7 +121,7 @@
                             @* <!-- Add Review Form --> *@
                             <div class="card mb-4">
                                 <div class="card-body">
-                                    <h5 class="card-title">Add Your Review</h5>
+                                    <h4>Add Your Review</h4>
                                     <form method="post" asp-page-handler="AddReview">
                                         <input type="hidden" name="facilityId" value="@Model.Facility.FacilityId" />
                                         <input type="hidden" asp-for="NewReview.FacilityId" value="@Model.Facility.FacilityId" />

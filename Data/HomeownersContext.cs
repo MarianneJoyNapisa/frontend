@@ -234,29 +234,3 @@ namespace HomeownersMS.Data
         }
     }
 }
-
-// public DbSet<ServiceStaff> ServiceStaffs { get; set; } = default!;
-
-// modelBuilder.Entity<ServiceStaff>()
-//     .HasKey(ss => ss.ServiceStaffId);
-
-// // One to many towards Service
-// modelBuilder.Entity<ServiceStaff>()
-//     .HasOne(ss => ss.Service)
-//     .WithMany(s => s.ServiceStaff)
-//     .HasForeignKey(ss => ss.ServiceId)
-//     .OnDelete(DeleteBehavior.Cascade);
-
-// // One to many towards Staff
-// modelBuilder.Entity<ServiceStaff>()
-//     .HasOne(ss => ss.Staff)
-//     .WithMany(s => s.ServiceStaff)
-//     .HasForeignKey(ss => ss.StaffId)
-//     .OnDelete(DeleteBehavior.Cascade);
-
-// // Indexing for faster queries? 
-// modelBuilder.Entity<ServiceStaff>()
-//     .HasIndex(ss => new { ss.ServiceId, ss.StaffId })
-//     .IsUnique();
-
-// modelBuilder.Entity<ServiceStaff>().ToTable("ServiceStaff");

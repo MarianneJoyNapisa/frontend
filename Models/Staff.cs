@@ -25,12 +25,6 @@ namespace HomeownersMS.Models
         public string? ProfileImage { get; set; }
         public virtual User? User { get; set; }
 
-        // Many-to-many to Service
-        // public ICollection<ServiceStaff> ServiceStaff { get; set; } = new List<ServiceStaff>();
-
-        // public ICollection<ServiceRequest> ServiceRequest { get; set; } = new List<ServiceRequest>();
-
-
         public Staff()
         {
             User = new User

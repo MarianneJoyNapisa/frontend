@@ -14,12 +14,12 @@
         </div>
     }
 
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" id="profileForm">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <!-- Profile Image -->
-        <div class="form-group mb-3">
-            <label asp-for="ProfileImage" class="control-label">Profile Image</label>
+        <div class="form-group mb-3 d-none" id="profileImageUpload">
+            <label asp-for="ProfileImage" class="control-label">Change Profile Picture</label>
             <input type="file" class="form-control" asp-for="ProfileImage">
             <span asp-validation-for="ProfileImage" class="text-danger"></span>
         </div>
