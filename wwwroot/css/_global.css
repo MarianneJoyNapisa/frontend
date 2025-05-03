@@ -464,11 +464,11 @@ input, textarea, select {
 
 #announcementAccordion a {
   display: block;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease-in-out;
 }
 
 #announcementAccordion a:hover {
-  transform: scale(1.04);
+  transform: scale(1.02);
 }
 
 /* styles to change the accordion-button icon's color (background image) */
