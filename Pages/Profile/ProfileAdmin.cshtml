@@ -4,14 +4,9 @@
     Layout = "_AdminLayout";
     ViewData["HeaderTitle"] = "Profile";
     ViewData["Title"] = "Edit Profile";
-    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
-    ViewData["CurrentPage"] = currentPage;
 }
 
-<!--NOT YET TESTED-->
 <div class="container">
-    <div id="toastContainer" aria-live="polite" aria-atomic="true"></div>
-
     @if (TempData["SuccessMessage"] != null)
     {
         <div class="alert alert-success">
@@ -32,149 +27,45 @@
         <!-- First Name -->
         <div class="form-group mb-3">
             <label asp-for="Admin.FName" class="control-label">First Name</label>
-            <input type="text" class="form-control" asp-for="Admin.FName" readonly required>
+            <input type="text" class="form-control" asp-for="Admin.FName">
             <span asp-validation-for="Admin.FName" class="text-danger"></span>
         </div>
 
         <!-- Last Name -->
         <div class="form-group mb-3">
             <label asp-for="Admin.LName" class="control-label">Last Name</label>
-            <input type="text" class="form-control" asp-for="Admin.LName" readonly required>
+            <input type="text" class="form-control" asp-for="Admin.LName">
             <span asp-validation-for="Admin.LName" class="text-danger"></span>
         </div>
 
         <!-- Email -->
         <div class="form-group mb-3">
             <label asp-for="Admin.Email" class="control-label">Email</label>
-            <input type="email" class="form-control" asp-for="Admin.Email" readonly required>
+            <input type="email" class="form-control" asp-for="Admin.Email">
             <span asp-validation-for="Admin.Email" class="text-danger"></span>
         </div>
 
         <!-- Contact Number -->
         <div class="form-group mb-3">
             <label asp-for="Admin.ContactNo" class="control-label">Contact Number</label>
-            <input type="tel" class="form-control" asp-for="Admin.ContactNo" readonly required>
+            <input type="tel" class="form-control" asp-for="Admin.ContactNo">
             <span asp-validation-for="Admin.ContactNo" class="text-danger"></span>
         </div>
 
         <!-- Job Title -->
         <div class="form-group mb-3">
             <label asp-for="Admin.Job" class="control-label">Job Title</label>
-            <input type="text" class="form-control" asp-for="Admin.Job" readonly required>
+            <input type="text" class="form-control" asp-for="Admin.Job">
             <span asp-validation-for="Admin.Job" class="text-danger"></span>
         </div>
 
+        <!-- Submit Button -->
         <div class="form-group">
-            <button type="button" id="editButton" class="btn btn-secondary mb-3">
-                <i class="bi bi-pencil-square pe-2"></i>Edit
-            </button>
-
-            <!-- Save Changes and Cancel Buttons (Initially Hidden) -->
-            <button type="submit" id="saveButton" class="btn btn-primary mb-3 d-none">Save Changes</button>
-            <button type="button" id="cancelButton" class="btn btn-danger mb-3 d-none">Cancel</button>
+            <input type="submit" value="Save Changes" class="btn btn-primary" />
         </div>
     </form>
 </div>
 
 @section Scripts {
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const editButton = document.getElementById("editButton");
-            const saveButton = document.getElementById("saveButton");
-            const cancelButton = document.getElementById("cancelButton");
-
-            const profileForm = document.getElementById("profileForm");
-
-            const formFields = profileForm.querySelectorAll("input, select, textarea");
-            const profileImageUpload = document.getElementById("profileImageUpload");
-
-            const toastContainer = document.getElementById("toastContainer");
-            const successMessage = '@(TempData["SuccessMessage"] ?? "")';
-            const errorMessage = '@(TempData["ErrorMessage"] ?? "")';
-
-            // Function to show toast notifications
-            function showToast(message, type = "primary", icon = null) {
-                const existingToast = Array.from(toastContainer.children).find(
-                    (toast) => toast.querySelector(".toast-body").textContent === message
-                );
-
-                if (existingToast) {
-                    return;
-                }
-
-                const toast = document.createElement("div");
-                toast.className = `toast align-items-center text-bg-${type} border-0`;
-                toast.setAttribute("role", "alert");
-                toast.setAttribute("aria-live", "assertive");
-                toast.setAttribute("aria-atomic", "true");
-
-                toast.innerHTML = `
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            ${icon ? `<i class="${icon} me-2"></i>` : ""} ${message}
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                `;
-
-                toastContainer.appendChild(toast);
-
-                const bootstrapToast = new bootstrap.Toast(toast);
-                bootstrapToast.show();
-
-                toast.addEventListener("hidden.bs.toast", () => {
-                    toast.remove();
-                });
-            }
-
-            if (successMessage) {
-                showToast(successMessage, "success", "bi bi-check-circle");
-            }
-
-            if (errorMessage) {
-                showToast(errorMessage, "danger", "bi bi-exclamation-triangle");
-            }
-
-            // Add click event listener to the Edit button
-            editButton.addEventListener("click", function () {
-                formFields.forEach(field => {
-                    field.removeAttribute("readonly");
-                    field.removeAttribute("disabled");
-                });
-
-                profileImageUpload.classList.remove("d-none");
-                saveButton.classList.remove("d-none");
-                cancelButton.classList.remove("d-none");
-                editButton.classList.add("d-none");
-
-                showToast("Editing Mode", "info", "bi bi-pencil-square");
-            });
-
-            // Add click event listener to the Cancel button
-            cancelButton.addEventListener("click", function () {
-                formFields.forEach(field => {
-                    field.setAttribute("readonly", "true");
-                    field.setAttribute("disabled", "true");
-                });
-
-                profileImageUpload.classList.add("d-none");
-                saveButton.classList.add("d-none");
-                cancelButton.classList.add("d-none");
-                editButton.classList.remove("d-none");
-
-                showToast("Exit Editing Mode", "warning", "bi bi-box-arrow-left");
-            });
-
-            // Add click event listener to the Save Changes button
-            saveButton.addEventListener("click", function (event) {
-                if (!profileForm.checkValidity()) {
-                    event.preventDefault();
-                    showToast("Please fill out all required fields.", "danger");
-                } else {
-                    showToast("Changes Saved Successfully!", "success");
-                }
-            });
-        });
-    </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

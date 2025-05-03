@@ -1,0 +1,509 @@
+@page
+@using Microsoft.AspNetCore.Identity
+@model HomeownersMS.Pages.Settings.IndexModel
+@using System.Security.Claims
+@using Microsoft.EntityFrameworkCore
+@using HomeownersMS.Data
+@inject HomeownersContext context
+@{
+    // Dynamic Layout Selection
+    if (User.IsInRole("admin"))
+    {
+        Layout = "_AdminLayout";
+    }
+    else if (User.IsInRole("staff"))
+    {
+        Layout = "_StaffLayout";
+    }
+    else if (User.IsInRole("resident"))
+    {
+        Layout = "_ResidentLayout";
+    }
+    else
+    {
+        Layout = "_Layout"; // Fallback layout
+    }
+
+    ViewData["HeaderTitle"] = "Settings";
+    ViewData["Title"] = "Settings";
+    var username = HttpContext?.User?.Identity?.Name ?? "Guest";
+    ViewData["Username"] = username;
+
+    var (profileImagePath, residentName) = await Task.Run(async () => {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId != null && int.TryParse(userId, out int residentId))
+            {
+                var resident = await context.Residents.FirstOrDefaultAsync(r => r.UserId == residentId);
+                if (resident != null)
+                {
+                    var name = $"{resident.FName} {resident.LName}".Trim();
+                    return (resident.ProfileImage ?? "", name);
+                }
+            }
+            return ("", "Guest");
+        });
+        
+        var profileImageUrl = !string.IsNullOrEmpty(profileImagePath?.ToString()) 
+            ? Url.Content($"~/{profileImagePath}")
+            : Url.Content("~/images/default-profile.jpg");
+}
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="d-flex flex-column align-items-center text-center">
+                        <img src="@profileImageUrl" alt="User" class="rounded-circle" width="80">
+                        <div class="mt-3">
+                            <h5>@username</h5>
+                            <p class="text-muted mb-1">@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <a href="#profile-section" class="list-group-item list-group-item-action active" data-bs-toggle="list">
+                            <i class="fas fa-user-circle me-2"></i>Profile
+                        </a>
+                        <a href="#appearance-section" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                            <i class="fas fa-palette me-2"></i>Appearance
+                        </a>
+                        <a href="#notifications-section" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                            <i class="fas fa-bell me-2"></i>Notifications
+                        </a>
+                        <a href="#privacy-section" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                            <i class="fas fa-lock me-2"></i>Privacy
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="card">
+                <div class="card-body">
+                    <div class="tab-content">
+                        <!-- Profile Section -->
+                        <div class="tab-pane fade show active" id="profile-section">
+                            <h5 class="card-title">Profile Settings</h5>
+                            <hr>
+                            <form id="profileForm">
+                                <div class="row mb-3">
+                                    <label for="displayName" class="col-md-3 col-form-label">Display Name</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" id="displayName" value="@username">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="email" class="col-md-3 col-form-label">Email</label>
+                                    <div class="col-md-9">
+                                        <input type="email" class="form-control" id="email" value="@User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value" readonly>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="timezone" class="col-md-3 col-form-label">Timezone</label>
+                                    <div class="col-md-9">
+                                        <select class="form-select" id="timezone">
+                                            <option value="-12">(GMT -12:00) Eniwetok, Kwajalein</option>
+                                            <option value="-11">(GMT -11:00) Midway Island, Samoa</option>
+                                            <option value="-10">(GMT -10:00) Hawaii</option>
+                                            <option value="-9">(GMT -9:00) Alaska</option>
+                                            <option value="-8">(GMT -8:00) Pacific Time (US & Canada)</option>
+                                            <option value="-7">(GMT -7:00) Mountain Time (US & Canada)</option>
+                                            <option value="-6" selected>(GMT -6:00) Central Time (US & Canada), Mexico City</option>
+                                            <option value="-5">(GMT -5:00) Eastern Time (US & Canada), Bogota, Lima</option>
+                                            <!-- More timezones would go here -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Appearance Section -->
+                        <div class="tab-pane fade" id="appearance-section">
+                            <h5 class="card-title">Appearance</h5>
+                            <hr>
+                            <form id="appearanceForm">
+                                <div class="row mb-3">
+                                    <label class="col-md-3 col-form-label">Theme</label>
+                                    <div class="col-md-9">
+                                        <div class="form-check form-switch mb-2">
+                                            <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                                            <label class="form-check-label" for="darkModeToggle">Dark Mode</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label class="col-md-3 col-form-label">Primary Color</label>
+                                    <div class="col-md-9">
+                                        <div class="color-options d-flex gap-2">
+                                            <input type="radio" class="btn-check" name="primaryColor" id="colorBlue" value="blue" autocomplete="off">
+                                            <label class="btn rounded-circle color-option" for="colorBlue" style="width: 40px; height: 40px; background-color: #3c6693"></label>
+
+                                            <input type="radio" class="btn-check" name="primaryColor" id="colorPurple" value="purple" autocomplete="off">
+                                            <label class="btn rounded-circle color-option" for="colorPurple" style="width: 40px; height: 40px; background-color: #6f42c1;"></label>
+
+                                            <input type="radio" class="btn-check" name="primaryColor" id="colorGreen" value="green" autocomplete="off">
+                                            <label class="btn rounded-circle color-option" for="colorGreen" style="width: 40px; height: 40px; background-color: #198754;"></label>
+
+                                            <input type="radio" class="btn-check" name="primaryColor" id="colorRed" value="red" autocomplete="off">
+                                            <label class="btn rounded-circle color-option" for="colorRed" style="width: 40px; height: 40px; background-color: #dc3545;"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label class="col-md-3 col-form-label">Layout Density</label>
+                                    <div class="col-md-9">
+                                        <select class="form-select" id="layoutDensity">
+                                            <option value="comfortable">Comfortable</option>
+                                            <option value="compact">Compact</option>
+                                            <option value="spacious">Spacious</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Notifications Section -->
+                        <div class="tab-pane fade" id="notifications-section">
+                            <h5 class="card-title">Notification Preferences</h5>
+                            <hr>
+                            <form id="notificationsForm">
+                                <div class="row mb-3">
+                                    <label class="col-md-3 col-form-label">Email Notifications</label>
+                                    <div class="col-md-9">
+                                        <div class="form-check form-switch mb-2">
+                                            <input class="form-check-input" type="checkbox" id="emailNotificationsToggle">
+                                            <label class="form-check-label" for="emailNotificationsToggle">Enable email notifications</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label class="col-md-3 col-form-label">Notification Types</label>
+                                    <div class="col-md-9">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="announcementsCheck">
+                                            <label class="form-check-label" for="announcementsCheck">Community announcements</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="maintenanceCheck">
+                                            <label class="form-check-label" for="maintenanceCheck">Maintenance updates</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="paymentsCheck">
+                                            <label class="form-check-label" for="paymentsCheck">Payment reminders</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="eventsCheck">
+                                            <label class="form-check-label" for="eventsCheck">Community events</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label class="col-md-3 col-form-label">Push Notifications</label>
+                                    <div class="col-md-9">
+                                        <div class="form-check form-switch mb-2">
+                                            <input class="form-check-input" type="checkbox" id="pushNotificationsToggle">
+                                            <label class="form-check-label" for="pushNotificationsToggle">Enable push notifications</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Privacy Section -->
+                        <div class="tab-pane fade" id="privacy-section">
+                            <h5 class="card-title">Privacy Settings</h5>
+                            <hr>
+                            <form id="privacyForm">
+                                <div class="row mb-3">
+                                    <label class="col-md-3 col-form-label">Profile Visibility</label>
+                                    <div class="col-md-9">
+                                        <select class="form-select" id="profileVisibility">
+                                            <option value="public">Visible to all community members</option>
+                                            <option value="staff">Visible to staff only</option>
+                                            <option value="private">Private (visible to admins only)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label class="col-md-3 col-form-label">Contact Information</label>
+                                    <div class="col-md-9">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="showEmailCheck">
+                                            <label class="form-check-label" for="showEmailCheck">Show email address to community members</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="showPhoneCheck">
+                                            <label class="form-check-label" for="showPhoneCheck">Show phone number to community members</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label class="col-md-3 col-form-label">Data Sharing</label>
+                                    <div class="col-md-9">
+                                        <div class="form-check form-switch mb-2">
+                                            <input class="form-check-input" type="checkbox" id="analyticsToggle">
+                                            <label class="form-check-label" for="analyticsToggle">Allow anonymous usage analytics</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Load saved settings from localStorage
+            loadSettings();
+
+            // Handle form submissions
+            $('#profileForm').on('submit', function(e) {
+                e.preventDefault();
+                saveProfileSettings();
+                showToast('Profile settings saved');
+            });
+
+            $('#appearanceForm').on('submit', function(e) {
+                e.preventDefault();
+                saveAppearanceSettings();
+                applyAppearanceSettings();
+                showToast('Appearance settings saved');
+            });
+
+            $('#notificationsForm').on('submit', function(e) {
+                e.preventDefault();
+                saveNotificationSettings();
+                showToast('Notification settings saved');
+            });
+
+            $('#privacyForm').on('submit', function(e) {
+                e.preventDefault();
+                savePrivacySettings();
+                showToast('Privacy settings saved');
+            });
+
+            // Dark mode toggle immediate effect
+            $('#darkModeToggle').change(function() {
+                if ($(this).is(':checked')) {
+                    $('html').attr('data-bs-theme', 'dark');
+                } else {
+                    $('html').attr('data-bs-theme', 'light');
+                }
+            });
+
+            // Color selection immediate effect
+            $('input[name="primaryColor"]').change(function() {
+                const color = $(this).val();
+                // Remove all theme classes
+                ['blue', 'purple', 'green', 'red'].forEach(c => {
+                    $('html').removeClass(`theme-${c}`);
+                });
+                // Add selected theme class
+                $('html').addClass(`theme-${color}`);
+            });
+
+            function loadSettings() {
+                // Profile settings
+                const profileSettings = JSON.parse(localStorage.getItem('profileSettings')) || {};
+                $('#displayName').val(profileSettings.displayName || '@username');
+                $('#timezone').val(profileSettings.timezone || '-6');
+
+                // Appearance settings
+                const appearanceSettings = JSON.parse(localStorage.getItem('appearanceSettings')) || {};
+                $('#darkModeToggle').prop('checked', appearanceSettings.darkMode || false);
+                $('input[name="primaryColor"][value="' + (appearanceSettings.primaryColor || 'blue') + '"]').prop('checked', true);
+                $('#layoutDensity').val(appearanceSettings.layoutDensity || 'comfortable');
+                
+                // Apply appearance settings immediately
+                applyAppearanceSettings();
+
+                // Notification settings
+                const notificationSettings = JSON.parse(localStorage.getItem('notificationSettings')) || {};
+                $('#emailNotificationsToggle').prop('checked', notificationSettings.emailNotifications || true);
+                $('#announcementsCheck').prop('checked', notificationSettings.announcements !== false);
+                $('#maintenanceCheck').prop('checked', notificationSettings.maintenance !== false);
+                $('#paymentsCheck').prop('checked', notificationSettings.payments !== false);
+                $('#eventsCheck').prop('checked', notificationSettings.events !== false);
+                $('#pushNotificationsToggle').prop('checked', notificationSettings.pushNotifications || true);
+
+                // Privacy settings
+                const privacySettings = JSON.parse(localStorage.getItem('privacySettings')) || {};
+                $('#profileVisibility').val(privacySettings.profileVisibility || 'public');
+                $('#showEmailCheck').prop('checked', privacySettings.showEmail !== false);
+                $('#showPhoneCheck').prop('checked', privacySettings.showPhone || false);
+                $('#analyticsToggle').prop('checked', privacySettings.analytics || true);
+            }
+
+            function saveProfileSettings() {
+                const settings = {
+                    displayName: $('#displayName').val(),
+                    timezone: $('#timezone').val()
+                };
+                localStorage.setItem('profileSettings', JSON.stringify(settings));
+            }
+
+            function saveAppearanceSettings() {
+                const settings = {
+                    darkMode: $('#darkModeToggle').is(':checked'),
+                    primaryColor: $('input[name="primaryColor"]:checked').val(),
+                    layoutDensity: $('#layoutDensity').val()
+                };
+                localStorage.setItem('appearanceSettings', JSON.stringify(settings));
+            }
+
+            function applyAppearanceSettings() {
+                const settings = JSON.parse(localStorage.getItem('appearanceSettings')) || {};
+                const html = document.documentElement;
+                
+                // Dark mode
+                if (settings.darkMode) {
+                    html.setAttribute('data-bs-theme', 'dark');
+                } else {
+                    html.removeAttribute('data-bs-theme');
+                }
+                
+                // Primary color
+                if (settings.primaryColor) {
+                    // Remove any existing color classes
+                    ['blue', 'purple', 'green', 'red'].forEach(color => {
+                        html.classList.remove(`theme-${color}`);
+                    });
+                    // Add the selected color class
+                    html.classList.add(`theme-${settings.primaryColor}`);
+                }
+                
+                // Layout density
+                ['comfortable', 'compact', 'spacious'].forEach(density => {
+                    html.classList.remove(`density-${density}`);
+                });
+                html.classList.add(`density-${settings.layoutDensity || 'comfortable'}`);
+            }
+
+            function saveNotificationSettings() {
+                const settings = {
+                    emailNotifications: $('#emailNotificationsToggle').is(':checked'),
+                    announcements: $('#announcementsCheck').is(':checked'),
+                    maintenance: $('#maintenanceCheck').is(':checked'),
+                    payments: $('#paymentsCheck').is(':checked'),
+                    events: $('#eventsCheck').is(':checked'),
+                    pushNotifications: $('#pushNotificationsToggle').is(':checked')
+                };
+                localStorage.setItem('notificationSettings', JSON.stringify(settings));
+            }
+
+            function savePrivacySettings() {
+                const settings = {
+                    profileVisibility: $('#profileVisibility').val(),
+                    showEmail: $('#showEmailCheck').is(':checked'),
+                    showPhone: $('#showPhoneCheck').is(':checked'),
+                    analytics: $('#analyticsToggle').is(':checked')
+                };
+                localStorage.setItem('privacySettings', JSON.stringify(settings));
+            }
+
+            function showToast(message) {
+                // Create toast element
+                const toast = $(`
+                    <div class="toast align-items-center text-white bg-primary border-0 position-fixed bottom-0 end-0 m-3" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                ${message}
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>
+                `);
+                
+                // Add to body
+                $('body').append(toast);
+                
+                // Initialize and show
+                const toastInstance = new bootstrap.Toast(toast[0]);
+                toastInstance.show();
+                
+                // Remove after hidden
+                toast.on('hidden.bs.toast', function() {
+                    toast.remove();
+                });
+            }
+        });
+    </script>
+
+    <style>
+        /* Custom styles for settings page */
+        .color-option {
+            padding: 0;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .btn-check:checked + .color-option {
+            border-color: var(--bs-dark);
+            transform: scale(1.1);
+        }
+        
+        /* Layout density classes */
+        .compact-layout {
+            --bs-body-font-size: 0.875rem;
+            --bs-btn-padding-y: 0.25rem;
+            --bs-btn-padding-x: 0.5rem;
+            --bs-form-control-padding-y: 0.25rem;
+        }
+        
+        .spacious-layout {
+            --bs-body-font-size: 1.1rem;
+            --bs-btn-padding-y: 0.5rem;
+            --bs-btn-padding-x: 1rem;
+            --bs-form-control-padding-y: 0.5rem;
+        }
+        
+        /* Ensure consistent spacing */
+        .card {
+            border-radius: 0.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        
+        .list-group-item {
+            border-left: 0;
+            border-right: 0;
+        }
+        
+        .list-group-item:first-child {
+            border-top: 0;
+        }
+        
+        .list-group-item:last-child {
+            border-bottom: 0;
+        }
+        
+        .list-group-item.active {
+            background-color: var(--bs-primary);
+            border-color: var(--bs-primary);
+        }
+    </style>
+}

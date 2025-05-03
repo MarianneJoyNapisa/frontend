@@ -20,7 +20,6 @@ namespace HomeownersMS.Data
         public DbSet<Staff> Staffs { get; set; } = default!;
         public DbSet<Admin> Admins { get; set; } = default!;
         public DbSet<Service> Services { get; set; } = default!;
-        public DbSet<ServiceStaff> ServiceStaffs { get; set; } = default!;
         public DbSet<ServiceRequest> ServiceRequests { get; set; } = default!;
         public DbSet<Facility> Facilities { get; set; } = default!;
         public DbSet<FacilityReview> FacilityReviews { get; set; } = default!;
@@ -31,6 +30,10 @@ namespace HomeownersMS.Data
         public DbSet<CommunityComment> CommunityComments { get; set; } = default!;
         public DbSet<Resource> Resources { get; set; } = default!;
         public DbSet<Event> Events { get; set; } = default!;
+
+        public DbSet<Notification> Notifications { get; set; } = default!;
+
+        public DbSet<UserNotification> UserNotifications { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -52,33 +55,18 @@ namespace HomeownersMS.Data
                 .HasForeignKey<Resident>(r => r.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<ServiceStaff>()
-                .HasKey(ss => ss.ServiceStaffId);
-            
-            // One to many towards Service
-            modelBuilder.Entity<ServiceStaff>()
-                .HasOne(ss => ss.Service)
-                .WithMany(s => s.ServiceStaff)
-                .HasForeignKey(ss => ss.ServiceId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // One to many towards Staff
-            modelBuilder.Entity<ServiceStaff>()
-                .HasOne(ss => ss.Staff)
-                .WithMany(s => s.ServiceStaff)
-                .HasForeignKey(ss => ss.StaffId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // Indexing for faster queries? 
-            modelBuilder.Entity<ServiceStaff>()
-                .HasIndex(ss => new { ss.ServiceId, ss.StaffId })
-                .IsUnique();
-
             modelBuilder.Entity<ServiceRequest>()
                 .HasOne(sr => sr.Resident)
                 .WithMany()
                 .HasForeignKey(sr => sr.RequestedBy)
                 .OnDelete(DeleteBehavior.Cascade);
+
+                // Add this configuration for the Staff relationship
+            modelBuilder.Entity<ServiceRequest>()
+                .HasOne(sr => sr.Staff)
+                .WithMany()
+                .HasForeignKey(sr => sr.StaffAcceptedBy)
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<ServiceRequest>()
                 .HasOne(sr => sr.Service)
@@ -185,12 +173,50 @@ namespace HomeownersMS.Data
                 .HasForeignKey(e => e.FacilityRequestId) // Specify the entity type explicitly
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // Notifications
+            modelBuilder.Entity<Notification>(entity =>
+            {
+                entity.HasKey(n => n.NotificationId);
+                
+                // Relationship with Announcement
+                entity.HasOne(n => n.Announcement)
+                    .WithMany()
+                    .HasForeignKey(n => n.AnnouncementId)
+                    .OnDelete(DeleteBehavior.Cascade);
+                
+                // Relationship with User (creator)
+                entity.HasOne(n => n.CreatedByUser)
+                    .WithMany()
+                    .HasForeignKey(n => n.CreatedByUserId)
+                    .OnDelete(DeleteBehavior.SetNull); // Keep notifications if user is deleted
+            });
+
+            modelBuilder.Entity<UserNotification>(entity =>
+            {
+                entity.HasKey(un => un.UserNotificationId);
+                
+                // Relationship with User
+                entity.HasOne(un => un.User)
+                    .WithMany()
+                    .HasForeignKey(un => un.UserId)
+                    .OnDelete(DeleteBehavior.Cascade); // Delete user notifications when user is deleted
+                
+                // Relationship with Notification
+                entity.HasOne(un => un.Notification)
+                    .WithMany()
+                    .HasForeignKey(un => un.NotificationId)
+                    .OnDelete(DeleteBehavior.Cascade); // Delete user notifications when notification is deleted
+                
+                // Index for performance
+                entity.HasIndex(un => new { un.UserId, un.IsRead });
+                entity.HasIndex(un => un.NotificationId);
+            });
+
             modelBuilder.Entity<User>().ToTable("User");
             modelBuilder.Entity<Resident>().ToTable("Resident");
             modelBuilder.Entity<Staff>().ToTable("Staff");
             modelBuilder.Entity<Admin>().ToTable("Admin");
             modelBuilder.Entity<Service>().ToTable("Service");
-            modelBuilder.Entity<ServiceStaff>().ToTable("ServiceStaff");
             modelBuilder.Entity<ServiceRequest>().ToTable("ServiceRequest");
             modelBuilder.Entity<Facility>().ToTable("Facility");
             modelBuilder.Entity<FacilityRequest>().ToTable("FacilityRequest");
@@ -201,6 +227,10 @@ namespace HomeownersMS.Data
             modelBuilder.Entity<Announcement>().ToTable("Announcement");
             modelBuilder.Entity<Resource>().ToTable("Resource");
             modelBuilder.Entity<Event>().ToTable("Event");
+            // Notifications
+            // Add table mappings
+            modelBuilder.Entity<Notification>().ToTable("Notification");
+            modelBuilder.Entity<UserNotification>().ToTable("UserNotification");
         }
     }
 }

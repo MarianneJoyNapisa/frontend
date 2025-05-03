@@ -1,16 +1,12 @@
 @page
-@model HomeownersMS.Pages.Announcement_Events.Announcement_EventsModel
+@model HomeownersMS.Pages.Announcement.Announcement_EventsModel
 @using HomeownersMS.Models
 @{
     Layout = "_ResidentLayout"; // Use the Resident layout
-    ViewData["HeaderTitle"] = "Announcement & Events";
-    ViewData["Title"] = "Announcement & Events";
+    ViewData["HeaderTitle"] = "Announcements";
+    ViewData["Title"] = "Announcements";
 }
 <style>
-    .container {
-        padding: 16px;
-    }
-
     .profile-header {
         position: relative;
         margin-bottom: 30px;
@@ -23,18 +19,6 @@
         object-position: center;
         border-radius: 12px;
         opacity: 0.9;
-    }
-
-    .search-bar-over-image {
-        position: absolute;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 90%;
-        padding: 20px;
-        border-radius: 12px;
-
-        justify-content: center;
     }
 
     .search-filter-container .form-control {
@@ -52,32 +36,31 @@
         <img src="~/images/mail_box.jpg" alt="Profile Banner" class="img-fluid profile-banner" />
 
         <!-- Search + Filter Bar Over Image -->
-        <div class="search-bar-over-image">
+        <div class="announcement-overlay">
             <div class="title d-flex align-items-center mb-3">
                 <i class="bi bi-megaphone-fill me-2 fs-3 text-light"></i>
                 <h3 class="fw-bold text-light m-0">Don't Miss Out: Important News</h3>
             </div>
 
             <form method="get" class="row g-2">
-                <div class="col-12 col-md">
+                <div class="col-12">
                     <div class="input-group">
                         <input type="text" class="form-control border-end-0" placeholder="Search..." aria-label="Search">
                         <button class="btn btn-input-icon" type="button"><i class="bi bi-search"></i></button>
                     </div>                  
                 </div>
-                <div class="col-6 col-md-auto">
+                <div class="col-4 col-md-auto">
                     <input type="date" id="datePicker" name="SelectedDate" class="form-control datepicker" value="@Model.SelectedDate" />
                 </div>
-                <div class="col-6 col-md-auto d-grid">
+                <div class="col-4 col-md-auto d-grid">
                     <button type="submit" id="filterButton" class="btn btn-primary w-100">Filter</button>
                 </div>
-                <div class="col-12 col-md-auto d-grid">
+                <div class="col-4 col-md-auto d-grid">
                     <a href="@Url.Page("./Announcement_Events")" class="btn btn-secondary w-100">Reset</a>
                 </div>
             </form>
         </div>
     </div>
-
 
     <!-- Accordion -->
     <div class="accordion" id="announcementAccordion">
@@ -91,43 +74,45 @@
                 </button>
             </h2>
             <div id="collapseToday" class="accordion-collapse collapse" data-bs-parent="#announcementAccordion">
-                <div class="accordion-body p-0">
+                <div class="accordion-body p-2">
                     @if (Model.TodayAnnouncements.Any())
                     {
                         @foreach (var announcement in Model.TodayAnnouncements)
                         {
-                            <div class="ann-Card">
-                                <div class="header @GetHeaderColorClass(announcement)">
-                                    <span class="fw-bold text-light">@announcement.Title</span>
-                                </div>
-                                <div class="content p-3">
-                                    <p class="mb-1 fw-bold">
-                                        @if (announcement.EventDate.HasValue)
-                                        {
-                                            <span>@announcement.EventDate.Value.ToString("MMM dd, yyyy") @@</span>
-                                            @if (announcement.EventTime.HasValue)
+                            <a class="ghost-link px-4 py-1" asp-page="./Details" asp-route-id="@announcement.AnnouncementId">
+                                <div class="card">
+                                    <div class="card-header @GetHeaderColorClass(announcement)">
+                                        <span class="fw-bold text-light">@announcement.Title</span>
+                                    </div>
+                                    <div class="content p-3 card-body">
+                                        <p class="mb-1 fw-bold">
+                                            @if (announcement.EventDate.HasValue)
                                             {
-                                                <span> @announcement.EventTime.Value.ToString("hh:mm tt")</span>
+                                                <span>@announcement.EventDate.Value.ToString("MMM dd, yyyy") @@</span>
+                                                @if (announcement.EventTime.HasValue)
+                                                {
+                                                    <span> @announcement.EventTime.Value.ToString("hh:mm tt")</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>--:--</span>
+                                                }
                                             }
                                             else
                                             {
-                                                <span>--:--</span>
+                                                <span>n.d. @@</span>
                                             }
-                                        }
-                                        else
-                                        {
-                                            <span>n.d. @@</span>
-                                        }
-                                    </p>
-                                    <p class="mb-1 small text-primary fw-bold">
-                                        <i class="bi bi-geo-alt"></i> Blocks @announcement.BlocksAffected
-                                    </p>
-                                    <p class="mb-2 small text-primary">
-                                        <i class="bi bi-telephone"></i> (@announcement.Office) <span class="fw-bold">@announcement.ContactNumber</span>
-                                    </p>
-                                    <p class="mb-0 text-muted super-small">@announcement.Content</p>
+                                        </p>
+                                        <p class="mb-1 small text-primary fw-bold">
+                                            <i class="bi bi-geo-alt"></i> Blocks @announcement.BlocksAffected
+                                        </p>
+                                        <p class="mb-2 small text-primary">
+                                            <i class="bi bi-telephone"></i> (@announcement.Office) <span class="fw-bold">@announcement.ContactNumber</span>
+                                        </p>
+                                        <p class="mb-0 text-muted super-small">@announcement.Content</p>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         }
                     }
                     else
@@ -150,43 +135,45 @@
                 </button>
             </h2>
             <div id="collapseYesterday" class="accordion-collapse collapse" data-bs-parent="#announcementAccordion">
-                <div class="accordion-body p-0">
+                <div class="accordion-body p-2">
                     @if (Model.YesterdayAnnouncements.Any())
                     {
                         @foreach (var announcement in Model.YesterdayAnnouncements)
                         {
-                            <div class="ann-Card">
-                                <div class="header @GetHeaderColorClass(announcement)">
-                                    <span class="fw-bold text-light">@announcement.Title</span>
-                                </div>
-                                <div class="content p-3">
-                                    <p class="mb-1 fw-bold">
-                                        @if (announcement.EventDate.HasValue)
-                                        {
-                                            <span>@announcement.EventDate.Value.ToString("MMM dd, yyyy") @@</span>
-                                            @if (announcement.EventTime.HasValue)
+                            <a asp-page="./Details" asp-route-id="@announcement.AnnouncementId" class="ghost-link px-4 py-1">
+                                <div class="card">
+                                    <div class="card-header @GetHeaderColorClass(announcement)">
+                                        <span class="fw-bold text-light">@announcement.Title</span>
+                                    </div>
+                                    <div class="card-body p-3 content">
+                                        <p class="mb-1 fw-bold">
+                                            @if (announcement.EventDate.HasValue)
                                             {
-                                                <span> @announcement.EventTime.Value.ToString("hh:mm tt")</span>
+                                                <span>@announcement.EventDate.Value.ToString("MMM dd, yyyy") @@</span>
+                                                @if (announcement.EventTime.HasValue)
+                                                {
+                                                    <span> @announcement.EventTime.Value.ToString("hh:mm tt")</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>--:--</span>
+                                                }
                                             }
                                             else
                                             {
-                                                <span>--:--</span>
+                                                <span>n.d. @@</span>
                                             }
-                                        }
-                                        else
-                                        {
-                                            <span>n.d. @@</span>
-                                        }
-                                    </p>
-                                    <p class="mb-1 small text-primary fw-bold">
-                                        <i class="bi bi-geo-alt"></i> Blocks @announcement.BlocksAffected
-                                    </p>
-                                    <p class="mb-2 small text-primary">
-                                        <i class="bi bi-telephone"></i> (@announcement.Office) <span class="fw-bold">@announcement.ContactNumber</span>
-                                    </p>
-                                    <p class="mb-0 text-muted super-small">@announcement.Content</p>
+                                        </p>
+                                        <p class="mb-1 small text-primary fw-bold">
+                                            <i class="bi bi-geo-alt"></i> Blocks @announcement.BlocksAffected
+                                        </p>
+                                        <p class="mb-2 small text-primary">
+                                            <i class="bi bi-telephone"></i> (@announcement.Office) <span class="fw-bold">@announcement.ContactNumber</span>
+                                        </p>
+                                        <p class="mb-0 text-muted super-small">@announcement.Content</p>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         }
                     }
                     else
@@ -209,43 +196,45 @@
                 </button>
             </h2>
             <div id="collapseWeekAgo" class="accordion-collapse collapse" data-bs-parent="#announcementAccordion">
-                <div class="accordion-body p-0">
+                <div class="accordion-body p-2">
                     @if (Model.WeekAgoAnnouncements.Any())
                     {
                         @foreach (var announcement in Model.WeekAgoAnnouncements)
                         {
-                            <div class="ann-Card">
-                                <div class="header @GetHeaderColorClass(announcement)">
-                                    <span class="fw-bold text-light">@announcement.Title</span>
-                                </div>
-                                <div class="content p-3">
-                                    <p class="mb-1 fw-bold">
-                                        @if (announcement.EventDate.HasValue)
-                                        {
-                                            <span>@announcement.EventDate.Value.ToString("MMM dd, yyyy") @@</span>
-                                            @if (announcement.EventTime.HasValue)
+                            <a asp-page="./Details" asp-route-id="@announcement.AnnouncementId" class="ghost-link px-4 py-1">
+                                <div class="card">
+                                    <div class="card-header @GetHeaderColorClass(announcement)">
+                                        <span class="fw-bold text-light">@announcement.Title</span>
+                                    </div>
+                                    <div class="card-body content p-3">
+                                        <p class="mb-1 fw-bold">
+                                            @if (announcement.EventDate.HasValue)
                                             {
-                                                <span> @announcement.EventTime.Value.ToString("hh:mm tt")</span>
+                                                <span>@announcement.EventDate.Value.ToString("MMM dd, yyyy") @@</span>
+                                                @if (announcement.EventTime.HasValue)
+                                                {
+                                                    <span> @announcement.EventTime.Value.ToString("hh:mm tt")</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>--:--</span>
+                                                }
                                             }
                                             else
                                             {
-                                                <span>--:--</span>
+                                                <span>n.d. @@</span>
                                             }
-                                        }
-                                        else
-                                        {
-                                            <span>n.d. @@</span>
-                                        }
-                                    </p>
-                                    <p class="mb-1 small text-primary fw-bold">
-                                        <i class="bi bi-geo-alt"></i> Blocks @announcement.BlocksAffected
-                                    </p>
-                                    <p class="mb-2 small text-primary">
-                                        <i class="bi bi-telephone"></i> (@announcement.Office) <span class="fw-bold">@announcement.ContactNumber</span>
-                                    </p>
-                                    <p class="mb-0 text-muted super-small">@announcement.Content</p>
+                                        </p>
+                                        <p class="mb-1 small text-primary fw-bold">
+                                            <i class="bi bi-geo-alt"></i> Blocks @announcement.BlocksAffected
+                                        </p>
+                                        <p class="mb-2 small text-primary">
+                                            <i class="bi bi-telephone"></i> (@announcement.Office) <span class="fw-bold">@announcement.ContactNumber</span>
+                                        </p>
+                                        <p class="mb-0 text-muted super-small">@announcement.Content</p>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         }
                     }
                     else

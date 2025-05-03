@@ -336,29 +336,59 @@ namespace HomeownersMS.Migrations
                     b.ToTable("FacilityReview", (string)null);
                 });
 
+            modelBuilder.Entity("HomeownersMS.Models.Notification", b =>
+                {
+                    b.Property<int>("NotificationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("AnnouncementId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("CreatedByUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("NotificationId");
+
+                    b.HasIndex("AnnouncementId");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.ToTable("Notification", (string)null);
+                });
+
             modelBuilder.Entity("HomeownersMS.Models.Resident", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ContactNo")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateOnly>("MoveInDate")
@@ -378,16 +408,22 @@ namespace HomeownersMS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Content")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateOnly>("CreatedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("CreatedBy")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Url")
                         .HasColumnType("TEXT");
 
                     b.HasKey("ResourceId");
@@ -403,10 +439,13 @@ namespace HomeownersMS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("AvailableDateTimeEnd")
+                    b.Property<TimeOnly?>("AvailableTimeEnd")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("AvailableDateTimeStart")
+                    b.Property<TimeOnly?>("AvailableTimeStart")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DayRange")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
@@ -432,16 +471,37 @@ namespace HomeownersMS.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("IssueDescription")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("RequestedAt")
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("RequestApprovedDateTime")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("RequestedBy")
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateOnly?>("RequestedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<TimeOnly?>("RequestedTimeEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<TimeOnly?>("RequestedTimeStart")
+                        .HasColumnType("TEXT");
+
                     b.Property<int?>("ServiceId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("StaffAcceptedBy")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("Status")
@@ -453,32 +513,9 @@ namespace HomeownersMS.Migrations
 
                     b.HasIndex("ServiceId");
 
+                    b.HasIndex("StaffAcceptedBy");
+
                     b.ToTable("ServiceRequest", (string)null);
-                });
-
-            modelBuilder.Entity("HomeownersMS.Models.ServiceStaff", b =>
-                {
-                    b.Property<int>("ServiceStaffId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("StaffId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ServiceStaffId");
-
-                    b.HasIndex("StaffId");
-
-                    b.HasIndex("ServiceId", "StaffId")
-                        .IsUnique();
-
-                    b.ToTable("ServiceStaff", (string)null);
                 });
 
             modelBuilder.Entity("HomeownersMS.Models.Staff", b =>
@@ -498,8 +535,8 @@ namespace HomeownersMS.Migrations
                     b.Property<DateOnly>("HireDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Job")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("Job")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("LName")
                         .HasColumnType("TEXT");
@@ -530,6 +567,33 @@ namespace HomeownersMS.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("User", (string)null);
+                });
+
+            modelBuilder.Entity("HomeownersMS.Models.UserNotification", b =>
+                {
+                    b.Property<int>("UserNotificationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("NotificationId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("ReadAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("UserNotificationId");
+
+                    b.HasIndex("NotificationId");
+
+                    b.HasIndex("UserId", "IsRead");
+
+                    b.ToTable("UserNotification", (string)null);
                 });
 
             modelBuilder.Entity("HomeownersMS.Models.Admin", b =>
@@ -653,6 +717,23 @@ namespace HomeownersMS.Migrations
                     b.Navigation("Resident");
                 });
 
+            modelBuilder.Entity("HomeownersMS.Models.Notification", b =>
+                {
+                    b.HasOne("HomeownersMS.Models.Announcement", "Announcement")
+                        .WithMany()
+                        .HasForeignKey("AnnouncementId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("HomeownersMS.Models.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Announcement");
+
+                    b.Navigation("CreatedByUser");
+                });
+
             modelBuilder.Entity("HomeownersMS.Models.Resident", b =>
                 {
                     b.HasOne("HomeownersMS.Models.User", "User")
@@ -686,24 +767,12 @@ namespace HomeownersMS.Migrations
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("Resident");
-
-                    b.Navigation("Service");
-                });
-
-            modelBuilder.Entity("HomeownersMS.Models.ServiceStaff", b =>
-                {
-                    b.HasOne("HomeownersMS.Models.Service", "Service")
-                        .WithMany("ServiceStaff")
-                        .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("HomeownersMS.Models.Staff", "Staff")
-                        .WithMany("ServiceStaff")
-                        .HasForeignKey("StaffId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("StaffAcceptedBy")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Resident");
 
                     b.Navigation("Service");
 
@@ -717,6 +786,25 @@ namespace HomeownersMS.Migrations
                         .HasForeignKey("HomeownersMS.Models.Staff", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HomeownersMS.Models.UserNotification", b =>
+                {
+                    b.HasOne("HomeownersMS.Models.Notification", "Notification")
+                        .WithMany()
+                        .HasForeignKey("NotificationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HomeownersMS.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Notification");
 
                     b.Navigation("User");
                 });
@@ -736,16 +824,6 @@ namespace HomeownersMS.Migrations
             modelBuilder.Entity("HomeownersMS.Models.Resident", b =>
                 {
                     b.Navigation("FacilityReview");
-                });
-
-            modelBuilder.Entity("HomeownersMS.Models.Service", b =>
-                {
-                    b.Navigation("ServiceStaff");
-                });
-
-            modelBuilder.Entity("HomeownersMS.Models.Staff", b =>
-                {
-                    b.Navigation("ServiceStaff");
                 });
 
             modelBuilder.Entity("HomeownersMS.Models.User", b =>

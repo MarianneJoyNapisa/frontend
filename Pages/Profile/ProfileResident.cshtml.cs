@@ -10,17 +10,12 @@ using Microsoft.AspNetCore.Http;
 namespace HomeownersMS.Pages.Profile
 {
     [Authorize(Roles = "resident,admin")]
-    public class ProfileResidentModel : PageModel
+    public class ProfileResidentModel(HomeownersContext context) : PageModel
     {
-        private readonly HomeownersContext _context;
-
-        public ProfileResidentModel(HomeownersContext context)
-        {
-            _context = context;
-        }
+        private readonly HomeownersContext _context = context;
 
         [BindProperty]
-        public Resident Resident { get; set; }
+        public Resident? Resident { get; set; }
 
         [BindProperty]
         public IFormFile? ProfileImage { get; set; } // Property for the uploaded file
@@ -31,7 +26,7 @@ namespace HomeownersMS.Pages.Profile
             if (userId != null && int.TryParse(userId, out int residentId))
             {
                 Resident = await _context.Residents
-                    .FirstOrDefaultAsync(r => r.UserId == residentId);
+                    .FirstOrDefaultAsync(r => r.UserId == residentId) ?? throw new InvalidOperationException("Resident not found.");
 
                 if (Resident == null)
                 {
@@ -66,7 +61,6 @@ namespace HomeownersMS.Pages.Profile
                 residentToUpdate.Email = Resident.Email;
                 residentToUpdate.ContactNo = Resident.ContactNo;
                 residentToUpdate.Address = Resident.Address;
-                
                 Console.WriteLine(Resident.FName);
                 Console.WriteLine(Resident.LName);
                 Console.WriteLine(Resident.Email);

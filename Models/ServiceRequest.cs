@@ -21,17 +21,33 @@ namespace HomeownersMS.Models
 
         public Statuses? Status { get; set; }
 
-        public DateTime? RequestedAt { get; set; }
+        public DateOnly? RequestedDate { get; set; }
+        public TimeOnly? RequestedTimeStart { get; set; }
+        public TimeOnly? RequestedTimeEnd { get; set; }
+
+        public DateTime? RequestApprovedDateTime { get; set; }
+        
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         [ForeignKey("Resident")]
         public int? RequestedBy { get; set; }
 
+        [ForeignKey("Staff")]
+        public int? StaffAcceptedBy { get; set; }
+
+        // General Information Fields
+
+        public string? FullName { get; set; }
+        public string? Email { get; set; }
+        public string? PhoneNumber { get; set; }
+
         [ForeignKey("Service")]
         public int? ServiceId { get; set; }
 
         public virtual Resident? Resident { get; set; }
+
+        public virtual Staff? Staff { get; set; }
 
         public virtual Service? Service { get; set; }
     }

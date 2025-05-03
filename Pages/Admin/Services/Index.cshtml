@@ -1,0 +1,125 @@
+@page
+@model HomeownersMS.Pages_Admin_Services.IndexModel
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["HeaderTitle"] = "Services Management";
+    ViewData["Title"] = "Services Dashboard";
+    ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
+}
+
+<div class="container px-4 py-3">
+    <!-- Header with Create button -->
+    <div class="mb-4">
+        <h2 class="fw-semibold mb-2">Services Management</h2>
+        <div class="d-flex flex-row  justify-content-between gap-2">
+            <a asp-page="./ServiceRequests/Index" class="btn btn-primary rounded-3 me-2" title="Navigate to Service Requests">
+                <i class="bi bi-list-task me-1"></i> Service Requests
+            </a>
+            <a asp-page="Create" class="btn btn-primary rounded-3" title="Create a new service">
+                <i class="bi bi-plus-circle me-1"></i>
+            </a>
+        </div>
+    </div>
+
+
+    <!-- Card Container -->
+    <div class="bg-white rounded-4 p-4 shadow-sm">
+        <!-- Search & Filter -->
+        <div class="d-flex mb-4">
+            <div class="input-group flex-grow-1">
+                <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+                <input type="text" class="form-control border-start-0" placeholder="Search services..." />
+            </div>
+            <button class="btn btn-light ms-2 rounded-3">
+                <i class="bi bi-sliders text-primary"></i>
+            </button>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+            <table class="table table-borderless align-middle">
+                <thead>
+                    <tr class="bg-primary">
+                        <th>@Html.DisplayNameFor(model => model.Service[0].Title)</th>
+                        <th>@Html.DisplayNameFor(model => model.Service[0].Description)</th>
+                        <th>@Html.DisplayNameFor(model => model.Service[0].ServiceCategory)</th>
+                        <th>Availability</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Service)
+                    {
+                        <tr class="border-bottom">
+                            <td class="fw-semibold">@Html.DisplayFor(modelItem => item.Title)</td>
+                            <td>
+                                <div class="text-truncate" style="max-width: 200px;">
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </div>
+                            </td>
+                            <td>@Html.DisplayFor(modelItem => item.ServiceCategory)</td>
+                            <td>
+                                <small class="text-muted">@Html.DisplayFor(modelItem => item.DayRange)</small><br>
+                                @Html.DisplayFor(modelItem => item.AvailableTimeStart) - @Html.DisplayFor(modelItem => item.AvailableTimeEnd)
+                            </td>
+                            <td>
+                                <a asp-page="./Edit" asp-route-id="@item.ServiceId" title="Edit">
+                                    <i class="bi bi-pencil-square text-primary me-2"></i>
+                                </a>
+                                <a asp-page="./Details" asp-route-id="@item.ServiceId" title="Details">
+                                    <i class="bi bi-eye text-primary me-2"></i>
+                                </a>
+                                <a asp-page="./Delete" asp-route-id="@item.ServiceId" title="Delete">
+                                    <i class="bi bi-trash text-primary"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        font-family: system-ui, -apple-system, sans-serif;
+        background-color: #f7f7f7;
+    }
+
+    .form-control:focus {
+        box-shadow: none;
+        border-color: #ced4da;
+    }
+
+    .table th {
+        background-color: #2f5b9c !important;
+        color: white !important;
+    }
+
+    .table td, .table th {
+        padding: 0.75rem 0.75rem;
+    }
+
+    .bi {
+        font-size: 1.2rem;
+        cursor: pointer;
+    }
+
+    .bi:hover {
+        opacity: 0.85;
+    }
+
+    .table thead th:first-child {
+        border-top-left-radius: 0.75rem;
+    }
+
+    .table thead th:last-child {
+        border-top-right-radius: 0.75rem;
+    }
+
+    .table thead tr {
+        overflow: hidden;
+    }
+</style>

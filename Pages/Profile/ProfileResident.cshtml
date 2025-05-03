@@ -10,43 +10,26 @@
     Layout = "_ResidentLayout"; 
     ViewData["HeaderTitle"] = "Profile";
     ViewData["Title"] = "Profile";
-
-    // Get the current user's username and the current page
-    var username = HttpContext?.User?.Identity?.Name ?? "Guest";
-    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
-
-    // Get the resident's profile image and name directly from the database
     var (profileImagePath, residentName) = await Task.Run(async () => {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (userId != null && int.TryParse(userId, out int residentId))
-        {
-            var resident = await context.Residents.FirstOrDefaultAsync(r => r.UserId == residentId);
-            if (resident != null)
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId != null && int.TryParse(userId, out int residentId))
             {
-                var name = $"{resident.FName} {resident.LName}".Trim();
-                return (resident.ProfileImage ?? "", name);
+                var resident = await context.Residents.FirstOrDefaultAsync(r => r.UserId == residentId);
+                if (resident != null)
+                {
+                    var name = $"{resident.FName} {resident.LName}".Trim();
+                    return (resident.ProfileImage ?? "", name);
+                }
             }
-        }
-        return ("", "Guest");
-    });
-
-    // Set the profile image path and resident name in ViewData
-    ViewData["ProfileImage"] = profileImagePath;
-    ViewData["ResidentName"] = residentName;
-    ViewData["Username"] = username;
-    ViewData["CurrentPage"] = currentPage;
+            return ("", "Guest");
+        });
+        
+        var profileImageUrl = !string.IsNullOrEmpty(profileImagePath?.ToString()) 
+            ? Url.Content($"~/{profileImagePath}")
+            : Url.Content("~/images/default-profile.jpg");
+        ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
 }
 <style>
-    .container {
-        max-width: 800px;
-        margin-top: 50px;
-        padding: 20px;
-        background-color: #fff; 
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        position: relative; /* make container relative for absolute positioning inside */
-    }
-
     .ProfileContainer {
         position: relative; /* make banner + profile picture positioning relative */
         text-align: center;
@@ -88,67 +71,71 @@
 
     <div id="toastContainer" aria-live="polite" aria-atomic="true"></div>
 
-    <div class ="profile_container">
-        <!---Profile Banner-->
-        <img src="~/images/subdivision_banner2.jpg" alt="Profile Banner" class="img-fluid profile-banner" />
-        
-        <!---User Profile Picture-->
-        <div class="pic_container">
-            <img src="~/@ViewData["ProfileImage"]" alt="Profile Picture" id="profilePicture" />
+    <div class="card">
+        <div class="card-body">
+            <div class ="profile_container">
+                <!---Profile Banner-->
+                <img src="~/images/subdivision_banner2.jpg" alt="Profile Banner" class="img-fluid profile-banner" />
+                
+                <!---User Profile Picture-->
+                <div class="pic_container">
+                    <img src="@profileImageUrl" alt="Profile Picture" id="profilePicture" />
+                </div>
+            </div>
+
+            <form method="post" enctype="multipart/form-data" id="profileForm">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                
+                <!-- Profile Picture Upload (Hidden Initially) -->
+                <div class="form-group mb-3 d-none" id="profileImageUpload">
+                    <label asp-for="ProfileImage" class="control-label">Change Profile Picture</label>
+                    <input type="file" class="form-control" asp-for="ProfileImage">
+                    <span asp-validation-for="ProfileImage" class="text-danger"></span>
+                </div>
+
+                <!-- Other Details -->
+                <div class="form-group mb-3">
+                    <label asp-for="Resident.FName" class="control-label">First Name</label>
+                    <input type="text" class="form-control" asp-for="Resident.FName" readonly required>
+                    <span asp-validation-for="Resident.FName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Resident.LName" class="control-label">Last Name</label>
+                    <input type="text" class="form-control" asp-for="Resident.LName" readonly required>
+                    <span asp-validation-for="Resident.LName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Resident.Email" class="control-label">Email</label>
+                    <input type="email" class="form-control" asp-for="Resident.Email" readonly required>
+                    <span asp-validation-for="Resident.Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Resident.ContactNo" class="control-label">Contact Number</label>
+                    <input type="tel" class="form-control" asp-for="Resident.ContactNo" readonly required>
+                    <span asp-validation-for="Resident.ContactNo" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Resident.Address" class="control-label">Address</label>
+                    <input type="text" class="form-control" asp-for="Resident.Address" readonly required>
+                    <span asp-validation-for="Resident.Address" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <button type="button" id="editButton" class="btn btn-secondary mb-3">
+                        <i class="bi bi-pencil-square pe-2"></i>Edit
+                    </button>
+
+                    <!-- Save Changes and Cancel Buttons (Initially Hidden) -->
+                    <button type="submit" id="saveButton" class="btn btn-primary mb-3 d-none">Save Changes</button>
+                    <button type="button" id="cancelButton" class="btn btn-danger mb-3 d-none">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
-
-    <form method="post" enctype="multipart/form-data" id="profileForm">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        
-        <!-- Profile Picture Upload (Hidden Initially) -->
-        <div class="form-group mb-3 d-none" id="profileImageUpload">
-            <label asp-for="ProfileImage" class="control-label">Change Profile Picture</label>
-            <input type="file" class="form-control" asp-for="ProfileImage">
-            <span asp-validation-for="ProfileImage" class="text-danger"></span>
-        </div>
-
-        <!-- Other Details -->
-        <div class="form-group mb-3">
-            <label asp-for="Resident.FName" class="control-label">First Name</label>
-            <input type="text" class="form-control" asp-for="Resident.FName" readonly required>
-            <span asp-validation-for="Resident.FName" class="text-danger"></span>
-        </div>
-
-        <div class="form-group mb-3">
-            <label asp-for="Resident.LName" class="control-label">Last Name</label>
-            <input type="text" class="form-control" asp-for="Resident.LName" readonly required>
-            <span asp-validation-for="Resident.LName" class="text-danger"></span>
-        </div>
-
-        <div class="form-group mb-3">
-            <label asp-for="Resident.Email" class="control-label">Email</label>
-            <input type="email" class="form-control" asp-for="Resident.Email" readonly required>
-            <span asp-validation-for="Resident.Email" class="text-danger"></span>
-        </div>
-
-        <div class="form-group mb-3">
-            <label asp-for="Resident.ContactNo" class="control-label">Contact Number</label>
-            <input type="tel" class="form-control" asp-for="Resident.ContactNo" readonly required>
-            <span asp-validation-for="Resident.ContactNo" class="text-danger"></span>
-        </div>
-
-        <div class="form-group mb-3">
-            <label asp-for="Resident.Address" class="control-label">Address</label>
-            <input type="text" class="form-control" asp-for="Resident.Address" readonly required>
-            <span asp-validation-for="Resident.Address" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <button type="button" id="editButton" class="btn btn-secondary mb-3">
-                <i class="bi bi-pencil-square pe-2"></i>Edit
-            </button>
-
-            <!-- Save Changes and Cancel Buttons (Initially Hidden) -->
-            <button type="submit" id="saveButton" class="btn btn-primary mb-3 d-none">Save Changes</button>
-            <button type="button" id="cancelButton" class="btn btn-danger mb-3 d-none">Cancel</button>
-        </div>
-    </form>
 </div>
 
 @section Scripts {

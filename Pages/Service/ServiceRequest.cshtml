@@ -1,0 +1,108 @@
+@page
+@model HomeownersMS.Pages.Service.ServiceRequestModel
+@{
+    Layout = "_ResidentLayout";
+    ViewData["HeaderTitle"] = "Request Service";
+    ViewData["Title"] = "Request Service";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <span class="mb-0 h4">Service Request Form</span>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        <input type="hidden" asp-for="ServiceRequest.ServiceId" />
+                        
+                        <h6 class="mb-3 border-bottom pb-2">General Information</h6>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="ServiceRequest.FullName" class="form-label">Full Name</label>
+                                <input asp-for="ServiceRequest.FullName" class="form-control" required>
+                                <span asp-validation-for="ServiceRequest.FullName" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="ServiceRequest.Email" class="form-label">Email</label>
+                                <input asp-for="ServiceRequest.Email" type="email" class="form-control" required>
+                                <span asp-validation-for="ServiceRequest.Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="ServiceRequest.PhoneNumber" class="form-label">Phone Number</label>
+                            <input asp-for="ServiceRequest.PhoneNumber" class="form-control" required>
+                            <span asp-validation-for="ServiceRequest.PhoneNumber" class="text-danger"></span>
+                        </div>
+                        
+                        <h6 class="mb-3 mt-4 border-bottom pb-2">Service Information</h6>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Service Category</label>
+                            <input class="form-control" value="@Model.ServiceCategory" readonly>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Service</label>
+                            <input class="form-control" value="@Model.ServiceTitle" readonly>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="ServiceRequest.IssueDescription" class="form-label">Description of Issue</label>
+                            <textarea asp-for="ServiceRequest.IssueDescription" class="form-control" rows="4" required></textarea>
+                            <span asp-validation-for="ServiceRequest.IssueDescription" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="ServiceRequest.RequestedDate" class="form-label">Date</label>
+                                <input asp-for="ServiceRequest.RequestedDate" type="date" class="form-control" required>
+                                <span asp-validation-for="ServiceRequest.RequestedDate" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-3">
+                                <label asp-for="ServiceRequest.RequestedTimeStart" class="form-label">Time Start</label>
+                                <input asp-for="ServiceRequest.RequestedTimeStart" type="time" class="form-control" required>
+                                <span asp-validation-for="ServiceRequest.RequestedTimeStart" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-3">
+                                <label asp-for="ServiceRequest.RequestedTimeEnd" class="form-label">Time End</label>
+                                <input asp-for="ServiceRequest.RequestedTimeEnd" type="time" class="form-control" required>
+                                <span asp-validation-for="ServiceRequest.RequestedTimeEnd" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary">Confirm Request</button>
+                            <a href="/Service/Service" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    
+    <script>
+        // Set default values from logged-in user if available
+        $(document).ready(function() {
+            @if (Model.Resident != null)
+            {
+                <text>
+                $('#ServiceRequest_FullName').val('@(Model.Resident.FName + " " + Model.Resident.LName)');
+                $('#ServiceRequest_Email').val('@Model.Resident.Email');
+                $('#ServiceRequest_PhoneNumber').val('@Model.Resident.ContactNo');
+                </text>
+            }
+            
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            $('input[type="date"]').attr('min', today);
+        });
+    </script>
+}

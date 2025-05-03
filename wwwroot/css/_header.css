@@ -1,27 +1,3 @@
-:root {
-    /* Deep Blue for main navigation, branding */
-    --primary-color: #3C6693; 
-    
-    /* Light Blue for secondary buttons, links */
-    --secondary-color: #96ADD6; 
-  
-    /* Warm Coral Red for CTA buttons, important actions */
-    --cta-color: #E85234;  
-  
-    /* Soft Pinkish Beige for highlights, badges */
-    --secondary-accent: #F9B8AF;  
-  
-    /* Light Creamy Beige for backgrounds */
-    --background-color: #F2EEE9;  
-  
-    /* Text Colors */
-    --primary-text-color: #333333; /* Main body text color */
-    --secondary-text-color: #7A7A7A; /* Secondary text color */
-    --accent-text-color: #E85234; /* Accent text color for links, buttons */
-    --placeholder-text-color: #B0B0B0; /* Placeholder text color */
-    --light-text-color: #FFFFFF; /* Light text color for dark backgrounds */
-}
-
 /*----------------------------- HEADER -----------------------------*/
 .headerPage {
     height: 60px;
@@ -33,12 +9,12 @@
     z-index: 1002;
 
     display: flex;
-    justify-content: center; /* Center content horizontally */
+    justify-content: space-between; /* Center content horizontally */
     align-items: center; /* Center content vertically */
     
     padding: 16px;
     color: #fff;
-    background-color: var(--primary-color);
+    background-color: var(--bs-primary);
 
     margin: 0;
 }
@@ -52,28 +28,20 @@
     flex-grow: 1; /* Allow the title to take up available space */
 }
 
-/* HeaderTitle */
-.ghost-link {
-    color: var(--background-color);
-    text-decoration: none;
-}
-.ghost-link:hover {
-    color: var(--background-color); /* Keep the same color on hover */
-    text-decoration: none; /* No underline on hover */
-    transition: none; /* Disable any hover animations */
-}
 
 /* the bi-list button */
 .sideNav_toggleBtn {
     color: #fff;
-    margin-right: auto; /* Push the button to the far left */
     background: none; /* Remove default button background */
     border: none; /* Remove default button border */
     cursor: pointer; /* Show pointer cursor on hover */
 }
 
 .sideNav_toggleBtn:hover {
-    color: var(--secondary-color); /* Change color on hover */
+    color: var(--bs-secondary); /* Change color on hover */
     transition: color 0.3s ease; /* Smooth transition for color change */
 }
 
+.secondary-on-hover:hover {
+    color: var(--bs-secondary) !important;
+}

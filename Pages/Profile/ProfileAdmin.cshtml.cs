@@ -31,7 +31,7 @@ namespace HomeownersMS.Pages.Profile
             if (userId != null && int.TryParse(userId, out int adminId))
             {
                 Admin = await _context.Admins
-                    .FirstOrDefaultAsync(a => a.UserId == adminId);
+                    .FirstOrDefaultAsync(a => a.UserId == adminId) ?? throw new InvalidOperationException("Admin not found.");
 
                 if (Admin == null)
                 {

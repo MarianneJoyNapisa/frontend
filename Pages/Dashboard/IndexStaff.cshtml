@@ -5,14 +5,8 @@
     Layout = "_StaffLayout"; // Use the Admin layout
     ViewData["HeaderTitle"] = "Dashboard";
     ViewData["Title"] = "Dashboard";
-    var username = HttpContext?.User?.Identity?.Name ?? "Guest";
-    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
-    ViewData["Username"] = username;
-    ViewData["CurrentPage"] = currentPage;
 }
 
-    <h1>Staff shiz</h1>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
-    <script src="js/Calendar.js"></script>
+<div class="container">
+    <h1>test staff</h1>
+</div>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HomeownersMS.Migrations
 {
     /// <inheritdoc />
-    public partial class Services : Migration
+    public partial class asd : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -37,8 +37,9 @@ namespace HomeownersMS.Migrations
                     Title = table.Column<string>(type: "TEXT", nullable: true),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
                     ServiceCategory = table.Column<int>(type: "INTEGER", nullable: true),
-                    AvailableDateTimeStart = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    AvailableDateTimeEnd = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    DayRange = table.Column<string>(type: "TEXT", nullable: true),
+                    AvailableTimeStart = table.Column<TimeOnly>(type: "TEXT", nullable: true),
+                    AvailableTimeEnd = table.Column<TimeOnly>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -142,7 +143,7 @@ namespace HomeownersMS.Migrations
                     FName = table.Column<string>(type: "TEXT", nullable: true),
                     Email = table.Column<string>(type: "TEXT", nullable: true),
                     ContactNo = table.Column<string>(type: "TEXT", nullable: true),
-                    Job = table.Column<string>(type: "TEXT", nullable: true),
+                    Job = table.Column<int>(type: "INTEGER", nullable: true),
                     HireDate = table.Column<DateOnly>(type: "TEXT", nullable: false),
                     ProfileImage = table.Column<string>(type: "TEXT", nullable: true)
                 },
@@ -191,9 +192,11 @@ namespace HomeownersMS.Migrations
                     ResourceId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", nullable: true),
-                    Content = table.Column<string>(type: "TEXT", nullable: true),
+                    Description = table.Column<string>(type: "TEXT", nullable: true),
+                    IsEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Url = table.Column<string>(type: "TEXT", nullable: true),
                     CreatedBy = table.Column<int>(type: "INTEGER", nullable: true),
-                    CreatedAt = table.Column<DateOnly>(type: "TEXT", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -337,9 +340,16 @@ namespace HomeownersMS.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     IssueDescription = table.Column<string>(type: "TEXT", nullable: true),
                     Status = table.Column<int>(type: "INTEGER", nullable: true),
-                    RequestedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    RequestedDate = table.Column<DateOnly>(type: "TEXT", nullable: true),
+                    RequestedTimeStart = table.Column<TimeOnly>(type: "TEXT", nullable: true),
+                    RequestedTimeEnd = table.Column<TimeOnly>(type: "TEXT", nullable: true),
+                    RequestApprovedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     RequestedBy = table.Column<int>(type: "INTEGER", nullable: true),
+                    StaffAcceptedBy = table.Column<int>(type: "INTEGER", nullable: true),
+                    FullName = table.Column<string>(type: "TEXT", nullable: true),
+                    Email = table.Column<string>(type: "TEXT", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
                     ServiceId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
@@ -357,33 +367,42 @@ namespace HomeownersMS.Migrations
                         principalTable: "Service",
                         principalColumn: "ServiceId",
                         onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_ServiceRequest_Staff_StaffAcceptedBy",
+                        column: x => x.StaffAcceptedBy,
+                        principalTable: "Staff",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ServiceStaff",
+                name: "Notification",
                 columns: table => new
                 {
-                    ServiceStaffId = table.Column<int>(type: "INTEGER", nullable: false)
+                    NotificationId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ServiceId = table.Column<int>(type: "INTEGER", nullable: false),
-                    StaffId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    Title = table.Column<string>(type: "TEXT", nullable: false),
+                    Message = table.Column<string>(type: "TEXT", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Url = table.Column<string>(type: "TEXT", nullable: true),
+                    AnnouncementId = table.Column<int>(type: "INTEGER", nullable: true),
+                    CreatedByUserId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ServiceStaff", x => x.ServiceStaffId);
+                    table.PrimaryKey("PK_Notification", x => x.NotificationId);
                     table.ForeignKey(
-                        name: "FK_ServiceStaff_Service_ServiceId",
-                        column: x => x.ServiceId,
-                        principalTable: "Service",
-                        principalColumn: "ServiceId",
+                        name: "FK_Notification_Announcement_AnnouncementId",
+                        column: x => x.AnnouncementId,
+                        principalTable: "Announcement",
+                        principalColumn: "AnnouncementId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ServiceStaff_Staff_StaffId",
-                        column: x => x.StaffId,
-                        principalTable: "Staff",
+                        name: "FK_Notification_User_CreatedByUserId",
+                        column: x => x.CreatedByUserId,
+                        principalTable: "User",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -418,6 +437,34 @@ namespace HomeownersMS.Migrations
                     table.ForeignKey(
                         name: "FK_Event_User_CreatedBy",
                         column: x => x.CreatedBy,
+                        principalTable: "User",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserNotification",
+                columns: table => new
+                {
+                    UserNotificationId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    NotificationId = table.Column<int>(type: "INTEGER", nullable: false),
+                    IsRead = table.Column<bool>(type: "INTEGER", nullable: false),
+                    ReadAt = table.Column<DateTime>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserNotification", x => x.UserNotificationId);
+                    table.ForeignKey(
+                        name: "FK_UserNotification_Notification_NotificationId",
+                        column: x => x.NotificationId,
+                        principalTable: "Notification",
+                        principalColumn: "NotificationId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserNotification_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
@@ -491,6 +538,16 @@ namespace HomeownersMS.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Notification_AnnouncementId",
+                table: "Notification",
+                column: "AnnouncementId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notification_CreatedByUserId",
+                table: "Notification",
+                column: "CreatedByUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Resource_CreatedBy",
                 table: "Resource",
                 column: "CreatedBy");
@@ -506,23 +563,24 @@ namespace HomeownersMS.Migrations
                 column: "ServiceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ServiceStaff_ServiceId_StaffId",
-                table: "ServiceStaff",
-                columns: new[] { "ServiceId", "StaffId" },
-                unique: true);
+                name: "IX_ServiceRequest_StaffAcceptedBy",
+                table: "ServiceRequest",
+                column: "StaffAcceptedBy");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ServiceStaff_StaffId",
-                table: "ServiceStaff",
-                column: "StaffId");
+                name: "IX_UserNotification_NotificationId",
+                table: "UserNotification",
+                column: "NotificationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserNotification_UserId_IsRead",
+                table: "UserNotification",
+                columns: new[] { "UserId", "IsRead" });
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Announcement");
-
             migrationBuilder.DropTable(
                 name: "CommunityComment");
 
@@ -542,7 +600,7 @@ namespace HomeownersMS.Migrations
                 name: "ServiceRequest");
 
             migrationBuilder.DropTable(
-                name: "ServiceStaff");
+                name: "UserNotification");
 
             migrationBuilder.DropTable(
                 name: "CommunityPost");
@@ -551,19 +609,25 @@ namespace HomeownersMS.Migrations
                 name: "FacilityRequest");
 
             migrationBuilder.DropTable(
-                name: "Admin");
-
-            migrationBuilder.DropTable(
                 name: "Service");
 
             migrationBuilder.DropTable(
                 name: "Staff");
 
             migrationBuilder.DropTable(
+                name: "Notification");
+
+            migrationBuilder.DropTable(
                 name: "Facility");
 
             migrationBuilder.DropTable(
                 name: "Resident");
+
+            migrationBuilder.DropTable(
+                name: "Announcement");
+
+            migrationBuilder.DropTable(
+                name: "Admin");
 
             migrationBuilder.DropTable(
                 name: "User");

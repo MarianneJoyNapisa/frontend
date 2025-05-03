@@ -1,0 +1,106 @@
+@page "{id:int}"
+@model HomeownersMS.Pages.Admin.Services.ServiceRequests.DetailsModel
+@using HomeownersMS.Models
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Service Request Details";
+    ViewData["HeaderTitle"] = "Services Management";
+    ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
+
+}
+
+<div class="container-fluid px-4 py-3">
+    <div class="bg-white rounded-4 p-4 shadow-sm">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-semibold mb-0">Service Request Details</h2>
+            <a asp-page="./Edit" asp-route-id="@Model.ServiceRequest.ServiceRequestId" class="btn btn-primary">
+                <i class="bi bi-pencil-square me-1"></i>Edit
+            </a>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <dl class="row">
+                    <dt class="col-sm-4">Request ID</dt>
+                    <dd class="col-sm-8">@Model.ServiceRequest.ServiceRequestId</dd>
+
+                    <dt class="col-sm-4">Service</dt>
+                    <dd class="col-sm-8">@(Model.ServiceRequest.Service?.Title ?? "N/A")</dd>
+
+                    <dt class="col-sm-4">Resident</dt>
+                    <dd class="col-sm-8">
+                        @(Model.ServiceRequest.Resident != null 
+                            ? $"{Model.ServiceRequest.Resident.FName} {Model.ServiceRequest.Resident.LName}" 
+                            : Model.ServiceRequest.FullName ?? "Guest")
+                    </dd>
+                    <dt class="col-sm-4">Status</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge @GetStatusBadgeClass(Model.ServiceRequest.Status)">
+                            @Model.ServiceRequest.Status
+                        </span>
+                    </dd>
+
+                    <dt class="col-sm-4">Created At</dt>
+                    <dd class="col-sm-8">@Model.ServiceRequest.CreatedAt.ToString("MMM dd, yyyy hh:mm tt")</dd>
+                </dl>
+            </div>
+            <div class="col-md-6">
+                <dl class="row">
+                    <dt class="col-sm-4">Requested Date</dt>
+                    <dd class="col-sm-8">@Model.ServiceRequest.RequestedDate?.ToString("MMM dd, yyyy")</dd>
+
+                    <dt class="col-sm-4">Time Slot</dt>
+                    <dd class="col-sm-8">
+                        @Model.ServiceRequest.RequestedTimeStart?.ToString("hh:mm tt") - @Model.ServiceRequest.RequestedTimeEnd?.ToString("hh:mm tt")
+                    </dd>
+
+                    <dt class="col-sm-4">Contact Email</dt>
+                    <dd class="col-sm-8">@Model.ServiceRequest.Email</dd>
+
+                    <dt class="col-sm-4">Contact Phone</dt>
+                    <dd class="col-sm-8">@Model.ServiceRequest.PhoneNumber</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <h5 class="fw-semibold">Issue Description</h5>
+            <div class="border rounded p-3 bg-light">
+                @Model.ServiceRequest.IssueDescription
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end mt-4">
+            <a asp-page="./Index" class="btn btn-light">Back to List</a>
+        </div>
+    </div>
+</div>
+
+@functions {
+    string GetStatusBadgeClass(Statuses? status)
+    {
+        return status switch
+        {
+            Statuses.pending => "bg-warning text-dark",
+            Statuses.inProgress => "bg-info text-white",
+            Statuses.completed => "bg-success text-white",
+            Statuses.cancelled => "bg-danger text-white",
+            _ => "bg-secondary text-white",
+        };
+    }
+}
+
+<style>
+    .badge {
+        padding: 0.35em 0.65em;
+        font-size: 0.85em;
+        font-weight: 500;
+        border-radius: 0.25rem;
+    }
+    
+    dt {
+        font-weight: 500;
+        color: #6c757d;
+    }
+</style>

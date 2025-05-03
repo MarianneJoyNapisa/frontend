@@ -22,7 +22,7 @@
         height: 100%;
         object-fit: cover;
     }
-    
+
     .facility-overlay {
         position: absolute;
         bottom: 0;
@@ -31,7 +31,7 @@
         background: linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0.2));
         color: white;
         padding: 1.5rem;
-    }
+        }
 
     .facility-overlay .price {
         font-size: 2rem;
@@ -58,7 +58,7 @@
     {
         @* <!-- Facility Hero Section --> *@
         <div class="facility-hero">
-            <img src="@Url.Content($"~/{Model.Facility.FacilityImage}")" alt="@Model.Facility.Name" />
+            <img src="@(string.IsNullOrEmpty(Model.Facility.FacilityImage) ? "https://placehold.co/600x400" : Url.Content($"~/{Model.Facility.FacilityImage}"))" />
             <div class="facility-overlay">
                 <div class="row">
                     <div class="col-6">
@@ -148,7 +148,7 @@
                         }
                     }
 
-                    @* <!-- When User creates Reviews --> *@
+                    @* <!-- Other Reviews --> *@
                     @if (Model.FacilityReviews.Any())
                     {
                         foreach (var review in Model.FacilityReviews.Where(r => r.ResidentId.ToString() != HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier)))
@@ -181,71 +181,9 @@
                     else
                     {
                         <div class="alert alert-info">
-                            You have no reviews for this facility.
+                            No reviews yet for this facility.
                         </div>
                     }
-
-                    <div class="bg-white p-4 rounded shadow-sm">
-                        @* <!-- Other Reviews --> *@
-                        <h4 class="mb-4">Reviews</h4>
-                        <div class="card review-card mb-3">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <img class="profile-avatar-alt" src="~/images/default-profile.jpg" />
-                                    <h5 class="card-title mb-0">Jane Doe</h5>
-                                    <div class="rating-stars">
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star"></i>
-                                    </div>
-                                </div>
-                                <p class="card-text">Great facility, very clean and organized. Will definitely book again!</p>
-                                <small class="text-muted">Reviewed on March 20, 2025</small>
-                            </div>
-                        </div>
-
-                        <div class="card review-card mb-3">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <img class="profile-avatar-alt" src="~/images/default-profile.jpg" />
-                                    <h5 class="card-title mb-0">John Smith</h5>
-                                    <div class="rating-stars">
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                    </div>
-                                </div>
-                                <p class="card-text">It was okay. Good enough for casual use, but the lighting could be better.</p>
-                                <small class="text-muted">Reviewed on April 10, 2025</small>
-                            </div>
-                        </div>
-
-                        <div class="card review-card mb-3">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <img class="profile-avatar-alt" src="~/images/default-profile.jpg" />
-                                    <h5 class="card-title mb-0">Alice Reyes</h5>
-                                    <div class="rating-stars">
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                    </div>
-                                </div>
-                                <p class="card-text">Absolutely loved it! Smooth booking and the staff was very helpful.</p>
-                                <small class="text-muted">Reviewed on April 25, 2025</small>
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <a href="Facility">View More</a>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>

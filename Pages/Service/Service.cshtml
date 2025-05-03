@@ -1,5 +1,6 @@
 @page
 @model HomeownersMS.Pages.Service.ServiceModel
+@using HomeownersMS.Models
 @{
     Layout = "_ResidentLayout"; // Use your layout file
     ViewData["HeaderTitle"] = "Services";
@@ -7,45 +8,592 @@
 }
 
 <style>
-    .service-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
+    .accordion .accordion-body > div p {
+        font-size: small !important;
+        margin-bottom: 5px;
     }
-    .service-card {
-        flex: 1 1 calc(50% - 20px); /* 2 per row */
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 15px;
-        background-color: #f9f9f9;
-        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+
+    .accordion .accordion-body button {
+        margin-top: 20px !important;
+    }
+
+    .empty-container:hover {
+        background-color: #eaeaea !important;
+    }
+
+   .service-btn {
+        color: white;
+   }
+
+   .pagination {
+        margin-top: 20px;
+    }
+
+    .page-item.active .page-link {
+        background-color: #3c6693;
+        border-color: #3c6693;
+    }
+
+    .page-link {
+        color: #3c6693;
+    }
+
+    .page-item.disabled .page-link {
+        color: #6c757d;
+    }
+
+    table td {
+        font-size: small;
+    }
+    .btn-icon {
+        background: transparent;
+        border: none;
+        color: #0d6efd; /* Bootstrap primary color */
+        padding: 0.375rem;
+        border-radius: 50%;
+        width: 2rem;
+        height: 2rem;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .btn-icon i {
+        font-size: 1.25rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-icon:hover {
+        background: rgba(13, 110, 253, 0.1);
+        transform: scale(1.1);
+    }
+
+    .btn-icon:hover i {
+        color: #0b5ed7; /* Slightly darker blue */
+        transform: rotate(15deg);
+    }
+
+    .btn-icon::after {
+        content: '';
+        position: absolute;
+        top: -5px;
+        left: -5px;
+        right: -5px;
+        bottom: -5px;
+        border: 2px solid rgba(13, 110, 253, 0.3);
+        border-radius: 50%;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .btn-icon:hover::after {
+        opacity: 1;
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+    }
+
+    .btn-finished {
+        color: #198754; /* Bootstrap success color */
+        margin-left: 0.5rem; /* Space between buttons */
+    }
+
+    .btn-finished:hover {
+        background: rgba(25, 135, 84, 0.1);
+    }
+
+    .btn-finished:hover i {
+        color: #157347; /* Slightly darker green */
+    }
+
+    .btn-finished::after {
+        border-color: rgba(25, 135, 84, 0.3);
+    }
+
+    /* Optional: Add a pulse animation when hovering */
+    @@keyframes pulseFinished {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+
+    .btn-finished:hover i {
+        animation: pulseFinished 0.5s ease;
     }
 </style>
 
-<h2 class="mb-4">Our Services</h2>
+@if (ViewData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @ViewData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 
-<div class="service-container">
-    <div class="service-card">
-        <h4>Plumbing Repairs</h4>
-        <p>Fix leaks, replace pipes, and general plumbing maintenance.</p>
-        <p><strong>Price:</strong> $50 - $200</p>
+<div class="container">
+    <div class="accordion mb-5" id="servicesAccordion">
+        <!-- Repairs and Maintenance -->
+        <div class="accordion-item mb-2">
+            <h2 class="accordion-header">
+                <button class="accordion-button fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#repairsMaintenance">
+                    Repairs and Maintenance
+                </button>
+            </h2>
+            <div id="repairsMaintenance" class="accordion-collapse collapse show" data-bs-parent="#servicesAccordion">
+                <div class="accordion-body">
+                    @if (Model.Services.Any(s => s.ServiceCategory == ServiceCategory.repairsAndMaintenance))
+                    {
+                        @foreach (var service in Model.Services.Where(s => s.ServiceCategory == ServiceCategory.repairsAndMaintenance))
+                        {
+                            <div class="mb-4 p-3 border rounded">
+                                <h6 class="fw-bold">@service.Title</h6>
+                                <p class="text-muted small mb-3">@service.Description</p>
+                                <p>@service.DayRange, @service.AvailableTimeStart?.ToString("h:mm tt") - @service.AvailableTimeEnd?.ToString("h:mm tt")</p>
+                                <p>Response: Within 24 hours</p>
+                                <p>Cost: Included in HOA fees</p>
+                                <a class="btn btn-primary service-btn btn-sm ghost-link" href="/Service/ServiceRequest?serviceId=@service.ServiceId">
+                                    <i class="fas fa-plus"></i> Request service
+                                </a>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <i class="fas fa-tools fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No repair and maintenance services available at this time</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Cleaning Services -->
+        <div class="accordion-item mb-2">
+            <h2 class="accordion-header">
+                <button class="accordion-button fw-bold text-dark collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cleaningServices">
+                    Cleaning Services
+                </button>
+            </h2>
+            <div id="cleaningServices" class="accordion-collapse collapse" data-bs-parent="#servicesAccordion">
+                <div class="accordion-body">
+                    @if (Model.Services.Any(s => s.ServiceCategory == ServiceCategory.cleaningServices))
+                    {
+                        @foreach (var service in Model.Services.Where(s => s.ServiceCategory == ServiceCategory.cleaningServices))
+                        {
+                            <div class="mb-4 p-3 border rounded">
+                                <h6 class="fw-bold">@service.Title</h6>
+                                <p class="text-muted small mb-3">@service.Description</p>
+                                <p>@service.DayRange, @service.AvailableTimeStart?.ToString("h:mm tt") - @service.AvailableTimeEnd?.ToString("h:mm tt")</p>
+                                <p>Response: Within 24 hours</p>
+                                <p>Cost: Included in HOA fees</p>
+                                <a class="btn btn-primary btn-sm service-btn ghost-link" href="/Service/ServiceRequest?serviceId=@service.ServiceId">
+                                    <i class="fas fa-plus"></i> Request service
+                                </a>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <i class="fas fa-broom fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No cleaning services available at this time</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Landscaping Maintenance -->
+        <div class="accordion-item mb-2">
+            <h2 class="accordion-header">
+                <button class="accordion-button fw-bold text-dark collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#landscapingMaintenance">
+                    Landscaping Maintenance
+                </button>
+            </h2>
+            <div id="landscapingMaintenance" class="accordion-collapse collapse" data-bs-parent="#servicesAccordion">
+                <div class="accordion-body">
+                    @if (Model.Services.Any(s => s.ServiceCategory == ServiceCategory.landscapingMaintenance))
+                    {
+                        @foreach (var service in Model.Services.Where(s => s.ServiceCategory == ServiceCategory.landscapingMaintenance))
+                        {
+                            <div class="mb-4 p-3 border rounded">
+                                <h6 class="fw-bold">@service.Title</h6>
+                                <p class="text-muted small mb-3">@service.Description</p>
+                                <p>@service.DayRange, @service.AvailableTimeStart?.ToString("h:mm tt") - @service.AvailableTimeEnd?.ToString("h:mm tt")</p>
+                                <p>Response: Within 24 hours</p>
+                                <p>Cost: Included in HOA fees</p>
+                                <a class="btn btn-primary btn-sm service-btn ghost-link" href="/Service/ServiceRequest?serviceId=@service.ServiceId">
+                                    <i class="fas fa-plus"></i> Request service
+                                </a>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <i class="fas fa-leaf fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No landscaping services available at this time</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Other Services -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button fw-bold text-dark collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#otherServices">
+                    Other Services
+                </button>
+            </h2>
+            <div id="otherServices" class="accordion-collapse collapse" data-bs-parent="#servicesAccordion">
+                <div class="accordion-body">
+                    @if (Model.Services.Any(s => s.ServiceCategory == ServiceCategory.otherServices))
+                    {
+                        @foreach (var service in Model.Services.Where(s => s.ServiceCategory == ServiceCategory.otherServices))
+                        {
+                            <div class="mb-4 p-3 border rounded">
+                                <h6 class="fw-bold">@service.Title</h6>
+                                <p class="text-muted small mb-3">@service.Description</p>
+                                <p>@service.DayRange, @service.AvailableTimeStart?.ToString("h:mm tt") - @service.AvailableTimeEnd?.ToString("h:mm tt")</p>
+                                <p>Response: Within 24 hours</p>
+                                <p>Cost: Included in HOA fees</p>
+                                <a class="btn btn-primary btn-sm service-btn ghost-link" href="/Service/ServiceRequest?serviceId=@service.ServiceId">
+                                    <i class="fas fa-plus"></i> Request service
+                                </a>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <i class="fas fa-ellipsis-h fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No other services available at this time</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="service-card">
-        <h4>Electrical Services</h4>
-        <p>Wiring repairs, circuit troubleshooting, and installations.</p>
-        <p><strong>Price:</strong> $75 - $300</p>
+    <!-- Current Service Requests -->
+    <div class="mb-5">
+        <div class="d-flex justify-content-between align-items-start flex-column mb-2">
+            <h5 class="fw-bold">Current Services</h5>
+            <div class="w-100">
+                <div class="d-flex input-group">
+                    <input type="text" class="form-control form-control-sm" placeholder="Search...">
+                    <button class="btn btn-sm btn-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="btn btn-sm ms-2 text-white" style="border-radius: 4px; background-color: #3c6693;">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        @if (Model.CurrentRequests.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Request Date</th>
+                            <th>Time started</th>
+                            <th>Status</th>
+                            <th>Approved at</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var request in Model.CurrentRequests)
+                        {
+                            <tr>
+                                <td>
+                                    @request.Service?.Title
+                                    <div class="text-muted small">ID/@request.ServiceRequestId</div>
+                                </td>
+                                <td>@request.RequestedDate?.ToString("MM/dd/yyyy")</td>
+                                <td>@request.RequestedTimeStart?.ToString("h:mm tt")</td>
+                                <td>
+                                    @switch (request.Status)
+                                    {
+                                        case Statuses.pending:
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                            break;
+                                        case Statuses.inProgress:
+                                            <span class="badge bg-info text-light">In Progress</span>
+                                            break;
+                                        default:
+                                            <span class="badge bg-secondary text-light">N/A</span>
+                                            break;
+                                    }
+                                </td>
+                                <td>@(request.RequestApprovedDateTime?.ToString("MM/dd/yyyy hh:mm tt") ?? "N/A")</td>
+                                <td>
+                                    <div class="d-flex flex-row">
+                                        <button class="btn btn-icon" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#detailsModal"
+                                            data-title="@request.Service?.Title"
+                                            data-id="@request.ServiceRequestId"
+                                            data-time="@request.RequestedTimeStart?.ToString("h:mm tt")"
+                                            data-approved="@request.RequestApprovedDateTime?.ToString("MM/dd/yyyy hh:mm tt")"
+                                            data-description="@request.IssueDescription"
+                                            title="View Details">
+                                        <i class="fas fa-info-circle"></i>
+                                        </button>
+                                        @if (request.Status == Statuses.inProgress)
+                                        {
+                                            <form method="post" asp-page-handler="MarkAsCompleted" class="d-inline" id="completeForm">
+                                                <input type="hidden" name="serviceRequestId" id="completeServiceRequestId" value="@request.ServiceRequestId" />
+                                                <button type="button" class="btn btn-icon btn-finished" 
+                                                        title="Mark as Finished"
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#confirmCompleteModal"
+                                                        data-request-id="@request.ServiceRequestId">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5 rounded-1 transition-all empty-container" style="transition: 0.3s; border-radius: 6px !important; font-size: small !important;">
+                <i class="fas fa-clipboard-list fa-3x text-muted mb-3"></i>
+                <h6 class="text-muted">No current service requests</h6>
+                <p class="text-muted">You don't have any pending or in-progress service requests</p>
+            </div>
+        }
     </div>
 
-    <div class="service-card">
-        <h4>Housekeeping</h4>
-        <p>Cleaning and organizing services for your home.</p>
-        <p><strong>Price:</strong> $40 per session</p>
-    </div>
+    <!-- Services History -->
+    <div>
+        <div class="d-flex justify-content-between align-items-start flex-column mb-2">
+            <h5 class="fw-bold">Services History</h5>
+            <div class="w-100">
+                <div class="d-flex input-group">
+                    <input type="text" class="form-control form-control-sm" placeholder="Search...">
+                    <button class="btn btn-sm btn-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="btn btn-sm ms-2 text-white" style="border-radius: 4px; background-color: #3c6693;">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
 
-    <div class="service-card">
-        <h4>Landscaping</h4>
-        <p>Lawn mowing, gardening, and outdoor maintenance.</p>
-        <p><strong>Price:</strong> $100 - $500</p>
+        @if (Model.HistoricalRequests.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Request Date</th>
+                            <th>Time started</th>
+                            <th>Time ended</th>
+                            <th>Status</th>
+                            <th>Approved at</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var request in Model.HistoricalRequests)
+                        {
+                            <tr>
+                                <td>
+                                    @request.Service?.Title
+                                    <div class="text-muted small">ID/@request.ServiceRequestId</div>
+                                </td>
+                                <td>@request.RequestedDate?.ToString("MM/dd/yyyy")</td>
+                                <td>@request.RequestedTimeStart?.ToString("h:mm tt")</td>
+                                <td>@request.RequestedTimeEnd?.ToString("h:mm tt")</td>
+                                <td>
+                                    @switch (request.Status)
+                                    {
+                                        case Statuses.completed:
+                                            <span class="badge bg-success text-light">Completed</span>
+                                            break;
+                                        case Statuses.cancelled:
+                                            <span class="badge bg-danger text-light">Cancelled</span>
+                                            break;
+                                        default:
+                                            <span class="badge bg-secondary text-light">N/A</span>
+                                            break;
+                                    }
+                                </td>
+                                <td>@(request.RequestApprovedDateTime?.ToString("MM/dd/yyyy hh:mm tt") ?? "N/A")</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#detailsModal" 
+                                            data-title="@request.Service?.Title" 
+                                            data-id="@request.ServiceRequestId"
+                                            data-time="@request.RequestedTimeStart?.ToString("h:mm tt")"
+                                            data-approved="@request.RequestApprovedDateTime?.ToString("MM/dd/yyyy hh:mm tt")"
+                                            data-description="@request.IssueDescription">
+                                        <i class="fas fa-info-circle"></i> Details
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5 rounded-1 transition-all empty-container" style="transition: 0.3s; border-radius: 6px !important; font-size: small !important;">
+                <i class="fas fa-history fa-3x text-muted mb-3"></i>
+                <h6 class="text-muted">No service history</h6>
+                <p class="text-muted">You don't have any completed or cancelled service requests</p>
+            </div>
+        }
     </div>
 </div>
+
+<!-- Request Service Modal -->
+<div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="requestModalLabel">Request Service</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post">
+                <div class="modal-body">
+                    <input type="hidden" id="serviceId" name="serviceId" />
+                    <div class="mb-3">
+                        <label for="issueDescription" class="form-label">Issue Description</label>
+                        <textarea class="form-control" id="issueDescription" name="issueDescription" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="requestedTimeStart" class="form-label">Preferred Start Time</label>
+                        <input type="time" class="form-control" id="requestedTimeStart" name="requestedTimeStart" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="requestedTimeEnd" class="form-label">Preferred End Time</label>
+                        <input type="time" class="form-control" id="requestedTimeEnd" name="requestedTimeEnd" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel">Service Request Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6 id="detailTitle"></h6>
+                <p class="text-muted small mb-3">ID: <span id="detailId"></span></p>
+                <p><strong>Time Started:</strong> <span id="detailTime"></span></p>
+                <p><strong>Approved At:</strong> <span id="detailApproved"></span></p>
+                <p><strong>Issue Description:</strong></p>
+                <p id="detailDescription" class="p-3 bg-light rounded"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap 5.3 Confirmation Modal -->
+<div class="modal fade" id="confirmCompleteModal" tabindex="-1" aria-labelledby="confirmCompleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header text-dark">
+                <h5 class="modal-title" id="confirmCompleteModalLabel">Confirm Completion</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to mark this service request as completed?</p>
+                <p class="small text-muted">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" id="confirmCompleteButton">Yes, Mark as Completed</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Request Modal
+        $('#requestModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var serviceId = button.data('service-id');
+            var modal = $(this);
+            modal.find('#serviceId').val(serviceId);
+        });
+
+        // Details Modal
+        $('#detailsModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var title = button.data('title');
+            var id = button.data('id');
+            var time = button.data('time');
+            var approved = button.data('approved');
+            var description = button.data('description');
+
+            var modal = $(this);
+            modal.find('#detailTitle').text(title);
+            modal.find('#detailId').text(id);
+            modal.find('#detailTime').text(time);
+            modal.find('#detailApproved').text(approved);
+            modal.find('#detailDescription').text(description);
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const confirmCompleteModal = document.getElementById('confirmCompleteModal');
+            const confirmCompleteButton = document.getElementById('confirmCompleteButton');
+            const completeForm = document.getElementById('completeForm');
+            const completeServiceRequestId = document.getElementById('completeServiceRequestId');
+            
+            if (confirmCompleteModal) {
+                confirmCompleteModal.addEventListener('show.bs.modal', function(event) {
+                    // Button that triggered the modal
+                    const button = event.relatedTarget;
+                    // Extract request ID from data-request-id attribute
+                    const requestId = button.getAttribute('data-request-id');
+                    // Update the hidden input value
+                    completeServiceRequestId.value = requestId;
+                });
+                
+                confirmCompleteButton.addEventListener('click', function() {
+                    completeForm.submit();
+                });
+            }
+            
+            // Show success message if exists
+            @if (ViewData["SuccessMessage"] != null)
+            {
+                <text>
+                    const toast = new bootstrap.Toast(document.getElementById('successToast'));
+                    toast.show();
+                </text>
+            }
+        });
+    </script>
+}

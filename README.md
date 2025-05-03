@@ -13,12 +13,9 @@
 
 ## How to Pull Forcefully from Development (Reject Local Changes)
 
-1. `git remote add origin https://github.com/VulpritProoze/ELNET_HomeownersMS`
-2. `git branch development`
-3. `git checkout development`
-4. `git pull origin development`
-5. `git branch --set-upstream-to=origin/development development`
-6. `git reset --hard origin/development`
+1. `git checkout -b development`
+2. `git pull origin development`
+3. `git reset --hard origin/development`
 
 ## How to Push?
 
@@ -26,23 +23,20 @@
 2. `git add .`
 3. `git commit -m "message here"`
 4. `git checkout <branch sa imo ipush>`
-5. `git remote add origin https://github.com/VulpritProoze/ELNET_HomeownersMS`
-6. `git push`
+5. `git push`
 
 ## How to Pull Again After Naay Changes sa Remote Repo
 Like nausab ang Development branch (e.g. naay lain ni push ug changes)
 
 1. Go to root directory sa current folder
 2. `git checkout <branch sa imo pullan>`
-3. `git remote add origin https://github.com/VulpritProoze/ELNET_HomeownersMS`
-4. `git pull`
+3. `git pull`
 
-## How to Push to "frontend"
+## How to Push to "frontend" (an example)
 1. `git add .`
 2. `git commit -m "messagehere"`
 3. `git checkout frontend`
-4. `git remote add origin https://github.com/VulpritProoze/ELNET_HomeownersMS.git`
-5. `git push`
+4. `git push`
 
 ### Take Note:
- 1. If naa kay usbon sa local repo nimo (sa imo computer), you have to always remember to `git pull origin development`. This pulls changes from remote repo (sa Github). This ensures nga smooth imo work inig `git push`.
+ 1. If naa kay usbon sa local repo nimo (sa imo computer), you have to always remember to `git pull`. This pulls changes from remote repo (sa Github). This ensures nga smooth imo work inig `git push`.

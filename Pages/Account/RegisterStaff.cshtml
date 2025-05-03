@@ -68,13 +68,8 @@
                         <!-- Job -->
                         <div class="col-md-6">
                             <label asp-for="UserInput.Job" class="form-label">Job</label>
-                            <select asp-for="UserInput.Job" class="form-control">
+                            <select asp-for="UserInput.Job" class="form-control" asp-items="Html.GetEnumSelectList<HomeownersMS.Models.StaffJob>()">
                                 <option value="">Select Job</option>
-                                <option value="Security Guard">Security Guard</option>
-                                <option value="Maintenance Staff">Maintenance Staff</option>
-                                <option value="Janitor/Cleaner">Janitor/Cleaner</option>
-                                <option value="Admin/Property Manager">Admin/Property Manager</option>
-                                <option value="Accounting/Billing Staff">Accounting/Billing Staff</option>
                             </select>
                             <span asp-validation-for="UserInput.Job" class="text-danger"></span>
                         </div>

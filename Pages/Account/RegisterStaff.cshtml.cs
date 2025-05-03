@@ -55,7 +55,7 @@ namespace HomeownersMS.Pages.Account
             public string ContactNo { get; set; } = string.Empty;
 
             [Required]
-            public string Job { get; set; } = string.Empty;
+            public StaffJob? Job { get; set; }
 
             [Required]
             public DateOnly HireDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
@@ -82,7 +82,7 @@ namespace HomeownersMS.Pages.Account
             };
 
             // Create the Staff entity
-            var staff = new Staff
+            var staff = new Models.Staff
             {
                 LName = UserInput.LName,
                 FName = UserInput.FName,

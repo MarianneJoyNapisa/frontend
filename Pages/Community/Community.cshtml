@@ -5,7 +5,24 @@
 @using HomeownersMS.Models
 @using Microsoft.AspNetCore.Identity
 @{
-    Layout = "_ResidentLayout";
+    // Dynamic Layout Selection
+    if (User.IsInRole("admin"))
+    {
+        Layout = "_AdminLayout";
+    }
+    else if (User.IsInRole("staff"))
+    {
+        Layout = "_StaffLayout";
+    }
+    else if (User.IsInRole("resident"))
+    {
+        Layout = "_ResidentLayout";
+    }
+    else
+    {
+        Layout = "_Layout"; // Fallback layout
+    }
+
     ViewData["HeaderTitle"] = "Community";
     ViewData["Title"] = "Community";
     var username = HttpContext?.User?.Identity?.Name ?? "Guest";
@@ -127,7 +144,7 @@
                                     int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value))
                                 {
                                     <div class="dropdown ms-2">
-                                        <button class="btn btn-sm btn-light border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <button class="btn btn-sm border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="bi bi-three-dots-vertical"></i>
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end">
@@ -166,6 +183,31 @@
                                 @post.Content
                             }
                         </div>
+                        <div class="post-icons">
+                            <div class="reaction-icons">
+                                <span class="vote-buttons">
+                                    @{
+                                        var userId = User.Identity.IsAuthenticated ?
+                                        int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value) : 0;
+                                        var userVote = post.Votes.FirstOrDefault(v => v.UserId == userId)?.IsUpvote;
+                                    }
+                                    <button type="button" class="btn-vote upvote-btn @(userVote == true ? "active" : "")"
+                                        data-post-id="@post.CommunityPostId" data-is-upvote="true">
+                                        <i class="fas fa-arrow-up"></i>
+                                    </button>
+                                    <span class="net-votes" data-post-id="@post.CommunityPostId">@(post.Votes.Count(v =>
+                                                                v.IsUpvote == true) - post.Votes.Count(v => v.IsUpvote == false))</span>
+                                    <button type="button" class="btn-vote downvote-btn @(userVote == false ? "active" : "")"
+                                        data-post-id="@post.CommunityPostId" data-is-upvote="false">
+                                        <i class="fas fa-arrow-down"></i>
+                                    </button>
+                                </span>
+                          </div>
+                            @* <div class="post-meta">
+                                <span class="badge badge-primary">@(post.Comments?.Count ?? 0) comments</span>
+                                <span class="badge badge-secondary">@post.CreatedAt.ToString("g")</span>
+                            </div> *@
+                        </div>
 
                         @* <!-- Comments Section --> *@
                         <div class="comments-section mt-3">
@@ -177,7 +219,7 @@
                             <div class="comments-list collapse" id="comments-@post.CommunityPostId">
                                 @foreach (var comment in post.Comments ?? new List<CommunityComment>())
                                 {
-                                    <div class="comment-card mb-2 p-2 border rounded">
+                                    <div class="comment-card mb-2 p-2 rounded">
                                         <div class="d-flex justify-content-between">
                                             <div class="d-flex align-items-center">
                                                 <div class="user-avatar" style="width: 30px; height: 30px;">
@@ -239,103 +281,11 @@
                     <p>No posts yet. Be the first to post!</p>
                 </div>
             }
-        </div>
-    </div>
+            <a href="#" class="see-more">See More</a>
+        </div> <!-- Closing community-container -->
+    </div> <!-- Closing community-main -->
 
-    @* <!-- Contacts Sidebar --> *@
-    <div class="community-sidebar">
-        <div class="contacts-card">
-            <div class="contacts-header">
-                <div class="contacts-title">Contacts</div>
-                <div><i class="fas fa-ellipsis-h"></i></div>
-            </div>
-
-            <div class="contacts-search">
-                <input type="text" placeholder="Search contacts...">
-                <i class="fas fa-search"></i>
-            </div>
-
-            <div class="contacts-category">Online</div>
-
-            <div class="contact-item">
-                <div class="contact-avatar">
-                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=2c5887&color=fff" alt="User Avatar"
-                        width="40" height="40">
-                </div>
-                <div class="contact-info">
-                    <div class="contact-name">John Doe</div>
-                    <div class="contact-role">Property Manager</div>
-                </div>
-                <div class="contact-status"></div>
-            </div>
-
-            <div class="contact-item">
-                <div class="contact-avatar">
-                    <img src="https://ui-avatars.com/api/?name=Jane+Smith&background=2c5887&color=fff" alt="User Avatar"
-                        width="40" height="40">
-                </div>
-                <div class="contact-info">
-                    <div class="contact-name">Jane Smith</div>
-                    <div class="contact-role">Maintenance</div>
-                </div>
-                <div class="contact-status"></div>
-            </div>
-
-            <div class="contact-item">
-                <div class="contact-avatar">
-                    <img src="https://ui-avatars.com/api/?name=Mike+Johnson&background=2c5887&color=fff"
-                        alt="User Avatar" width="40" height="40">
-                </div>
-                <div class="contact-info">
-                    <div class="contact-name">Mike Johnson</div>
-                    <div class="contact-role">Resident</div>
-                </div>
-                <div class="contact-status away"></div>
-            </div>
-
-            <div class="contacts-category">Offline</div>
-
-            <div class="contact-item">
-                <div class="contact-avatar">
-                    <img src="https://ui-avatars.com/api/?name=Sarah+Williams&background=2c5887&color=fff"
-                        alt="User Avatar" width="40" height="40">
-                </div>
-                <div class="contact-info">
-                    <div class="contact-name">Sarah Williams</div>
-                    <div class="contact-role">Resident</div>
-                </div>
-                <div class="contact-status offline"></div>
-            </div>
-
-            <div class="contact-item">
-                <div class="contact-avatar">
-                    <img src="https://ui-avatars.com/api/?name=Robert+Brown&background=2c5887&color=fff"
-                        alt="User Avatar" width="40" height="40">
-                </div>
-                <div class="contact-info">
-                    <div class="contact-name">Robert Brown</div>
-                    <div class="contact-role">Security</div>
-                </div>
-                <div class="contact-status offline"></div>
-            </div>
-        </div>
-
-        @* <!-- Additional sidebar content can go here --> *@
-        <div class="contacts-card">
-            <div class="contacts-header">
-                <div class="contacts-title">Quick Links</div>
-            </div>
-            <div class="contact-item">
-                <i class="fas fa-file-alt me-2"></i> Community Guidelines
-            </div>
-            <div class="contact-item">
-                <i class="fas fa-phone-alt me-2"></i> Emergency Contacts
-            </div>
-            <div class="contact-item">
-                <i class="fas fa-calendar-alt me-2"></i> Events Calendar
-            </div>
-        </div>
-    </div>
+</div> <!-- Closing community-wrapper -->
 </div>
 
 <!-- Add edit modal -->
@@ -348,8 +298,8 @@
             </div>
             <form method="post" id="editForm">
                 <div class="modal-body">
-                    <input type="hidden" id="editId" name="id">
-                    <input type="hidden" id="editType" name="type" value="post">
+                    <input type="hidden" id="editId" name="id" />
+                    <input type="hidden" id="editType" name="type" value="post" />
 
                     <div class="form-group post-edit-fields">
                         <label>Title</label>
@@ -400,9 +350,6 @@
 </div>
 
 @section Scripts {
-    @* <!-- Make sure Font Awesome is included in your layout --> *@
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
     <script>
         $(document).ready(function () {
             @* // Toggle new thread form *@
@@ -516,44 +463,44 @@
                 });
             });
 
-            // // Voting functionality
-            // $(document).on('click', '.btn-vote', function () {
-            //     const postId = $(this).data('post-id');
-            //     const isUpvote = $(this).data('is-upvote');
-            //     const $button = $(this);
-            //     const $oppositeButton = isUpvote ?
-            //         $(`.downvote-btn[data-post-id="${postId}"]`) :
-            //         $(`.upvote-btn[data-post-id="${postId}"]`);
+            // Voting functionality
+            $(document).on('click', '.btn-vote', function () {
+                const postId = $(this).data('post-id');
+                const isUpvote = $(this).data('is-upvote');
+                const $button = $(this);
+                const $oppositeButton = isUpvote ?
+                    $(`.downvote-btn[data-post-id="${postId}"]`) :
+                    $(`.upvote-btn[data-post-id="${postId}"]`);
 
-            //     // If already active, this is an unvote
-            //     const isActive = $button.hasClass('active');
-            //     const voteValue = isActive ? null : isUpvote;
+                // If already active, this is an unvote
+                const isActive = $button.hasClass('active');
+                const voteValue = isActive ? null : isUpvote;
 
-            //     $.ajax({
-            //         url: window.location.pathname + '?handler=Vote',
-            //         type: 'POST',
-            //         data: {
-            //             postId: postId,
-            //             isUpvote: voteValue,
-            //             __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
-            //         },
-            //         success: function (response) {
-            //             // Update counts
-            //             $(`.upvote-btn[data-post-id="${postId}"] .upvote-count`).text(response.upvotes);
-            //             $(`.downvote-btn[data-post-id="${postId}"] .downvote-count`).text(response.downvotes);
+                $.ajax({
+                    url: window.location.pathname + '?handler=Vote',
+                    type: 'POST',
+                    data: {
+                        postId: postId,
+                        isUpvote: voteValue,
+                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (response) {
+                        // Update counts
+                        $(`.upvote-btn[data-post-id="${postId}"] .upvote-count`).text(response.upvotes);
+                        $(`.downvote-btn[data-post-id="${postId}"] .downvote-count`).text(response.downvotes);
 
-            //             // Update net votes - add this line
-            //             $(`.net-votes[data-post-id="${postId}"]`).text(response.upvotes - response.downvotes);
+                        // Update net votes - add this line
+                        $(`.net-votes[data-post-id="${postId}"]`).text(response.upvotes - response.downvotes);
 
-            //             // Update active states
-            //             $button.toggleClass('active', response.userVote === isUpvote);
-            //             $oppositeButton.removeClass('active');
-            //         },
-            //         error: function () {
-            //             alert('Error processing your vote');
-            //         }
-            //     });
-            // });
+                        // Update active states
+                        $button.toggleClass('active', response.userVote === isUpvote);
+                        $oppositeButton.removeClass('active');
+                    },
+                    error: function () {
+                        alert('Error processing your vote');
+                    }
+                });
+            });
         });
 
         // Read more functionality
@@ -573,29 +520,29 @@
             }
         }
 
-        // document.addEventListener('DOMContentLoaded', function () {
-        //     // Select all vote buttons
-        //     const voteButtons = document.querySelectorAll('.vote-btn');
+        document.addEventListener('DOMContentLoaded', function () {
+            // Select all vote buttons
+            const voteButtons = document.querySelectorAll('.vote-btn');
 
-        //     // Add click event listeners to each button
-        //     voteButtons.forEach(button => {
-        //         button.addEventListener('click', function () {
-        //             // If the same button is clicked again, toggle its active state
-        //             if (this.classList.contains('active')) {
-        //                 this.classList.remove('active');
-        //             } else {
-        //                 // If it's an upvote, remove active from downvote and vice versa
-        //                 if (this.classList.contains('upvote')) {
-        //                     document.querySelector('.downvote').classList.remove('active');
-        //                 } else {
-        //                     document.querySelector('.upvote').classList.remove('active');
-        //                 }
+            // Add click event listeners to each button
+            voteButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    // If the same button is clicked again, toggle its active state
+                    if (this.classList.contains('active')) {
+                        this.classList.remove('active');
+                    } else {
+                        // If it's an upvote, remove active from downvote and vice versa
+                        if (this.classList.contains('upvote')) {
+                            document.querySelector('.downvote').classList.remove('active');
+                        } else {
+                            document.querySelector('.upvote').classList.remove('active');
+                        }
 
-        //                 // Add active class to the clicked button
-        //                 this.classList.add('active');
-        //             }
-        //         });
-        //     });
-        // });
+                        // Add active class to the clicked button
+                        this.classList.add('active');
+                    }
+                });
+            });
+        });
     </script>
 }

@@ -8,22 +8,11 @@ namespace HomeownersMS.Models
     {
         [Key, ForeignKey("User")]
         public int UserId { get; set; }
-
-        [Required(ErrorMessage = "Last Name is required.")]
-        public string? LName { get; set; }
-
-        [Required(ErrorMessage = "First Name is required.")]
+        public string? LName { get; set; } 
         public string? FName { get; set; } 
-
-        [Required(ErrorMessage = "Email is required.")]
-        public string? Email { get; set; }
-
-        [Required(ErrorMessage = "Contact Number is required.")]
-        public string? ContactNo { get; set; }
-
-        [Required(ErrorMessage = "Address is required.")]
-        public string? Address { get; set; }
-
+        public string? Email { get; set; } 
+        public string? ContactNo { get; set; } 
+        public string? Address { get; set; } 
         public DateOnly MoveInDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
 
         public string? ProfileImage { get; set; }

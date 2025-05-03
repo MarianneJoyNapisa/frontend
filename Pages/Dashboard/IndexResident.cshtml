@@ -6,6 +6,257 @@
     ViewData["Title"] = "Dashboard";
 }
 
+<style>
+    /* General styles */
+    .card-header {
+        border-bottom: 1px solid var(--bs-border-color);
+        padding: 12px 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: var(--bs-tertiary-bg);
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    /* Custom button styling */
+    .show-more-btn {
+        background-color: transparent;
+        border: 1px solid var(--bs-border-color);
+        color: var(--bs-body-color);
+        width: 100%;
+        padding: 8px;
+        border-radius: 4px;
+        text-align: center;
+        transition: all 0.3s;
+    }
+
+    .show-more-btn:hover {
+        background-color: var(--bs-tertiary-bg);
+    }
+
+    /* Events card */
+    .event-card {
+        border-left: 4px solid var(--bs-primary);
+        border-radius: 8px;
+        padding: 12px 15px;
+        margin-bottom: 12px;
+        background-color: var(--bs-body-bg);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: all 0.2s ease;
+    }
+
+    .event-card:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .event-date {
+        font-size: 0.95rem;
+        color: var(--bs-primary);
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .event-time {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+        color: var(--bs-secondary-color);
+        font-weight: bold;
+    }
+
+    .event-location {
+        font-size: 0.9rem;
+        color: var(--bs-secondary-color);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+    }
+
+    .event-location i {
+        margin-right: 5px;
+        color: var(--bs-primary);
+    }
+
+    .event-title {
+        font-weight: 500;
+        font-size: 1rem;
+        color: var(--bs-body-color);
+    }
+
+    /* No events message styling */
+    #events-container>p {
+        text-align: center;
+        color: var(--bs-secondary-color);
+        padding: 10px;
+    }
+
+    /* custom */
+    .super-small {
+        font-size: x-small;
+    }
+
+    /* Modern FullCalendar Styles */
+    #calendar thead {
+        background-color: var(--bs-body-bg);
+    }
+
+    .fc {
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        --fc-border-color: var(--bs-border-color-translucent);
+        --fc-today-bg-color: transparent;
+        --fc-neutral-bg-color: transparent;
+        --fc-highlight-color: rgba(var(--bs-primary-rgb), 0.1);
+    }
+
+    /* Header styling */
+    .fc .fc-toolbar-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--bs-heading-color);
+    }
+
+    .fc .fc-col-header-cell {
+        padding: 12px 0;
+    }
+
+    .fc .fc-col-header-cell-cushion {
+        color: var(--bs-secondary-color);
+        text-decoration: none !important;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+
+    /* Navigation buttons */
+    .fc .fc-button {
+        background-color: transparent !important;
+        border: none !important;
+        color: var(--bs-primary) !important;
+        transition: all 0.2s ease;
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 1rem;
+    }
+
+    .fc .fc-button:hover {
+        background-color: var(--bs-primary-bg-subtle) !important;
+        color: var(--bs-primary) !important;
+        transform: translateY(-1px);
+    }
+
+    .fc .fc-button:active {
+        transform: translateY(0);
+    }
+
+    /* Day cells */
+    .fc .fc-daygrid-day-frame {
+        aspect-ratio: 1/1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 4px;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+    }
+
+    .fc-day-hoverable:hover .fc-daygrid-day-frame {
+        background-color: rgba(var(--bs-primary-rgb), 0.1) !important;
+        transform: scale(1.05);
+    }
+
+    .fc .fc-daygrid-day-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        color: var(--bs-body-color);
+        text-decoration: none !important;
+        font-weight: 500;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+    }
+
+    /* Today's date */
+    .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-frame {
+        background-color: var(--bs-primary) !important;
+        box-shadow: 0 2px 6px rgba(var(--bs-primary-rgb), 0.3);
+    }
+
+    .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+        color: white !important;
+        font-weight: 600;
+    }
+
+    /* Selected date */
+    .fc .fc-daygrid-day.selected .fc-daygrid-day-frame {
+        background-color: var(--bs-primary) !important;
+        box-shadow: 0 3px 8px rgba(var(--bs-primary-rgb), 0.4);
+        transform: scale(1.05);
+    }
+
+    .fc .fc-daygrid-day.selected .fc-daygrid-day-number {
+        color: white !important;
+        font-weight: 600;
+    }
+
+    /* Remove borders and spacing */
+    .fc .fc-scrollgrid {
+        border: none !important;
+    }
+
+    .fc .fc-daygrid-body {
+        border: none !important;
+    }
+
+    .fc .fc-daygrid-day {
+        border: none !important;
+    }
+
+    /* Month divider */
+    .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
+        min-height: 0;
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .fc .fc-toolbar-title {
+            font-size: 1rem;
+        }
+        
+        .fc .fc-col-header-cell-cushion {
+            font-size: 0.7rem;
+        }
+        
+        .fc .fc-daygrid-day-number {
+            font-size: 0.8rem;
+        }
+    }
+
+    /* event dot indicator */
+    .event-dot {
+        width: 6px;
+        height: 6px;
+        background-color: var(--bs-primary);
+        border-radius: 50%;
+        display: inline-block;
+        margin-left: 4px;
+        vertical-align: middle;
+    }
+
+    .fc-daygrid-day.fc-day-today .event-dot,
+    .fc-daygrid-day.selected .event-dot {
+        background-color: white;
+    }
+
+    #calendar thead tr th {
+        background-color: var(--bs-body-bg) !important;
+    }
+</style>
+
 <!-- Add FullCalendar CSS -->
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet" />
 
@@ -26,7 +277,7 @@
 
                         @foreach (var announcement in Model.LatestAnnouncements)
                         {
-                            <div class="card mb-3 border-0 shadow-sm ann-card">
+                            <div class="card mb-3 border-0 shadow-sm">
                                 <div
                                     class="card-header text-white @colorClasses[colorIndex] d-flex justify-content-between align-items-center">
                                     <span class="text-capitalize">@announcement.Title</span>
@@ -66,10 +317,10 @@
                     }
                     else
                     {
-                        <div class="card border-0">
-                            <div class="card-body">
-                                <p class="mb-0">No recent announcements</p>
-                            </div>
+                        <div class="text-center py-5 rounded-1 transition-all empty-container mb-3" style="transition: 0.3s; border-radius: 6px !important; font-size: small !important;">
+                            <i class="fas fa-history fa-3x text-muted mb-3"></i>
+                            <h6 class="text-muted">No announcements</h6>
+                            <p class="text-muted">There are currently no announcements as of this moment.</p>
                         </div>
                     }
                 </div>
@@ -103,27 +354,29 @@
                     {
                         foreach (var evt in Model.AllEvents)
                         {
-                            <div class="event-card" data-event-date="@evt.EventDate?.ToString("yyyy-MM-dd")">
-                                <div class="event-date">
-                                    <strong>@(evt.EventDate.HasValue ? evt.EventDate?.ToString("ddd, MMM dd yyyy") : "n.d")</strong>
+                        <div class="event-card" data-event-date="@evt.EventDate?.ToString("yyyy-MM-dd")">
+                            <div class="event-date">
+                                <strong>@(evt.EventDate.HasValue ? evt.EventDate?.ToString("ddd, MMM dd yyyy") : "n.d")</strong>
+                            </div>
+                            <div class="event-time">
+                                <strong>
+                                    @(evt.EventTimeStart.HasValue? evt.EventTimeStart.Value.ToString("h:mm tt") : "--:--")
+                                    @(evt.EventTimeEnd.HasValue ? " - " + evt.EventTimeEnd.Value.ToString("h:mm tt") : "")
+                                </strong>
+                            </div>
+                            <div class="event-location">
+                                <i class="bi bi-geo-alt"></i> @evt.FacilityRequest?.Facility?.Name
+                            </div>
+                            <div class="event-title">@evt.Title</div>
                         </div>
-                        <div class="event-time">
-                            <strong>
-                                @(evt.EventTimeStart.HasValue? evt.EventTimeStart.Value.ToString("h:mm tt") : "--:--")
-                                @(evt.EventTimeEnd.HasValue ? " - " + evt.EventTimeEnd.Value.ToString("h:mm tt") : "")
-                            </strong>
-                        </div>
-                        <div class="event-location">
-                            <i class="bi bi-geo-alt"></i> @evt.FacilityRequest?.Facility?.Name
-                        </div>
-                        <div class="event-title">@evt.Title</div>
-                    </div>
                         }
                     }
                     else
                     {
-                        <div class="text-muted small m-3 text-center">
-                            <i class="bi bi-exclamation-circle me-2"></i> No events available for the selected date.
+                        <div class="text-center py-5 rounded-1 transition-all empty-container mb-3" style="transition: 0.3s; border-radius: 6px !important; font-size: small !important;">
+                            <i class="fas fa-exclamation-circle fa-3x text-muted mb-3"></i>
+                            <h6 class="text-muted">No events</h6>
+                            <p class="text-muted">No events available for the selected date.</p>
                         </div>
                     }
                 </div>
@@ -291,156 +544,3 @@ document.addEventListener('DOMContentLoaded', function () {
     handleResize();
 });
 </script>
-
-<style>
-    /* Modern FullCalendar Styles */
-    .fc {
-        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        --fc-border-color: rgba(0, 0, 0, 0.05);
-        --fc-today-bg-color: transparent;
-        --fc-neutral-bg-color: transparent;
-        --fc-highlight-color: rgba(13, 110, 253, 0.1);
-    }
-
-    /* Header styling */
-    .fc .fc-toolbar-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #2d3748;
-    }
-
-    .fc .fc-col-header-cell {
-        background-color: transparent !important;
-        padding: 12px 0;
-    }
-
-    .fc .fc-col-header-cell-cushion {
-        color: #64748b;
-        text-decoration: none !important;
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        font-weight: 500;
-        letter-spacing: 0.5px;
-    }
-
-    /* Navigation buttons */
-    .fc .fc-button {
-        background-color: transparent !important;
-        border: none !important;
-        color: #3b82f6 !important;
-        transition: all 0.2s ease;
-        padding: 6px 10px;
-        border-radius: 6px;
-        font-size: 1rem;
-    }
-
-    .fc .fc-button:hover {
-        background-color: #eff6ff !important;
-        color: #2563eb !important;
-        transform: translateY(-1px);
-    }
-
-    .fc .fc-button:active {
-        transform: translateY(0);
-    }
-
-    /* Day cells */
-    .fc .fc-daygrid-day-frame {
-        aspect-ratio: 1/1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 4px;
-        border-radius: 50%;
-        transition: all 0.2s ease;
-    }
-
-    .fc-day-hoverable:hover .fc-daygrid-day-frame {
-        background-color: rgba(59, 130, 246, 0.1) !important;
-        transform: scale(1.05);
-    }
-
-    .fc .fc-daygrid-day-number {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 4px;
-        color: #1e293b;
-        text-decoration: none !important;
-        font-weight: 500;
-        font-size: 0.9rem;
-        transition: all 0.2s ease;
-    }
-
-    /* Today's date */
-    .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-frame {
-        background-color: #3b82f6 !important;
-        box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
-    }
-
-    .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
-        color: white !important;
-        font-weight: 600;
-    }
-
-    /* Selected date */
-    .fc .fc-daygrid-day.selected .fc-daygrid-day-frame {
-        background-color: #3b82f6 !important;
-        box-shadow: 0 3px 8px rgba(59, 130, 246, 0.4);
-        transform: scale(1.05);
-    }
-
-    .fc .fc-daygrid-day.selected .fc-daygrid-day-number {
-        color: white !important;
-        font-weight: 600;
-    }
-
-    /* Remove borders and spacing */
-    .fc .fc-scrollgrid {
-        border: none !important;
-    }
-
-    .fc .fc-daygrid-body {
-        border: none !important;
-    }
-
-    .fc .fc-daygrid-day {
-        border: none !important;
-    }
-
-    /* Month divider */
-    .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
-        min-height: 0;
-    }
-
-    /* Responsive adjustments */
-    @@media (max-width: 768px) {
-        .fc .fc-toolbar-title {
-            font-size: 1rem;
-        }
-        
-        .fc .fc-col-header-cell-cushion {
-            font-size: 0.7rem;
-        }
-        
-        .fc .fc-daygrid-day-number {
-            font-size: 0.8rem;
-        }
-    }
-
-    /* event dot indicator */
-    .event-dot {
-        width: 6px;
-        height: 6px;
-        background-color: #3b82f6;
-        border-radius: 50%;
-        display: inline-block;
-        margin-left: 4px;
-        vertical-align: middle;
-    }
-
-    .fc-daygrid-day.fc-day-today .event-dot,
-    .fc-daygrid-day.selected .event-dot {
-        background-color: white;
-    }
-</style>

@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using HomeownersMS.Data;
 using HomeownersMS.Services;
+using HomeownersMS.Hubs;
 
 namespace HomeownersMS
 {
@@ -12,23 +13,25 @@ namespace HomeownersMS
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Database Context (Only register once!)
+            // Add services to the container in this order:
+
+            // 1. Core services first
+            builder.Services.AddRazorPages();
+            builder.Services.AddSignalR();
+            builder.Services.AddHttpContextAccessor();
+
+            // 2. Database Context (correctly placed)
             builder.Services.AddDbContext<HomeownersContext>(options =>
                 options.UseSqlite(builder.Configuration.GetConnectionString("HomeownersContext")
                     ?? throw new InvalidOperationException("Connection string 'HomeownersContext' not found.")));
 
-            // Add services to the container.
-            builder.Services.AddRazorPages();
-
-            // Register UserService
+            // 3. Application services
             builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped<SettingsService>();
+            builder.Services.AddScoped<INotificationService, NotificationService>();
 
-            // HTTP Context Accessor
-            builder.Services.AddHttpContextAccessor();
-
-            // Authentication and Authorization
-            builder.Services
-                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            // 4. Authentication (simplified)
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
                     options.LoginPath = "/Account/Login";
@@ -37,26 +40,37 @@ namespace HomeownersMS
                     options.Cookie.HttpOnly = true;
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                    options.SlidingExpiration = true; // Added for better UX
                 });
 
-            builder.Services.AddAuthorization();
+            // 5. Authorization
+            builder.Services.AddAuthorization(options =>
+            {
+                // Add policies here if needed
+                // options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+            });
 
-            builder.Services.AddSession(options => {
+            // 6. Session (with better security)
+            builder.Services.AddSession(options => 
+            {
                 options.IdleTimeout = TimeSpan.FromMinutes(20);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Important for production
             });
 
-            // Add Exception Filter for Dev Mode
+            // 7. Development services
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // Configure the HTTP request pipeline in this order:
+
+            // 1. Exception handling
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Error");
-                app.UseHsts();
+                app.UseHsts(); // HTTP Strict Transport Security
             }
             else
             {
@@ -64,36 +78,39 @@ namespace HomeownersMS
                 app.UseMigrationsEndPoint();
             }
 
-            // // Database Initialization (Use Migrate() instead of EnsureCreated() if using Migrations)
-            // using (var scope = app.Services.CreateScope())
-            // {
-            //     var services = scope.ServiceProvider;
-            //     var context = services.GetRequiredService<HomeownersContext>();
-            //     context.Database.Migrate(); // Apply pending migrations automatically
-            //     DbInitializer.Initialize(context);
-            // }
-
-            // Database Initialization (Migrate database on startup)
-
-
-
+            // 2. Database initialization (correct placement)
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<HomeownersContext>();
-                context.Database.Migrate(); // Apply pending migrations automatically
-                DbInitializer.Initialize(context); // You can initialize your DB here if needed
+                context.Database.Migrate();
+                DbInitializer.Initialize(context);
             }
 
+            // 3. Security and static files
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = ctx =>
+                {
+                    // Cache static files for 1 week
+                    ctx.Context.Response.Headers.Append(
+                        "Cache-Control", "public,max-age=604800");
+                }
+            });
 
-            app.UseSession();
+            // 4. Routing middleware
             app.UseRouting();
 
+            // 5. Authentication & Authorization (must be after UseRouting)
             app.UseAuthentication();
             app.UseAuthorization();
 
+            // 6. Session middleware (after auth, before endpoints)
+            app.UseSession();
+
+            // 7. Endpoints
+            app.MapHub<NotificationHub>("/notificationHub");
             app.MapRazorPages();
 
             app.Run();
@@ -150,7 +167,15 @@ sqlite:
 dotnet add package Microsoft.EntityFrameworkCore.Sqlite
 dotnet add package Microsoft.EntityFrameworkCore.Design
 
+pagination:
+dotnet add package X.PagedList.Mvc.Core
 
+dotnet add package X.PagedList --version 8.4.0
+dotnet add package X.PagedList.Mvc.Core --version 8.4.0
+
+dotnet add package Microsoft.AspNetCore.SignalR.Client
+
+dotnet list package
 
 git operations:
 
@@ -159,3 +184,5 @@ git stash clear             // delete all stash
 
 
 */
+
+
