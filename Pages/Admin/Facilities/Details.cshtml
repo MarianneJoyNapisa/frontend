@@ -2,44 +2,66 @@
 @model HomeownersMS.Pages_Admin_Facilities.DetailsModel
 
 @{
-    Layout = "_AdminLayout"; // Use the Admin layout
+    Layout = "_AdminLayout";
     ViewData["HeaderTitle"] = "Facilities Management";
     ViewData["Title"] = "Facility Details";
 }
-
-<h1>Details</h1>
-
-<div>
-    <h4>Facility</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Facility.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Facility.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Facility.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Facility.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Facility.PricePerHour)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Facility.PricePerHour)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Facility.FacilityImage)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Facility.FacilityImage)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Facility.FacilityId">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+<style>
+    .card-header {
+        background-color: var(--cta-color);
+    }
+</style>
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 text-white">
+                <i class="bi bi-building me-2"></i>Facility Details
+            </h5>
+            <div>
+                <a asp-page="./Index" class="btn btn-sm btn-outline-light">
+                    <i class="bi bi-arrow-left me-1"></i> Back to List
+                </a>
+            </div>
+        </div>
+        
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-4 text-center">
+                    @if (!string.IsNullOrEmpty(Model.Facility.FacilityImage))
+                    {
+                        <img src="@Model.Facility.FacilityImage" 
+                             class="img-fluid rounded shadow" 
+                             style="max-height: 300px; object-fit: cover;" 
+                             alt="@Model.Facility.Name" />
+                    }
+                    else
+                    {
+                        <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <i class="bi bi-building text-muted" style="font-size: 3rem;"></i>
+                        </div>
+                    }
+                </div>
+                
+                <div class="col-md-8">
+                    <div class="mb-4">
+                        <h4 class="fw-bold">@Model.Facility.Name</h4>
+                        <p class="text-muted mb-4">@Model.Facility.Description</p>
+                        
+                        <div class="row">
+                            <div class="col-sm-6 mb-3">
+                                <h6 class="text-muted">Price Per Hour</h6>
+                                <p class="h5">₱@Model.Facility.PricePerHour</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border-top pt-3">
+                        <a asp-page="./Edit" asp-route-id="@Model.Facility.FacilityId" class="btn btn-primary me-2">
+                            <i class="bi bi-pencil me-1"></i> Edit Facility
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -15,17 +15,20 @@
 
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <div class="d-flex align-items-center">
-            <i class="bi bi-megaphone fs-3 me-2"></i>
-            <span class="fs-4">Announcements</span>
-        </div>
-        <div>
-            <div class="input-group">
+        <div class="d-flex align-items-center gap-3 mb-3 col-8">
+            <div class="input-group col-8">
                 <input type="text" class="form-control" placeholder="Search announcements..." aria-label="Search announcements">
                 <button class="btn btn-outline-secondary" type="button">
                     <i class="bi bi-search"></i>
                 </button>
             </div>
+            @* <!-- Create Button --> *@
+            <div class="text-end col-4 justify-content-end">
+                <a asp-page="./Create" class="btn btn-primary ghost-link text-light">
+                    <i class="bi bi-plus-lg"></i> Create Announcement
+                </a>
+            </div>
+
         </div>
     </div>
     
@@ -235,13 +238,6 @@
                 }
             </div>
         </div>
-    </div>
-    
-    @* <!-- Create Button --> *@
-    <div class="text-end mb-3">
-        <a asp-page="./Create" class="btn btn-primary ghost-link text-light">
-            <i class="bi bi-plus-lg"></i> Create New
-        </a>
     </div>
 </div>
 

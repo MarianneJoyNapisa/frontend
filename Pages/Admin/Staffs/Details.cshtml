@@ -6,58 +6,60 @@
     ViewData["HeaderTitle"] = "User Management";
     ViewData["Title"] = "Staff Details";
 }
+<style>
+    .card-header {
+        background-color: var(--cta-color);
+    }
+</style>
+<div class="container py-4">
+    <div class="card shadow-sm rounded-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 text-white">Staff Details</h5>
+            <div>
+                <a class="btn btn-sm btn-light me-2" asp-page="./Edit" asp-route-id="@Model.Staff.UserId">
+                    <i class="bi bi-pencil-square"></i> Edit
+                </a>
+                <a class="btn btn-sm btn-outline-light" asp-page="./Index">
+                    <i class="bi bi-arrow-left"></i> Back
+                </a>
+            </div>
+        </div>
 
-<h1>Details</h1>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-3 text-center">
+                    <img src="@(string.IsNullOrEmpty(Model.Staff.ProfileImage) 
+                        ? Url.Content("~/images/default-profile.png") 
+                        : Url.Content($"~/uploads/{Model.Staff.ProfileImage}"))"
+                        alt="Profile Image"
+                        class="rounded-circle shadow"
+                        style="width: 150px; height: 150px; object-fit: cover; background-color: #e9ecef;">
+                </div>
+                <div class="col-md-9">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Last Name</dt>
+                        <dd class="col-sm-8">@Model.Staff.LName</dd>
 
-<div>
-    <h4>Staff</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Staff.LName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Staff.LName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Staff.FName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Staff.FName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Staff.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Staff.Email)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Staff.ContactNo)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Staff.ContactNo)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Staff.Job)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Staff.Job)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Staff.HireDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Staff.HireDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Staff.User)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Staff.User.UserId)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Staff.UserId">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+                        <dt class="col-sm-4">First Name</dt>
+                        <dd class="col-sm-8">@Model.Staff.FName</dd>
+
+                        <dt class="col-sm-4">Email</dt>
+                        <dd class="col-sm-8">@Model.Staff.Email</dd>
+
+                        <dt class="col-sm-4">Contact Number</dt>
+                        <dd class="col-sm-8">@Model.Staff.ContactNo</dd>
+
+                        <dt class="col-sm-4">Job Title</dt>
+                        <dd class="col-sm-8">@Model.Staff.Job</dd>
+
+                        <dt class="col-sm-4">Hire Date</dt>
+                        <dd class="col-sm-8">@Model.Staff.HireDate.ToString("MMMM dd, yyyy")</dd>
+
+                        <dt class="col-sm-4">User ID</dt>
+                        <dd class="col-sm-8">@Model.Staff.User.UserId</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

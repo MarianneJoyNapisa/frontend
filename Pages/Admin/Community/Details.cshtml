@@ -1,57 +1,55 @@
 @page
 @model HomeownersMS.Pages_Admin_Community.DetailsModel
-
 @{
-    Layout = "_AdminLayout"; // Use the Admin layout
+    Layout = "_AdminLayout";
     ViewData["HeaderTitle"] = "Community Management";
-    ViewData["Title"] = "Community";
+    ViewData["Title"] = "Community Post Details";
 }
+<style>
+    .card-header {
+        background-color: var(--cta-color);
+    }
+</style>
+<div class="container py-4">
+    <div class="card shadow-sm rounded-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 text-white">Community Post Details</h5>
+            <div>
+                <a class="btn btn-sm btn-outline-light" asp-page="./Index">
+                    <i class="bi bi-arrow-left"></i> Back to List
+                </a>
+            </div>
+        </div>
+        
+        <div class="card-body">
+            <dl class="row mb-4">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CommunityPost.Title)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.CommunityPost.Title)</dd>
 
-<h1>Details</h1>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CommunityPost.Content)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.CommunityPost.Content)</dd>
 
-<div>
-    <h4>CommunityPost</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CommunityPost.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CommunityPost.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CommunityPost.Content)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CommunityPost.Content)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CommunityPost.CreatedAt)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CommunityPost.CreatedAt)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CommunityPost.UpdatedAt)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CommunityPost.UpdatedAt)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CommunityPost.Type)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CommunityPost.Type)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CommunityPost.User)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CommunityPost.User.UserId)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.CommunityPost.CommunityPostId">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CommunityPost.Type)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.CommunityPost.Type)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CommunityPost.User)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.CommunityPost.User.UserId)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CommunityPost.CreatedAt)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.CommunityPost.CreatedAt)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CommunityPost.UpdatedAt)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.CommunityPost.UpdatedAt)</dd>
+            </dl>
+            
+            <div class="d-flex justify-content-end border-top pt-3 gap-2">
+                <a asp-page="./Index" class="btn btn-secondary">
+                    <i class="bi bi-x-circle"></i> Cancel
+                </a>
+                <a asp-page="./Edit" asp-route-id="@Model.CommunityPost.CommunityPostId" class="btn btn-primary">
+                    <i class="bi bi-pencil-square"></i> Edit
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
