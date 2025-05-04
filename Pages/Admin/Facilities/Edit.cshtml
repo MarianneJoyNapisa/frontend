@@ -27,9 +27,10 @@
                 <div class="col-md-4 mb-4 text-center">
                     @if (!string.IsNullOrEmpty(Model.Facility.FacilityImage))
                     {
-                        <img src="@Model.Facility.FacilityImage" 
+                        <img src="@Url.Content($"~/{Model.Facility.FacilityImage}")" 
                              class="img-fluid rounded shadow mb-3" 
-                             style="max-height: 250px; object-fit: cover;" 
+                             style="object-fit: cover;" 
+                             width="100%"
                              alt="Current facility image" />
                     }
                     else

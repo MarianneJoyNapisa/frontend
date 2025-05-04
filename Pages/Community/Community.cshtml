@@ -217,7 +217,7 @@
                                     <div class="d-flex gap-2">
                                         @if (post.Type.HasValue)
                                         {
-                                            <span class="badge">@post.Type</span>
+                                            <span class="badge text-light">@post.Type</span>
                                         }
                                         @if (post.User != null)
                                         {
@@ -281,14 +281,14 @@
                             <div class="d-flex align-items-center mb-3">
                                 @* <!-- Upvote Button --> *@
                                 <button type="button" 
-                                        class="btn btn-sm btn-outline-secondary btn-vote me-2 upvote-btn @(userVote == true ? "text-primary" : "")"
+                                        class="btn btn-sm btn-outline-secondary btn-vote me-1 upvote-btn @(userVote == true ? "text-primary" : "")"
                                         data-post-id="@post.CommunityPostId">
                                     <i class="fas fa-thumbs-up"></i>
                                     <span class="upvotes-count" style="display:none">@post.Votes.Count(v => v.IsUpvote == true)</span>
                                 </button>
                                 
                                 @* <!-- Net Votes Count --> *@
-                                <span class="me-2 net-votes fw-bold" data-post-id="@post.CommunityPostId">
+                                <span class="me-1 net-votes fw-bold" data-post-id="@post.CommunityPostId">
                                     @(post.Votes.Count(v => v.IsUpvote == true) - post.Votes.Count(v => v.IsUpvote == false))
                                 </span>
                                 

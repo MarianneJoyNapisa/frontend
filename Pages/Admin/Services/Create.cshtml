@@ -1,4 +1,5 @@
 @page
+@using HomeownersMS.Models
 @model HomeownersMS.Pages_Admin_Services.CreateModel
 @{
     Layout = "_AdminLayout";
@@ -38,11 +39,10 @@
                             <label asp-for="Service.ServiceCategory" class="form-label"></label>
                             <select asp-for="Service.ServiceCategory" class="form-select" required>
                                 <option value="">Select category</option>
-                                <option value="Maintenance">Maintenance</option>
-                                <option value="Cleaning">Cleaning</option>
-                                <option value="Security">Security</option>
-                                <option value="Utilities">Utilities</option>
-                                <option value="Other">Other</option>
+                                <option value="@Models.ServiceCategory.repairsAndMaintenance">Maintenance</option>
+                                <option value="@Models.ServiceCategory.cleaningServices">Cleaning</option>
+                                <option value="@Models.ServiceCategory.landscapingMaintenance">Landscaping</option>
+                                <option value="@Models.ServiceCategory.otherServices">Others</option>
                             </select>
                             <span asp-validation-for="Service.ServiceCategory" class="text-danger small"></span>
                         </div>
