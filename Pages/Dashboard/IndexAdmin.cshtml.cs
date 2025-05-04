@@ -76,6 +76,7 @@ namespace HomeownersMS.Pages.Dashboard
             var message = new StringBuilder();
             message.Append("<div class='notification-content'>");
             message.Append("<h5 class='mb-3'>Here are the most popular discussions:</h5>");
+            message.Append("<hr>");
             message.Append("<ul class='list-unstyled'>");
 
             foreach (var post in popularPosts)
@@ -91,10 +92,9 @@ namespace HomeownersMS.Pages.Dashboard
                 };
 
                 message.Append("<li class='mb-3'>");
-                message.Append("<br>");
                 message.Append($"<div class='d-flex justify-content-between align-items-start'>");
                 message.Append($"<span class='fw-bold'>{post.Title}</span>");
-                message.Append($"<span class='badge {roleBadgeClass} ms-2'>{authorRole}</span>");
+                message.Append($"<span class='badge text-light {roleBadgeClass} ms-2'>{authorRole}</span>");
                 message.Append("</div>");
                 
                 message.Append($"<div class='text-muted mt-1 mb-2'>{post.Content}</div>");
@@ -104,15 +104,17 @@ namespace HomeownersMS.Pages.Dashboard
                 message.Append($"<span class='me-2'><i class='bi bi-arrow-up-circle-fill text-success'></i> {post.Vote}</span>");
                 message.Append($"<span><i class='bi bi-chat-left-text me-1'></i> {post.Comments?.Count ?? 0} comments</span>");
                 message.Append("</div>");
-                message.Append("<br>");
+                
+                // Add the "Join conversation" button with post-specific URL
+                message.Append($"<div class='mt-2'>");
+                message.Append($"<a href='/Community/Community/#community-post-id-{post.CommunityPostId}' class='btn btn-sm btn-outline-primary'>Join this conversation</a>");
+                message.Append("</div>");
+                message.Append("<hr>");
                 
                 message.Append("</li>");
             }
 
             message.Append("</ul>");
-            message.Append("<div class='mt-3'>");
-            message.Append("<a href='/Community/Community' class='btn btn-sm btn-outline-primary'>Join the conversation</a>");
-            message.Append("</div>");
             message.Append("</div>");
 
             // Final message with HTML formatting

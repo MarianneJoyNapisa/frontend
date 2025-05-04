@@ -28,6 +28,10 @@
     flex-grow: 1; /* Allow the title to take up available space */
 }
 
+.headerPage h2 {
+    font-size: calc(var(--bs-body-font-size) * 1.7);
+}
+
 
 /* the bi-list button */
 .sideNav_toggleBtn {
@@ -42,6 +46,23 @@
     transition: color 0.3s ease; /* Smooth transition for color change */
 }
 
+.sideNav_toggleBtn {
+    font-size: calc(var(--bs-body-font-size) * 1.4);
+}
+
 .secondary-on-hover:hover {
     color: var(--bs-secondary) !important;
+}
+
+.bell-icon {
+    position: relative;
+    font-size: calc(var(--bs-body-font-size) * 1.4);
+}
+.bell-icon #unreadCount {
+    position: absolute;
+    top: -2px;
+    right: -7px;
+    font-size: calc(var(--bs-body-font-size) * 0.6);
+    color: white;
+    border: 2px solid var(--bs-primary);
 }

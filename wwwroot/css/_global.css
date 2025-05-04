@@ -1,26 +1,4 @@
 :root {
-  /* Deep Blue for main navigation, branding */
-  --primary-color: #3C6693; 
-  
-  /* Light Blue for secondary buttons, links */
-  --secondary-color: #96ADD6; 
-
-  /* Warm Coral Red for CTA buttons, important actions */
-  --cta-color: #E85234;  
-
-  /* Soft Pinkish Beige for highlights, badges */
-  --secondary-accent: #F9B8AF;  
-
-  /* Light Creamy Beige for backgrounds */
-  --background-color: #F2EEE9;  
-
-  /* Text Colors */
-  --primary-text-color: #333333; /* Main body text color */
-  --secondary-text-color: #7A7A7A; /* Secondary text color */
-  --accent-text-color: #E85234; /* Accent text color for links, buttons */
-  --placeholder-text-color: #B0B0B0; /* Placeholder text color */
-  --light-text-color: #FFFFFF; /* Light text color for dark backgrounds */
-
   --bs-body-bg: #F2EEE9;
 
   --bs-primary: #3c6693;
@@ -46,7 +24,7 @@
   --bs-body-bg: #000;
 }
 
-/* Blue Theme */
+/* Blue Theme - default theme */  
 .theme-blue {
   --bs-primary: #3c6693;
   --bs-primary-rgb: 60, 102, 147;
@@ -71,6 +49,7 @@
   --bs-primary-hover: #4a7db3; /* 20% lighter in dark mode */
   --bs-secondary-hover: #9a9ec7; /* Lighter lavender for hover */
   --bs-accent-text: #7ae1ff;
+  --bs-primary-bg-subtle: #718ca9;
 }
 
 /* Purple Theme */
@@ -98,6 +77,8 @@
   --bs-primary-hover: #8a5bd6;
   --bs-secondary-hover: #e83e8c;
   --bs-accent-text: #c79eff;
+  --bs-primary-bg-subtle: #5a497a;
+
 }
 
 /* Green Theme */
@@ -125,6 +106,7 @@
   --bs-primary-hover: #20c975;
   --bs-secondary-hover: #ffd351;
   --bs-accent-text: #c5f46e;
+  --bs-primary-bg-subtle: #2c5844;
 }
 
 /* Red Theme */
@@ -152,6 +134,7 @@
   --bs-primary-hover: #ff4d6d;
   --bs-secondary-hover: #ff983d;
   --bs-accent-text: #ff9abf;
+  --bs-primary-bg-subtle: #a64952;
 }
 
 /* Layout densities */

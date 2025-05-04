@@ -10,7 +10,7 @@ using HomeownersMS.Models;
 
 namespace HomeownersMS.Pages.Announcement
 {
-    [Authorize(Roles="resident,admin")]
+    [Authorize]
     public class DetailsModel(HomeownersContext context) : PageModel
     {
         private readonly HomeownersContext _context = context;

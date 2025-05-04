@@ -6,6 +6,13 @@
 @using Microsoft.EntityFrameworkCore
 @using HomeownersMS.Data
 @inject HomeownersContext context
+@* Add these using directives *@
+@using Microsoft.Extensions.Caching.Memory
+@using Microsoft.AspNetCore.Identity
+@inject HomeownersContext context
+@* Fix the injection name to match what you're using *@
+@inject HomeownersContext _context
+@inject IMemoryCache _cache
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,47 +28,51 @@
     <link rel="stylesheet" href="~/css/_global.css" />
     <link rel="stylesheet" href="~/css/_header.css" />
     <link rel="stylesheet" href="~/css/_sidenav.css" />
+    <link rel="stylesheet" href="~/css/_community.css" />
+
 </head>
 
 <body>
     <!-- Header -->
     <div class="headerPage">
         <button class="sideNav_toggleBtn" id="sideNav_toggleBtn">
-            <i class="bi bi-list fs-4 p-2"></i>
+            <i class="bi bi-list p-2"></i>
         </button>
-        <h3 class="m-0">
+        <h2 class="m-0">
             <a class="ghost-link text-light secondary-on-hover fw-bold" asp-page="/Dashboard/Index">@ViewData["HeaderTitle"]</a>
-        </h3>
+        </h2>
         <a class="ghost-link"></a>
     </div>
 
     @{
-        var username = Context.User?.Identity?.Name ?? "Guest";
-        // Get the resident's profile image and name directly from the database
-        var (profileImagePath, adminName) = await Task.Run(async () => {
+        var cacheKey = $"UserProfile_{User.FindFirstValue(ClaimTypes.NameIdentifier)}";
+        
+        if (!_cache.TryGetValue(cacheKey, out (string ImageUrl, string Name, string Username) profileData))
+        {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            Console.WriteLine(userId);
             if (userId != null && int.TryParse(userId, out int adminId))
             {
-                var admin = await context.Admins.FirstOrDefaultAsync(r => r.UserId == adminId);
-                Console.WriteLine(admin.ProfileImage);
-                if (admin != null)
-                {
-                    var name = $"{admin.FName} {admin.LName}".Trim();
-                    return (admin.ProfileImage ?? "", name);
-                }
+                var admin = await _context.Admins
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(r => r.UserId == adminId);
+                    
+                var imagePath = admin?.ProfileImage ?? "";
+                profileData = (
+                    !string.IsNullOrEmpty(imagePath) ? Url.Content($"~/{imagePath}") : Url.Content("~/images/default-profile.jpg"),
+                    admin != null ? $"{admin.FName} {admin.LName}".Trim() : "Guest",
+                    User.Identity?.Name ?? "Guest"
+                );
+                
+                _cache.Set(cacheKey, profileData, TimeSpan.FromMinutes(30));
             }
-            return ("", "Guest");
-        });
-        Console.WriteLine(profileImagePath);
+        }
         
-        var profileImageUrl = !string.IsNullOrEmpty(profileImagePath?.ToString()) 
-            ? Url.Content($"~/{profileImagePath}")
-            : Url.Content("~/images/default-profile.jpg");
-        Console.WriteLine(profileImageUrl);
-        ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
+        // Set values for the view
+        var profileImageUrl = profileData.ImageUrl ?? Url.Content("~/images/default-profile.jpg");
+        var adminName = profileData.Name ?? "Guest";
+        var username = profileData.Username ?? "Guest";
     }
-
+    
     <!-- Side Navigation -->
     <div class="sideNavBar" id="sidenavBar">
         <!-- User Profile Section -->

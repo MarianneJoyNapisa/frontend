@@ -9,7 +9,7 @@ using HomeownersMS.Data;
 
 namespace HomeownersMS.Pages.Announcement
 {
-    [Authorize(Roles="admin,resident")]
+    [Authorize]
 
     public class Announcement_EventsModel(HomeownersContext context) : PageModel
     {

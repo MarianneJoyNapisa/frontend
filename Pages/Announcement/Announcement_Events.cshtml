@@ -1,8 +1,26 @@
 @page
 @model HomeownersMS.Pages.Announcement.Announcement_EventsModel
+@using Microsoft.AspNetCore.Authorization
+@using HomeownersMS.Data
 @using HomeownersMS.Models
+@using Microsoft.AspNetCore.Identity
 @{
-    Layout = "_ResidentLayout"; // Use the Resident layout
+    if (User.IsInRole("admin"))
+    {
+        Layout = "_AdminLayout";
+    }
+    else if (User.IsInRole("staff"))
+    {
+        Layout = "_StaffLayout";
+    }
+    else if (User.IsInRole("resident"))
+    {
+        Layout = "_ResidentLayout";
+    }
+    else
+    {
+        Layout = "_Layout"; // Fallback layout
+    }
     ViewData["HeaderTitle"] = "Announcements";
     ViewData["Title"] = "Announcements";
 }

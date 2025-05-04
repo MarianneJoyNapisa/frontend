@@ -16,15 +16,35 @@ namespace HomeownersMS.Pages.Community
 
         public List<CommunityPost>? Posts { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string searchTerm = "", string sortBy = "newest")
         {
-            Posts = await _context.CommunityPosts
+            IQueryable<CommunityPost> query = _context.CommunityPosts
                 .Include(p => p.User)
                 .Include(p => p.Comments)
                     .ThenInclude(c => c.User)
-                .Include(p => p.Votes) // Add this line to include votes
-                .OrderByDescending(p => p.CreatedAt)
-                .ToListAsync();
+                .Include(p => p.Votes);
+
+            // Apply search filter if search term exists
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower();
+                query = query.Where(p => 
+                    (p.Title != null && p.Title.ToLower().Contains(searchTerm)) ||
+                    (p.Content != null && p.Content.ToLower().Contains(searchTerm)) ||
+                    (p.User != null && p.User.Username != null && p.User.Username.ToLower().Contains(searchTerm)));
+            }
+
+            // Apply sorting
+            query = sortBy switch
+            {
+                "oldest" => query.OrderBy(p => p.CreatedAt),
+                "most-commented" => query.OrderByDescending(p => p.Comments.Count),
+                "most-voted" => query.OrderByDescending(p => p.Votes.Count(v => v.IsUpvote == true) - 
+                                p.Votes.Count(v => v.IsUpvote == false)),
+                _ => query.OrderByDescending(p => p.CreatedAt) // Default: newest first
+            };
+
+            Posts = await query.ToListAsync();
         }
 
         public async Task<IActionResult> OnPostAsync(string Title, string Content, CommunityPost.Types Type)

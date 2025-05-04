@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="~/css/_global.css" />
     <link rel="stylesheet" href="~/css/_header.css" />
     <link rel="stylesheet" href="~/css/_sidenav.css" />
+    <link rel="stylesheet" href="~/css/_community.css" />
+
     <style>
         #notificationList * {
             font-size: small !important;
@@ -26,16 +28,6 @@
 
         #notification .dropdown-toggle::after {
             display: none;
-        }
-        .bell-icon {
-            position: relative;
-        }
-        .bell-icon #unreadCount {
-            position: absolute;
-            top: 0;
-            right: 0;
-            font-size: 8px;
-            color: white;
         }
     </style>
 </head>
@@ -45,7 +37,7 @@
     <!-- Header -->
     <div class="headerPage">
         <button class="sideNav_toggleBtn" id="sideNav_toggleBtn">
-            <i class="bi bi-list fs-4 p-2"></i>
+            <i class="bi bi-list p-2"></i>
         </button>
         <h2 class="m-0">
             <a class="ghost-link text-light secondary-on-hover" asp-page="/Dashboard/Index">@ViewData["HeaderTitle"]</a>
@@ -53,7 +45,7 @@
         @* Notification *@
         <div class="dropdown" id="notification">
             <button class="btn dropdown-toggle secondary-on-hover" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-bell fs-4 text-light secondary-on-hover bell-icon">
+                <i class="bi bi-bell text-light secondary-on-hover bell-icon">
                     <span id="unreadCount" class="badge bg-danger d-none">0</span>
                 </i>
             </button>
@@ -129,7 +121,7 @@
             </a>
             <a asp-page="/Community/Community"
                 class="navItem @(ViewData["CurrentPage"]?.ToString()?.StartsWith("/Community") == true ? "active" : "")">
-                <i class="bi bi-chat-left-text-fill"></i>
+                <i class="bi bi-c``t-left-text-fill"></i>
                 <span>Community</span>
             </a>
             <a asp-page="/Resources/Resource"
