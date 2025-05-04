@@ -40,14 +40,20 @@
     <!-- Card Container -->
     <div class="bg-white rounded-4 p-4 shadow-sm">
         <!-- Search & Filter -->
-        <div class="d-flex mb-4">
-            <div class="input-group flex-grow-1">
-                <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
-                <input type="text" class="form-control border-start-0" placeholder="Search..." />
+        <div class="row mb-4">
+            <!-- Search Bar -->
+            <div class="col-10">
+                <div class="input-group">
+                    <input type="text" class="form-control border-end-0" placeholder="Search..." aria-label="Search">
+                    <button class="btn btn-input-icon" type="button"><i class="bi bi-search"></i></button>
+                </div>
             </div>
-            <button class="btn btn-light ms-2 rounded-3">
-                <i class="bi bi-sliders text-primary"></i>
-            </button>
+
+            <!-- Filter and Sort Buttons -->
+            <div class="col-2 d-flex align-items-center justify-content-end">
+                <button class="btn btn-sm btn-primary me-2"><i class="bi bi-filter"></i></button>
+                <button class="btn btn-sm btn-secondary"><i class="bi bi-sort-down"></i></button>
+            </div>
         </div>
 
         <!-- Table -->
@@ -69,15 +75,9 @@
                             <td>@item.Username</td>
                             <td>@item.Privilege</td>
                             <td>
-                                <a asp-page="./Edit" asp-route-id="@item.UserId" title="Edit">
-                                    <i class="bi bi-pencil-square text-primary me-2"></i>
-                                </a>
-                                <a asp-page="./Details" asp-route-id="@item.UserId" title="Details">
-                                    <i class="bi bi-eye text-primary me-2"></i>
-                                </a>
-                                <a asp-page="./Delete" asp-route-id="@item.UserId" title="Delete">
-                                    <i class="bi bi-trash text-primary"></i>
-                                </a>
+                                <a asp-page="./Edit" asp-route-id="@item.UserId" title="Edit"><i class="bi bi-pencil-square text-primary me-2"></i></a>
+                                <a asp-page="./Details" asp-route-id="@item.UserId" title="Details"><i class="bi bi-eye text-success me-2"></i></a>
+                                <a asp-page="./Delete" asp-route-id="@item.UserId" title="Delete"><i class="bi bi-trash text-danger"></i></a>
                             </td>
                         </tr>
                     }
@@ -118,7 +118,7 @@
     }
 
     .table th {
-        background-color: #2f5b9c !important;
+        background-color: var(--cta-color) !important;
         color: white !important;
     }
 

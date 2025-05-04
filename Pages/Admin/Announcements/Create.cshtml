@@ -1,70 +1,103 @@
 @page
-@model HomeownersMS.Pages_Admin_Announcements.CreateModel
+@model HomeownersMS.Pages_Admin_Services.CreateModel
 @{
     Layout = "_AdminLayout";
-    ViewData["HeaderTitle"] = "Create Announcement";
-    ViewData["Title"] = "Create Announcement";
+    ViewData["HeaderTitle"] = "Services Management";
+    ViewData["Title"] = "Create New Service";
+    ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
 }
-
-<div class="container-fluid">
-    <h2>Create Announcement</h2>
-    <form method="post" id="createForm">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" asp-for="NewAnnouncement.CreatedBy" value="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" required />
-        <input type="hidden" asp-for="NewAnnouncement.CreatedAt" value="@DateTime.Now" />
+<style>
+    .card-header {
+        background-color: var(--cta-color);
+    }
+</style>
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 text-white">
+                <i class="bi bi-plus-circle me-2"></i>Create New Announcement
+            </h5>
+            <a asp-page="./Announcements" class="btn btn-sm btn-outline-light">
+                <i class="bi bi-arrow-left me-1"></i> Back to List
+            </a>
+        </div>
         
-        <div class="form-group">
-            <label asp-for="NewAnnouncement.Title" class="control-label"></label>
-            <input asp-for="NewAnnouncement.Title" class="form-control" required />
-            <span asp-validation-for="NewAnnouncement.Title" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="NewAnnouncement.Content" class="control-label"></label>
-            <textarea asp-for="NewAnnouncement.Content" class="form-control" rows="5" required></textarea>
-            <span asp-validation-for="NewAnnouncement.Content" class="text-danger"></span>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label asp-for="NewAnnouncement.EventDate" class="control-label"></label>
-                    <input asp-for="NewAnnouncement.EventDate" type="date" class="form-control" required />
-                    <span asp-validation-for="NewAnnouncement.EventDate" class="text-danger"></span>
+        <div class="card-body">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="Service.Title" class="form-label"></label>
+                            <input asp-for="Service.Title" class="form-control" placeholder="Enter service title" required />
+                            <span asp-validation-for="Service.Title" class="text-danger small"></span>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="Service.ServiceCategory" class="form-label"></label>
+                            <select asp-for="Service.ServiceCategory" class="form-select" required>
+                                <option value="">Select category</option>
+                                <option value="Maintenance">Maintenance</option>
+                                <option value="Cleaning">Cleaning</option>
+                                <option value="Security">Security</option>
+                                <option value="Utilities">Utilities</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <span asp-validation-for="Service.ServiceCategory" class="text-danger small"></span>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="Service.DayRange" class="form-label"></label>
+                            <select asp-for="Service.DayRange" class="form-select" required>
+                                <option value="">Select days</option>
+                                <option value="Monday-Friday">Monday-Friday</option>
+                                <option value="Weekdays">Weekdays</option>
+                                <option value="Weekends">Weekends</option>
+                                <option value="Daily">Daily</option>
+                                <option value="Custom">Custom</option>
+                            </select>
+                            <span asp-validation-for="Service.DayRange" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="Service.Description" class="form-label"></label>
+                            <textarea asp-for="Service.Description" class="form-control" rows="5" placeholder="Enter service description" required></textarea>
+                            <span asp-validation-for="Service.Description" class="text-danger small"></span>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Service.AvailableTimeStart" class="form-label">Start Time</label>
+                                    <input asp-for="Service.AvailableTimeStart" class="form-control" type="time" required />
+                                    <span asp-validation-for="Service.AvailableTimeStart" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Service.AvailableTimeEnd" class="form-label">End Time</label>
+                                    <input asp-for="Service.AvailableTimeEnd" class="form-control" type="time" required />
+                                    <span asp-validation-for="Service.AvailableTimeEnd" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label asp-for="NewAnnouncement.EventTime" class="control-label"></label>
-                    <input asp-for="NewAnnouncement.EventTime" type="time" class="form-control" required />
-                    <span asp-validation-for="NewAnnouncement.EventTime" class="text-danger"></span>
+                
+                <div class="d-flex justify-content-end border-top pt-3 gap-2">
+                    <a asp-page="./Announcements" class="btn btn-secondary">
+                        <i class="bi bi-x-circle me-1"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="bi bi-save me-1"></i> Create Service
+                    </button>
                 </div>
-            </div>
+            </form>
         </div>
-        <div class="form-group">
-            <label asp-for="NewAnnouncement.BlocksAffected" class="control-label"></label>
-            <input asp-for="NewAnnouncement.BlocksAffected" class="form-control" required />
-            <span asp-validation-for="NewAnnouncement.BlocksAffected" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="NewAnnouncement.Office" class="control-label"></label>
-            <input asp-for="NewAnnouncement.Office" class="form-control" required />
-            <span asp-validation-for="NewAnnouncement.Office" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="NewAnnouncement.ContactNumber" class="control-label"></label>
-            <div class="input-group">
-                <span class="input-group-text">+63</span>
-                <input asp-for="NewAnnouncement.ContactNumber" type="text" class="form-control" 
-                    pattern="\d*" maxlength="10" required 
-                    oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
-            </div>
-            <small class="form-text text-muted">Enter your 10-digit phone number (e.g., 9123456789).</small>
-            <span asp-validation-for="NewAnnouncement.ContactNumber" class="text-danger"></span>
-        </div>
-        <div class="form-group text-end mt-3">
-            <button type="submit" class="btn btn-primary">Create</button>
-            <a asp-page="./Announcements" class="btn btn-secondary">Go back</a>
-        </div>
-    </form>
+    </div>
 </div>
 
 @section Scripts {

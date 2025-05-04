@@ -2,56 +2,98 @@
 @model HomeownersMS.Pages_Admin_Community.CreateModel
 
 @{
-    Layout = "_AdminLayout"; // Use the Admin layout
+    Layout = "_AdminLayout";
     ViewData["HeaderTitle"] = "Community Management";
-    ViewData["Title"] = "Community";
+    ViewData["Title"] = "Create Post";
 }
 
-<h1>Create</h1>
+<div class="container-fluid px-4 py-3">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0">Create New Community Post</h4>
+        <a asp-page="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i> Back to List
+        </a>
+    </div>
 
-<h4>CommunityPost</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CommunityPost.Title" class="control-label"></label>
-                <input asp-for="CommunityPost.Title" class="form-control" />
-                <span asp-validation-for="CommunityPost.Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CommunityPost.Content" class="control-label"></label>
-                <input asp-for="CommunityPost.Content" class="form-control" />
-                <span asp-validation-for="CommunityPost.Content" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CommunityPost.CreatedAt" class="control-label"></label>
-                <input asp-for="CommunityPost.CreatedAt" class="form-control" />
-                <span asp-validation-for="CommunityPost.CreatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CommunityPost.UpdatedAt" class="control-label"></label>
-                <input asp-for="CommunityPost.UpdatedAt" class="form-control" />
-                <span asp-validation-for="CommunityPost.UpdatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CommunityPost.Type" class="control-label"></label>
-                <input asp-for="CommunityPost.Type" class="form-control" />
-                <span asp-validation-for="CommunityPost.Type" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CommunityPost.CreatedBy" class="control-label"></label>
-                <select asp-for="CommunityPost.CreatedBy" class ="form-control" asp-items="ViewBag.CreatedBy"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <div class="card shadow-sm rounded-3">
+        <div class="card-body">
+            <form method="post" class="needs-validation" novalidate>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input asp-for="CommunityPost.Title" class="form-control" placeholder=" " required />
+                            <label asp-for="CommunityPost.Title"></label>
+                            <span asp-validation-for="CommunityPost.Title" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <select asp-for="CommunityPost.Type" class="form-select" required>
+                                <option value="">Select Post Type</option>
+                                <option value="Announcement">Announcement</option>
+                                <option value="Event">Event</option>
+                                <option value="Discussion">Discussion</option>
+                            </select>
+                            <label asp-for="CommunityPost.Type"></label>
+                            <span asp-validation-for="CommunityPost.Type" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <select asp-for="CommunityPost.CreatedBy" class="form-select" required>
+                                <option value="">Select Author</option>
+                                @foreach (var item in ViewBag.CreatedBy)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            </select>
+                            <label asp-for="CommunityPost.CreatedBy"></label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input asp-for="CommunityPost.CreatedAt" class="form-control" type="datetime-local" />
+                            <label asp-for="CommunityPost.CreatedAt"></label>
+                            <span asp-validation-for="CommunityPost.CreatedAt" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                            <textarea asp-for="CommunityPost.Content" class="form-control" placeholder=" " style="height: 200px" required></textarea>
+                            <label asp-for="CommunityPost.Content"></label>
+                            <span asp-validation-for="CommunityPost.Content" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-4">
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="bi bi-save me-2"></i> Create Post
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-page="Index">Back to List</a>
-</div>
-
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        // Set default datetime value if empty
+        document.addEventListener('DOMContentLoaded', function() {
+            const now = new Date();
+            const formattedDateTime = now.toISOString().slice(0, 16);
+            
+            if (!document.getElementById('CommunityPost_CreatedAt').value) {
+                document.getElementById('CommunityPost_CreatedAt').value = formattedDateTime;
+            }
+        });
+    </script>
+}

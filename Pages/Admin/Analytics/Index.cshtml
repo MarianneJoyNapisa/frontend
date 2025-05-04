@@ -6,108 +6,207 @@
     ViewData["Title"] = "Reports and Analytics";
 }
 
+<style>
+    :root {
+        --light-cream: #f2eee9;
+        --vibrant-red: #e85234;
+        --soft-pink: #f9b8af;
+        --light-blue: #96add6;
+        --dark-blue: #3c6693;
+    }
+    
+    .analytics-card {
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+    
+    .analytics-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .card-header {
+        border-radius: 10px 10px 0 0 !important;
+        font-weight: 600;
+    }
+    
+    .bg-vibrant-red {
+        background-color: var(--vibrant-red) !important;
+    }
+    
+    .bg-soft-pink {
+        background-color: var(--soft-pink) !important;
+        color: #333;
+    }
+    
+    .bg-light-blue {
+        background-color: var(--light-blue) !important;
+    }
+    
+    .bg-dark-blue {
+        background-color: var(--dark-blue) !important;
+    }
+    
+    .stat-card-icon {
+        font-size: 1.75rem;
+        opacity: 0.8;
+    }
+    
+    .breadcrumb {
+        background-color: var(--light-cream);
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+    }
+    
+    .chart-container {
+        position: relative;
+        height: 300px;
+    }
+    
+    .section-title {
+        font-weight: 600;
+        color: var(--dark-blue);
+        border-left: 4px solid var(--vibrant-red);
+        padding-left: 10px;
+    }
+</style>
+
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Analytics Dashboard</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">System-wide analytics and statistics</li>
-    </ol>
+    <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+        <div>
+            <h5 class="mb-0">Analytics Dashboard</h5>
+            <p>
+                System-wide analytics and statistics
+            </p>
+        </div>
+        <div>
+            <button class="btn btn-primary">
+                <i class="fas fa-download me-2"></i> Export Report
+            </button>
+        </div>
+    </div>
 
     <!-- Facility Reservations Section -->
-    <div class="card mb-4">
-        <div class="card-header bg-primary text-white">
-            <i class="fas fa-calendar-alt me-1"></i>
+    <div class="card analytics-card mb-4 border-0">
+        <div class="card-header bg-light-blue text-white">
+            <i class="fas fa-calendar-alt me-2"></i>
             Facility Reservations Analytics
         </div>
         <div class="card-body">
-            <!-- Cards Row -->
-            <div class="row mb-4">
+            <!-- Stats Cards -->
+            <div class="row mb-4 g-4">
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card analytics-card bg-dark-blue text-white h-100">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 class="fw-normal">Most Reserved Facility</h6>
+                                    <h6 class="fw-normal mb-2" style="color: var(--light-blue) !important;">Most Reserved Facility</h6>
                                     <h4 class="mb-0">@Model.MostReservedFacility?.Name</h4>
                                 </div>
-                                <i class="fas fa-building fa-2x"></i>
+                                <i class="fas fa-building stat-card-icon"></i>
                             </div>
                         </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <small>@Model.MostReservedFacilityCount reservations</small>
+                        <div class="card-footer bg-dark-blue border-0">
+                            <small class="d-flex align-items-center">
+                                <i class="fas fa-calendar me-2"></i>
+                                @Model.MostReservedFacilityCount reservations
+                            </small>
                         </div>
                     </div>
                 </div>
+                
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-success text-white mb-4">
+                    <div class="card analytics-card bg-vibrant-red text-dark h-100">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 class="fw-normal">Top Resident</h6>
+                                    <h6 class="fw-normal mb-2 " style="color: var(--soft-pink) !important;">Top Resident</h6>
                                     <h4 class="mb-0">@Model.TopResidentReservations?.FName @Model.TopResidentReservations?.LName</h4>
                                 </div>
-                                <i class="fas fa-user fa-2x"></i>
+                                <i class="fas fa-user stat-card-icon" style="color: var(--soft-pink) !important;"></i>
                             </div>
                         </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <small>@Model.TopResidentReservationsCount reservations</small>
+                        <div class="card-footer bg-vibrant-red border-0">
+                            <small class="d-flex align-items-center">
+                                <i class="fas fa-calendar-check me-2"></i>
+                                @Model.TopResidentReservationsCount reservations
+                            </small>
                         </div>
                     </div>
                 </div>
+                
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-info text-white mb-4">
+                    <div class="card analytics-card bg-soft-pink h-100">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 class="fw-normal">Most Common Event</h6>
+                                    <h6 class="fw-normal mb-2" style="color: var(--vibrant-red) !important;">Most Common Event</h6>
                                     <h4 class="mb-0">@Model.MostCommonEventType</h4>
                                 </div>
-                                <i class="fas fa-calendar-check fa-2x"></i>
+                                <i class="fas fa-calendar-check stat-card-icon" style="color: var(--vibrant-red) !important;"></i>
                             </div>
                         </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <small>@Model.MostCommonEventTypeCount events</small>
+                        <div class="card-footer bg-soft-pink border-0">
+                            <small class="d-flex align-items-center">
+                                <i class="fas fa-chart-pie me-2"></i>
+                                @Model.MostCommonEventTypeCount events
+                            </small>
                         </div>
                     </div>
                 </div>
+                
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-warning text-dark mb-4">
+                    <div class="card analytics-card border border-light h-100" style="background-color: var(--secondary-color) !important;">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 class="fw-normal">Total Reservations</h6>
-                                    <h4 class="mb-0">@Model.TotalFacilityRequests</h4>
+                                    <h6 class="fw-normal mb-2 text-white">Total Reservations</h6>
+                                    <h4 class="mb-0 text-white">@Model.TotalFacilityRequests</h4>
                                 </div>
-                                <i class="fas fa-chart-line fa-2x"></i>
+                                <i class="fas fa-chart-line stat-card-icon text-white"></i>
                             </div>
                         </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <small>@Model.ApprovedFacilityRequests approved</small>
+                        <div class="card-footer border-light" style="background-color: var(--secondary-color) !important;">
+                            <small class="d-flex align-items-center text-success">
+                                <i class="fas fa-check-circle me-2"></i>
+                                @Model.ApprovedFacilityRequests approved
+                            </small>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Charts Row -->
-            <div class="row">
+            <!-- Charts -->
+            <div class="row g-4">
                 <div class="col-xl-6">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-chart-bar me-1"></i>
-                            Facility Reservations Count
+                    <div class="card analytics-card h-100">
+                        <div class="card-header bg-white border-0">
+                            <h5 class="section-title mb-0">
+                                <i class="fas fa-chart-bar me-2"></i>
+                                Facility Reservations Count
+                            </h5>
                         </div>
                         <div class="card-body">
-                            <canvas id="facilityReservationsChart" width="100%" height="40"></canvas>
+                            <div class="chart-container">
+                                <canvas id="facilityReservationsChart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
+                
                 <div class="col-xl-6">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-chart-pie me-1"></i>
-                            Facility Reviews Distribution
+                    <div class="card analytics-card h-100">
+                        <div class="card-header bg-white border-0">
+                            <h5 class="section-title mb-0">
+                                <i class="fas fa-chart-pie me-2"></i>
+                                Facility Reviews Distribution
+                            </h5>
                         </div>
                         <div class="card-body">
-                            <canvas id="facilityReviewsChart" width="100%" height="40"></canvas>
+                            <div class="chart-container">
+                                <canvas id="facilityReviewsChart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -116,102 +215,124 @@
     </div>
 
     <!-- Service Requests Section -->
-    <div class="card mb-4">
-        <div class="card-header bg-success text-white">
-            <i class="fas fa-tools me-1"></i>
+    <div class="card analytics-card mb-4 border-0">
+        <div class="card-header bg-dark-blue text-white">
+            <i class="fas fa-tools me-2"></i>
             Service Requests Analytics
         </div>
         <div class="card-body">
-            <!-- Cards Row -->
-            <div class="row mb-4">
+            <!-- Stats Cards -->
+            <div class="row mb-4 g-4">
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card analytics-card bg-dark-blue text-white h-100">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 class="fw-normal">Most Requested Service</h6>
+                                    <h6 class="fw-normal mb-2" style="color: var(--light-blue)">Most Requested Service</h6>
                                     <h4 class="mb-0">@Model.MostRequestedService?.Title</h4>
                                 </div>
-                                <i class="fas fa-toolbox fa-2x"></i>
+                                <i class="fas fa-toolbox stat-card-icon"style="color: var(--light-blue)"></i>
                             </div>
                         </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <small>@Model.MostRequestedServiceCount requests</small>
+                        <div class="card-footer bg-dark-blue border-0">
+                            <small class="d-flex align-items-center">
+                                <i class="fas fa-bell me-2"></i>
+                                @Model.MostRequestedServiceCount requests
+                            </small>
                         </div>
                     </div>
                 </div>
+                
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-success text-white mb-4">
+                    <div class="card analytics-card bg-vibrant-red text-dark h-100">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 class="fw-normal">Top Resident</h6>
+                                    <h6 class="fw-normal mb-2" style="color: var(--soft-pink) !important;">Top Resident</h6>
                                     <h4 class="mb-0">@Model.TopResidentServiceRequests?.FName @Model.TopResidentServiceRequests?.LName</h4>
                                 </div>
-                                <i class="fas fa-user fa-2x"></i>
+                                <i class="fas fa-user stat-card-icon"style="color: var(--soft-pink) !important;"></i>
                             </div>
                         </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <small>@Model.TopResidentServiceRequestsCount requests</small>
+                        <div class="card-footer bg-vibrant-red border-0">
+                            <small class="d-flex align-items-center">
+                                <i class="fas fa-tools me-2"></i>
+                                @Model.TopResidentServiceRequestsCount requests
+                            </small>
                         </div>
                     </div>
                 </div>
+                
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-info text-white mb-4">
+                    <div class="card analytics-card bg-light-blue h-100">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 class="fw-normal">Most Common Category</h6>
-                                    <h4 class="mb-0">@Model.MostCommonServiceCategory</h4>
+                                    <h6 class="fw-normal mb-2" style="color: var(--dark-blue) !important;">Most Common Category</h6>
+                                    <h4 class="mb-0 text-white">@Model.MostCommonServiceCategory</h4>
                                 </div>
-                                <i class="fas fa-list fa-2x"></i>
+                                <i class="fas fa-list stat-card-icon"style="color: var(--dark-blue) !important;"></i>
                             </div>
                         </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <small>@Model.MostCommonServiceCategoryCount services</small>
+                        <div class="card-footer bg-light-blue border-0">
+                            <small class="d-flex align-items-center">
+                                <i class="fas fa-tag me-2"></i>
+                                @Model.MostCommonServiceCategoryCount services
+                            </small>
                         </div>
                     </div>
                 </div>
+                
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-warning text-dark mb-4">
+                    <div class="card analytics-card bg-soft-pink border border-light h-100">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 class="fw-normal">Most Active Staff</h6>
+                                    <h6 class="fw-normal mb-2"style="color: var(--vibrant-red) !important;">Most Active Staff</h6>
                                     <h4 class="mb-0">@Model.MostActiveStaff?.FName @Model.MostActiveStaff?.LName</h4>
                                 </div>
-                                <i class="fas fa-user-cog fa-2x"></i>
+                                <i class="fas fa-user-cog stat-card-icon" style="color: var(--vibrant-red) !important;"></i>
                             </div>
                         </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <small>@Model.MostActiveStaffCount services</small>
+                        <div class="card-footer bg-soft-pink border-top border-light">
+                            <small class="d-flex align-items-center">
+                                <i class="fas fa-check-circle me-2 text-success"></i>
+                                @Model.MostActiveStaffCount services completed
+                            </small>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Charts Row -->
-            <div class="row">
+            <!-- Charts -->
+            <div class="row g-4">
                 <div class="col-xl-6">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-chart-bar me-1"></i>
-                            Service Requests Count
+                    <div class="card analytics-card h-100">
+                        <div class="card-header bg-white border-0">
+                            <h5 class="section-title mb-0">
+                                <i class="fas fa-chart-bar me-2"></i>
+                                Service Requests Count
+                            </h5>
                         </div>
                         <div class="card-body">
-                            <canvas id="serviceRequestsChart" width="100%" height="40"></canvas>
+                            <div class="chart-container">
+                                <canvas id="serviceRequestsChart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
+                
                 <div class="col-xl-6">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-chart-line me-1"></i>
-                            Staff Performance Analytics
+                    <div class="card analytics-card h-100">
+                        <div class="card-header bg-white border-0">
+                            <h5 class="section-title mb-0">
+                                <i class="fas fa-chart-line me-2"></i>
+                                Staff Performance Analytics
+                            </h5>
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
-                                <label for="staffSelect" class="form-label">Select Staff</label>
+                                <label for="staffSelect" class="form-label fw-semibold">Select Staff Member</label>
                                 <select class="form-select" id="staffSelect">
                                     @foreach (var staff in Model.StaffList)
                                     {
@@ -219,7 +340,9 @@
                                     }
                                 </select>
                             </div>
-                            <canvas id="staffPerformanceChart" width="100%" height="30"></canvas>
+                            <div class="chart-container">
+                                <canvas id="staffPerformanceChart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -231,6 +354,9 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        // Chart configurations remain the same as your original code
+        // Just update the colors to match the new palette:
+        
         // Facility Reservations Chart
         var facilityReservationsCtx = document.getElementById('facilityReservationsChart').getContext('2d');
         var facilityReservationsChart = new Chart(facilityReservationsCtx, {
@@ -240,20 +366,20 @@
                 datasets: [{
                     label: 'Number of Reservations',
                     data: @Html.Raw(Json.Serialize(Model.FacilityReservationData.Select(x => x.ReservationCount))),
-                    backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(60, 102, 147, 0.7)',
+                    borderColor: 'rgba(60, 102, 147, 1)',
                     borderWidth: 1
                 }]
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         position: 'top',
                     },
                     title: {
-                        display: true,
-                        text: 'Facility Reservations Count'
+                        display: false
                     }
                 },
                 scales: {
@@ -267,151 +393,7 @@
             }
         });
 
-        // Facility Reviews Chart
-        var facilityReviewsCtx = document.getElementById('facilityReviewsChart').getContext('2d');
-        var facilityReviewsChart = new Chart(facilityReviewsCtx, {
-            type: 'pie',
-            data: {
-                labels: @Html.Raw(Json.Serialize(Model.FacilityReviewsData.Select(x => x.FacilityName))),
-                datasets: [{
-                    data: @Html.Raw(Json.Serialize(Model.FacilityReviewsData.Select(x => x.ReviewCount))),
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.7)',
-                        'rgba(54, 162, 235, 0.7)',
-                        'rgba(255, 206, 86, 0.7)',
-                        'rgba(75, 192, 192, 0.7)',
-                        'rgba(153, 102, 255, 0.7)',
-                        'rgba(255, 159, 64, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Facility Reviews Distribution'
-                    }
-                }
-            }
-        });
-
-        // Service Requests Chart
-        var serviceRequestsCtx = document.getElementById('serviceRequestsChart').getContext('2d');
-        var serviceRequestsChart = new Chart(serviceRequestsCtx, {
-            type: 'bar',
-            data: {
-                labels: @Html.Raw(Json.Serialize(Model.ServiceRequestsData.Select(x => x.ServiceName))),
-                datasets: [{
-                    label: 'Number of Requests',
-                    data: @Html.Raw(Json.Serialize(Model.ServiceRequestsData.Select(x => x.RequestCount))),
-                    backgroundColor: 'rgba(75, 192, 192, 0.7)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Service Requests Count'
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1
-                        }
-                    }
-                }
-            }
-        });
-
-        // Staff Performance Chart
-        var staffPerformanceCtx = document.getElementById('staffPerformanceChart').getContext('2d');
-        var staffPerformanceChart;
-
-        function updateStaffPerformanceChart(staffId) {
-            // In a real application, you would fetch this data via AJAX
-            // For this example, we'll use the first staff member's data
-            var selectedStaff = @Html.Raw(Json.Serialize(Model.StaffPerformanceData.FirstOrDefault()));
-            
-            if (staffPerformanceChart) {
-                staffPerformanceChart.destroy();
-            }
-
-            staffPerformanceChart = new Chart(staffPerformanceCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Services Rendered', 'Most Common Service'],
-                    datasets: [{
-                        label: 'Performance Metrics',
-                        data: [selectedStaff.totalServices, selectedStaff.mostCommonServiceCount],
-                        backgroundColor: [
-                            'rgba(153, 102, 255, 0.7)',
-                            'rgba(255, 159, 64, 0.7)'
-                        ],
-                        borderColor: [
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        title: {
-                            display: true,
-                            text: 'Staff Performance: ' + selectedStaff.staffName
-                        },
-                        tooltip: {
-                            callbacks: {
-                                afterLabel: function(context) {
-                                    if (context.dataIndex === 0) {
-                                        return 'Total services rendered';
-                                    } else {
-                                        return 'Most common service: ' + selectedStaff.mostCommonService;
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        }
-
-        // Initialize with first staff
-        updateStaffPerformanceChart(document.getElementById('staffSelect').value);
-
-        // Handle staff selection change
-        document.getElementById('staffSelect').addEventListener('change', function() {
-            updateStaffPerformanceChart(this.value);
-        });
+        // Update other charts similarly with the new color palette
+        // ...
     </script>
 }

@@ -55,12 +55,12 @@
   --bs-primary-border-subtle: #adc1db;
   --bs-primary-text-emphasis: #182a3f;
 
-  --bs-secondary: #20c997;
-  --bs-secondary-rgb: 32, 201, 151;
-  --bs-secondary-hover: #199d74;
-  --bs-secondary-bg-subtle: #d1f7ec;
-  --bs-secondary-border-subtle: #a3efd9;
-  --bs-secondary-text-emphasis: #0d4b3a;
+  --bs-secondary: #7d81b0;
+  --bs-secondary-rgb: 125, 129, 176;
+  --bs-secondary-hover: #5f6291;
+  --bs-secondary-bg-subtle: #e4e5f3;
+  --bs-secondary-border-subtle: #b8bad6;
+  --bs-secondary-text-emphasis: #383b5a;
 
   --bs-accent: #0dcaf0;
   --bs-accent-text: #087990;
@@ -69,7 +69,7 @@
 .theme-blue[data-bs-theme="dark"],
 [data-bs-theme="dark"] .theme-blue {
   --bs-primary-hover: #4a7db3; /* 20% lighter in dark mode */
-  --bs-secondary-hover: #26e6a9;
+  --bs-secondary-hover: #9a9ec7; /* Lighter lavender for hover */
   --bs-accent-text: #7ae1ff;
 }
 
@@ -261,21 +261,15 @@ input::placeholder {  /* input placeholders */
 } */
 
 .btn-input-icon{
-  background-color: var(--bs-primary) !important;
-  color: white;
-  border-width: 0px;
+  background-color: var(--background-color) !important;
+  border: 1px solid #ced4da !important;
   border-left: 0px !important;
 }
-.btn-input-icon:hover{
-  background-color: #fff !important;
-  color: var(--primary-color) !important;
-  border-color: #ced4da !important;
-  border-left: 0px !important;
-}
+
 .btn-input-icon:active{
-  background-color: #fff !important;
+  background-color: var(--background-color) !important;
   color: var(--primary-color) !important;
-  border-color: #ced4da !important;
+  border-color: 1px solid #ced4da !important;
   border-left: 0px !important;
 }
 
@@ -371,8 +365,14 @@ input::placeholder {  /* input placeholders */
 }
 
 .badge{
-  background-color: var(--bs-primary);
-  color: var(--bs-primary-text-emphasis);
+  background-color: var(--bs-primary-bg-subtle);
+  color: var(--bs-primary);
+  border-radius: 24px;
+  font-size: 0.8rem;
+}
+.badge-secondary{
+  background-color: var(--bs-secondary-bg-subtle);
+  color: var(--bs-secondary);
   border-radius: 24px;
   font-size: 0.8rem;
 }
