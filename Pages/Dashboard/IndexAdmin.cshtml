@@ -6,3 +6,87 @@
     ViewData["HeaderTitle"] = "Dashboard";
     ViewData["Title"] = "Dashboard";
 }
+
+<div class="container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Community Engagement</h5>
+        </div>
+        <div class="card-body">
+            <p>Highlight popular discussions to keep the community engaged.</p>
+            
+            <form method="post" asp-page-handler="SendPopularPostsNotification">
+                @if (Model.CanSendNotification)
+                {
+                    <button type="submit" class="btn btn-primary">
+                        Send Popular Posts Notification
+                    </button>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-secondary" disabled>
+                        Notification Cooldown Active
+                    </button>
+                    <p class="text-muted mt-2">
+                        Next notification can be sent in @Model.TimeUntilNextNotification?.ToString(@"hh\:mm\:ss")
+                    </p>
+                    <p class="text-muted">
+                        Last sent: @Model.LastNotificationTime?.ToString("g")
+                    </p>
+                }
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @if (!Model.CanSendNotification)
+    {
+        <script>
+            // Update the countdown every second
+            setInterval(function() {
+                var timeElement = document.querySelector('.text-muted');
+                if (timeElement) {
+                    var timeText = timeElement.textContent;
+                    var timeParts = timeText.match(/(\d+):(\d+):(\d+)/);
+                    if (timeParts) {
+                        var hours = parseInt(timeParts[1]);
+                        var minutes = parseInt(timeParts[2]);
+                        var seconds = parseInt(timeParts[3]);
+                        
+                        // Decrease by 1 second
+                        seconds--;
+                        if (seconds < 0) {
+                            seconds = 59;
+                            minutes--;
+                            if (minutes < 0) {
+                                minutes = 59;
+                                hours--;
+                            }
+                        }
+                        
+                        // Update display
+                        timeElement.textContent = 'Next notification can be sent in ' + 
+                            hours.toString().padStart(2, '0') + ':' + 
+                            minutes.toString().padStart(2, '0') + ':' + 
+                            seconds.toString().padStart(2, '0');
+                            
+                        // If time is up, reload the page
+                        if (hours <= 0 && minutes <= 0 && seconds <= 0) {
+                            location.reload();
+                        }
+                    }
+                }
+            }, 1000);
+        </script>
+    }
+}

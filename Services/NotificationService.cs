@@ -9,31 +9,27 @@ namespace HomeownersMS.Services
 {
     public interface INotificationService
     {
-        Task CreateAnnouncementNotification(Announcement announcement, int createdByUserId);
+        Task CreateNotification(string title, string message, string url, MessageTypes messageType, int createdByUserId);
+
+        Task CreateNotificationForGroup(string title, string message, string url, MessageTypes messageType, int createdByUserId, List<int> recipientUserIds);
         Task MarkAsRead(int notificationId, int userId);
         Task<int> GetUnreadCount(int userId);
     }
 
-    public class NotificationService : INotificationService
+    public class NotificationService(HomeownersContext context, IHubContext<NotificationHub> hubContext) : INotificationService
     {
-        private readonly HomeownersContext _context;
-        private readonly IHubContext<NotificationHub> _hubContext;
+        private readonly HomeownersContext _context = context;
+        private readonly IHubContext<NotificationHub> _hubContext = hubContext;
 
-        public NotificationService(HomeownersContext context, IHubContext<NotificationHub> hubContext)
-        {
-            _context = context;
-            _hubContext = hubContext;
-        }
-
-        public async Task CreateAnnouncementNotification(Announcement announcement, int createdByUserId)
+        public async Task CreateNotification(string title, string message, string? url, MessageTypes messageType, int createdByUserId)
         {
             // Create the base notification
             var notification = new Notification
             {
-                Title = $"New Announcement: {announcement.Title}",
-                Message = announcement.Content ?? string.Empty,
-                Url = $"/Announcement/Details/{announcement.AnnouncementId}",
-                AnnouncementId = announcement.AnnouncementId,
+                Title = title,
+                Message = message ?? string.Empty,
+                MessageType = messageType,
+                Url = url,
                 CreatedByUserId = createdByUserId
             };
 
@@ -71,8 +67,70 @@ namespace HomeownersMS.Services
                 {
                     notification.NotificationId,
                     notification.Title,
+                    MessageType = notification.MessageType.ToString(),
                     notification.Message,
                     notification.CreatedAt,
+                    notification.Url,
+                    IsRead = false
+                });
+            }
+        }
+
+        public async Task CreateNotificationForGroup(string title, string message, string? url, MessageTypes messageType, int createdByUserId, List<int> recipientUserIds)
+        {
+            if (recipientUserIds == null || !recipientUserIds.Any())
+            {
+                throw new ArgumentException("At least one recipient user ID must be specified");
+            }
+
+            // Create the base notification
+            var notification = new Notification
+            {
+                Title = title,
+                Message = message ?? string.Empty,
+                MessageType = messageType,
+                Url = url,
+                CreatedByUserId = createdByUserId
+            };
+
+            _context.Notifications.Add(notification);
+            await _context.SaveChangesAsync();
+
+            // Get only the specified users
+            var users = await _context.Users
+                .Where(u => recipientUserIds.Contains(u.UserId))
+                .ToListAsync();
+
+             // Create user notifications
+            var userNotifications = new List<UserNotification>();
+            
+            foreach (var user in users)
+            {
+                var userNotification = new UserNotification
+                {
+                    UserId = user.UserId,
+                    NotificationId = notification.NotificationId,
+                    IsRead = false,
+                    User = user,  // Set the required navigation property
+                    Notification = notification  // Set the required navigation property
+                };
+                userNotifications.Add(userNotification);
+            }
+
+            _context.UserNotifications.AddRange(userNotifications);
+            await _context.SaveChangesAsync();
+
+            // Notify all users in real-time
+            foreach (var user in users)
+            {
+                await _hubContext.Clients.Group(user.UserId.ToString()).SendAsync("ReceiveNotification", new
+                {
+                    notification.NotificationId,
+                    notification.Title,
+                    MessageType = notification.MessageType.ToString(),
+                    notification.Message,
+                    notification.CreatedAt,
+                    notification.Url,
                     IsRead = false
                 });
             }

@@ -1,6 +1,8 @@
 @page
 @model HomeownersMS.Pages.Reservation.ReservationModel
 @using HomeownersMS.Models
+@using System
+@using System.Globalization
 @{
     Layout = "_ResidentLayout"; 
     ViewData["HeaderTitle"] = "Reservation";
@@ -38,6 +40,13 @@
     }
 </style>
 <div class="container">
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
 
     @* <!-- Left Side: Facilities --> *@
     <div class="facilities mb-4">
@@ -160,7 +169,7 @@
         </div>
 
         <!-- Reservation History Section -->
-        <div class="reservation-history mt-5 card p-4 rounded shadow-sm">
+        <div class="reservation-history mt-5 card p-4 rounded shadow-sm" id="reservation-history-table">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4 class="fw-bold">Reservation History</h4>
             </div>
@@ -209,7 +218,12 @@
                                         </small>
                                     </td>
                                     <td>@reservation.Event?.GuestCapacity Guests</td>
-                                    <td>@reservation.Event?.EventType</td>
+                                    @{
+                                        TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
+                                        var str = reservation.Event?.Title.ToString();
+                                        var title = textInfo.ToTitleCase(str);
+                                    }
+                                    <td>@title (@(reservation.Event?.EventType.ToString().ToLower()))</td>
                                     <td>
                                         <span class="badge 
                                             @(reservation.FacilityRequest?.Status == RequestStatus.Approved ? "bg-success" :

@@ -135,6 +135,9 @@ namespace HomeownersMS.Pages.Reservation
             _context.Events.Add(Event);
             await _context.SaveChangesAsync();
 
+            // Success message
+            TempData["SuccessMessage"] = "Your reservation request has been submitted successfully! Please await for notification from our administrators for further details.";
+
             return RedirectToPage("/Reservation/Reservation");
         }
     }

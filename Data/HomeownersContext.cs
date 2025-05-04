@@ -178,12 +178,6 @@ namespace HomeownersMS.Data
             {
                 entity.HasKey(n => n.NotificationId);
                 
-                // Relationship with Announcement
-                entity.HasOne(n => n.Announcement)
-                    .WithMany()
-                    .HasForeignKey(n => n.AnnouncementId)
-                    .OnDelete(DeleteBehavior.Cascade);
-                
                 // Relationship with User (creator)
                 entity.HasOne(n => n.CreatedByUser)
                     .WithMany()

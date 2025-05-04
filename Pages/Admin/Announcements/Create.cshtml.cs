@@ -53,10 +53,15 @@ namespace HomeownersMS.Pages_Admin_Announcements
             await _context.SaveChangesAsync();
 
             // Send notification after announcement is created
+
             if (NewAnnouncement.AnnouncementId > 0)
             {
-                await _notificationService.CreateAnnouncementNotification( 
-                    NewAnnouncement,
+                var url = $"/Announcement/Details/{NewAnnouncement.AnnouncementId}";
+                await _notificationService.CreateNotification( 
+                    NewAnnouncement.Title ?? "N/A",
+                    NewAnnouncement.Content ?? "No content",
+                    url,
+                    MessageTypes.announcement,
                     NewAnnouncement.CreatedBy ?? 0
                 );
             }

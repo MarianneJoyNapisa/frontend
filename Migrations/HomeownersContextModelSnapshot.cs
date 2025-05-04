@@ -342,9 +342,6 @@ namespace HomeownersMS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("AnnouncementId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
@@ -355,6 +352,9 @@ namespace HomeownersMS.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("MessageType")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -363,8 +363,6 @@ namespace HomeownersMS.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("NotificationId");
-
-                    b.HasIndex("AnnouncementId");
 
                     b.HasIndex("CreatedByUserId");
 
@@ -719,17 +717,10 @@ namespace HomeownersMS.Migrations
 
             modelBuilder.Entity("HomeownersMS.Models.Notification", b =>
                 {
-                    b.HasOne("HomeownersMS.Models.Announcement", "Announcement")
-                        .WithMany()
-                        .HasForeignKey("AnnouncementId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("HomeownersMS.Models.User", "CreatedByUser")
                         .WithMany()
                         .HasForeignKey("CreatedByUserId")
                         .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("Announcement");
 
                     b.Navigation("CreatedByUser");
                 });

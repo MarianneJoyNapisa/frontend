@@ -28,6 +28,7 @@ namespace HomeownersMS.Pages.Notifications
             
             Notifications = await _context.UserNotifications
                 .Include(un => un.Notification)
+                    .ThenInclude(n => n.CreatedByUser)
                 .Where(un => un.UserId == userId)
                 .OrderByDescending(un => un.Notification.CreatedAt)
                 .ToListAsync();

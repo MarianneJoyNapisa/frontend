@@ -32,6 +32,7 @@ namespace HomeownersMS.Pages.Notification
                     un.NotificationId,
                     un.Notification.Title,
                     un.Notification.Url,
+                    messageType = un.Notification.MessageType.ToString(),
                     un.Notification.Message,
                     un.Notification.CreatedAt,
                     un.IsRead

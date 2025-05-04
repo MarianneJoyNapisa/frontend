@@ -7,15 +7,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using HomeownersMS.Data;
 using HomeownersMS.Models;
+using HomeownersMS.Services;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
 namespace HomeownersMS.Pages.Staff.Services
 {
     [Authorize(Roles = "staff,admin")]
-    public class IndexModel(HomeownersContext context) : PageModel 
+    public class IndexModel(HomeownersContext context, INotificationService notificationService) : PageModel 
     {
         private readonly HomeownersContext _context = context;
+        private readonly INotificationService _notificationService = notificationService;
 
         public Models.Staff? CurrentStaff { get; set; }
         public List<Models.Service> AvailableServices { get; set; } = new List<Models.Service>();
@@ -133,6 +135,36 @@ namespace HomeownersMS.Pages.Staff.Services
 
             await _context.SaveChangesAsync();
             TempData["SuccessMessage"] = "Service request accepted successfully!";
+
+
+            // Reverse lookup to find the staff who accepted the service request
+            var staffWhoAccepted = await _context.Staffs
+                .FirstOrDefaultAsync(s => s.UserId == serviceRequest.StaffAcceptedBy);
+
+            var staffName = $"{staffWhoAccepted?.FName} {staffWhoAccepted?.LName}";
+
+            if (staffWhoAccepted == null || staffWhoAccepted.LName == null || staffWhoAccepted.FName == null)
+            {
+                staffName = "N/A";
+            }
+
+            var title = $"{serviceRequest.Service?.Title ?? "No service"} (ID/{serviceRequest.ServiceRequestId})";
+            var message = $"Your service request (ID/{serviceRequest.ServiceRequestId}) has been accepted by {staffName}.";
+            var url = "/Service/Service/#current-services-table";
+            var messageType = MessageTypes.service;
+            var createdBy = serviceRequest.StaffAcceptedBy ?? 0;
+            var userGroup = new List<int>{ serviceRequest.RequestedBy ?? 0 };
+
+            // Notify resident for staff successfully serving their service
+            await _notificationService.CreateNotificationForGroup( 
+                title,
+                message,
+                url,
+                messageType,
+                createdBy,
+                userGroup
+            );
+
             return RedirectToPage();
         }
     }

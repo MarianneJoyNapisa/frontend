@@ -41,6 +41,7 @@
 </head>
 
 <body>
+    @Html.AntiForgeryToken()
     <!-- Header -->
     <div class="headerPage">
         <button class="sideNav_toggleBtn" id="sideNav_toggleBtn">
@@ -199,6 +200,11 @@
             html.classList.add('density-comfortable'); // Default
         }
 
+        console.log("Loading notifications...");
+        // Load initial notifications and count
+        updateUnreadCount();
+        loadNotifications();
+
         const connection = new signalR.HubConnectionBuilder()
             .withUrl("/notificationHub")
             .configureLogging(signalR.LogLevel.Information)
@@ -212,16 +218,15 @@
             return console.error(err.toString());
         });
 
+
         // Handle received notifications
         connection.on("ReceiveNotification", function (notification) {
+            console.log("Receiving notifications...", notification);
             updateUnreadCount();
             addNotificationToDropdown(notification);
             showToast(notification);
         });
 
-        // Load initial notifications and count
-        updateUnreadCount();
-        loadNotifications();
 
         // Mark as read when clicked
         document.getElementById('notificationList').addEventListener('click', function(e) {
@@ -233,6 +238,7 @@
             }
             
             const notificationId = target.dataset.notificationId;
+            console.log('notificationId', notificationId);
             if (notificationId) {
                 // Add visual feedback immediately
                 target.classList.remove('fw-bold');
@@ -289,14 +295,25 @@
                     link.className = `dropdown-item ${notification.isRead ? '' : 'fw-bold'}`;
                     link.href = notification.url || '#'; // Use the URL from server
                     link.dataset.notificationId = notification.notificationId;
+                    console.log("notification", notification);
+                    console.log("messageType", notification.messageType);
+
+                    // Limit title to 30 characters and message to 50 characters
+                    const shortTitle = notification.title.length > 15 
+                        ? notification.title.substring(0, 12) + '...' 
+                        : notification.title;
+                    
+                    const shortMessage = notification.message.length > 30 
+                        ? notification.message.substring(0, 27) + '...' 
+                        : notification.message;
                     
                     const timeAgo = timeSince(new Date(notification.createdAt));
                     link.innerHTML = `
                         <div class="d-flex justify-content-between">
-                            <span>${notification.title}</span>
-                            <small class="text-muted">${timeAgo}</small>
+                            <span><span style="text-transform: capitalize;">${notification.messageType}</span>: ${shortTitle}</span>
+                            <small class="text-muted ms-1">${timeAgo}</small>
                         </div>
-                        <small class="text-muted">${notification.message.substring(0, 50)}${notification.message.length > 50 ? '...' : ''}</small>
+                        <small class="text-muted">${shortMessage}${notification.message.length > 50 ? '...' : ''}</small>
                     `;
                     
                     item.appendChild(link);
@@ -311,29 +328,53 @@
     function addNotificationToDropdown(notification) {
         const list = document.getElementById('notificationList');
         const header = list.querySelector('h6.dropdown-header');
-        const noItems = list.querySelector('.dropdown-item[href="#"]');
         
-        if (noItems && noItems.textContent === 'No notifications') {
+        // Remove "No notifications" message if present
+        const noItems = list.querySelector('.dropdown-item[href="#"]');
+        if (noItems && (noItems.textContent === 'No notifications' || noItems.textContent === 'Loading notifications...')) {
             list.removeChild(noItems.parentElement);
         }
         
+        // Create new notification item
         const item = document.createElement('li');
         const link = document.createElement('a');
         link.className = 'dropdown-item fw-bold';
-        link.href = '#';
+        link.href = notification.url || '#';
         link.dataset.notificationId = notification.notificationId;
+
+        // Limit title to 30 characters and message to 50 characters
+        const shortTitle = notification.title.length > 30 
+            ? notification.title.substring(0, 27) + '...' 
+            : notification.title;
+        
+        const shortMessage = notification.message.length > 50 
+            ? notification.message.substring(0, 47) + '...' 
+            : notification.message;
         
         const timeAgo = timeSince(new Date(notification.createdAt));
         link.innerHTML = `
             <div class="d-flex justify-content-between">
-                <span>${notification.title}</span>
-                <small class="text-muted">${timeAgo}</small>
+                <span><span style="text-transform: capitalize;">${notification.messageType}</span>: ${shortTitle}</span>
+                <small class="text-muted ms-1">${timeAgo}</small>
             </div>
-            <small class="text-muted">${notification.message.substring(0, 50)}${notification.message.length > 50 ? '...' : ''}</small>
+            <small class="text-muted">${shortMessage}${notification.message.length > 50 ? '...' : ''}</small>
         `;
         
         item.appendChild(link);
-        list.insertBefore(item, header.nextSibling);
+        
+        // Insert after the header (at the very top of the list)
+        // Find the first list item after the header
+        const firstItem = header.nextElementSibling;
+        
+        if (firstItem) {
+            list.insertBefore(item, firstItem);
+        } else {
+            // If no items exist yet, just append after header
+            header.parentNode.insertBefore(item, header.nextSibling);
+        }
+        
+        // Update unread count badge
+        updateUnreadCount();
     }
 
     function markAsRead(notificationId) {

@@ -4,6 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HomeownersMS.Models
 {
+    public enum MessageTypes 
+    {
+        announcement,
+        reservation,
+        service
+    }
+    // Stores notification message
     public class Notification
     {
         [Key]
@@ -14,20 +21,19 @@ namespace HomeownersMS.Models
         
         [Required]
         public string Message { get; set; } = "This is a simple message.";
+
+        public MessageTypes? MessageType { get; set; }
         
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public string? Url { get; set; }
-        
-        [ForeignKey("Announcement")]
-        public int? AnnouncementId { get; set; }
-        public virtual Announcement? Announcement { get; set; }
         
         [ForeignKey("User")]
         public int? CreatedByUserId { get; set; }
         public virtual User? CreatedByUser { get; set; }
     }
 
+    // Notification for all users (every user has one userNotification for everu Notification)
     public class UserNotification
     {
         [Key]

@@ -91,9 +91,13 @@
                     <span class="mb-1 text-capitalize fw-bold">@userNotification.Notification.Title</span>
                     <small class="notification-time">@userNotification.Notification.CreatedAt.ToString("g")</small>
                 </div>
-                <p class="mb-1 notification-content">@userNotification.Notification.Message</p>
+                <p>@userNotification.Notification.MessageType</p>
+                <p class="mb-1 notification-content">@Html.Raw(userNotification.Notification.Message)</p>
                 <div class="d-flex justify-content-between align-items-center">
-                    <span class="small text-muted">@(userNotification.IsRead ? $"Read on {userNotification.ReadAt?.ToString("g")}" : "Unread")</span>
+                    <div class="d-flex flex-column">
+                        <span class="small text-muted">@(userNotification.IsRead ? $"Read on {userNotification.ReadAt?.ToString("g")}" : "Unread")</span>
+                        <span class="small text-muted">Submitted by: @(userNotification.Notification?.CreatedByUser?.Username ?? "N/A")</span>
+                    </div>
                     @if (!userNotification.IsRead)
                     {
                         <form method="post">
