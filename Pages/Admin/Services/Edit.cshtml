@@ -4,58 +4,104 @@
 @{
     Layout = "_AdminLayout";
     ViewData["HeaderTitle"] = "Services Management";
-    ViewData["Title"] = "Services Edit";
+    ViewData["Title"] = "Edit Service";
     ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
-
 }
-
-<h1>Edit</h1>
-
-<h4>Service</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Service.ServiceId" />
-            <div class="form-group">
-                <label asp-for="Service.Title" class="control-label"></label>
-                <input asp-for="Service.Title" class="form-control" />
-                <span asp-validation-for="Service.Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Service.Description" class="control-label"></label>
-                <input asp-for="Service.Description" class="form-control" required/>
-                <span asp-validation-for="Service.Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Service.ServiceCategory" class="control-label"></label>
-                <input asp-for="Service.ServiceCategory" class="form-control" required/>
-                <span asp-validation-for="Service.ServiceCategory" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Service.DayRange" class="control-label"></label>
-                <input asp-for="Service.DayRange" class="form-control" required/>
-                <span asp-validation-for="Service.DayRange" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Service.AvailableTimeStart" class="control-label"></label>
-                <input asp-for="Service.AvailableTimeStart" class="form-control" type="time" required/>
-                <span asp-validation-for="Service.AvailableTimeStart" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Service.AvailableTimeEnd" class="control-label"></label>
-                <input asp-for="Service.AvailableTimeEnd" class="form-control" type="time" required/>
-                <span asp-validation-for="Service.AvailableTimeEnd" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<style>
+    .card-header {
+        background-color: var(--cta-color);
+    }
+</style>
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 text-white">
+                <i class="bi bi-pencil-square me-2"></i>Edit Service
+            </h5>
+            <a asp-page="./Index" class="btn btn-sm btn-outline-light">
+                <i class="bi bi-arrow-left me-1"></i> Back to List
+            </a>
+        </div>
+        
+        <div class="card-body">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                <input type="hidden" asp-for="Service.ServiceId" />
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="Service.Title" class="form-label"></label>
+                            <input asp-for="Service.Title" class="form-control" placeholder="Enter service title" />
+                            <span asp-validation-for="Service.Title" class="text-danger small"></span>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="Service.ServiceCategory" class="form-label"></label>
+                            <select asp-for="Service.ServiceCategory" class="form-select" required>
+                                <option value="">Select category</option>
+                                <option value="Maintenance">Maintenance</option>
+                                <option value="Cleaning">Cleaning</option>
+                                <option value="Security">Security</option>
+                                <option value="Utilities">Utilities</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <span asp-validation-for="Service.ServiceCategory" class="text-danger small"></span>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="Service.DayRange" class="form-label"></label>
+                            <select asp-for="Service.DayRange" class="form-select" required>
+                                <option value="">Select days</option>
+                                <option value="Monday-Friday">Monday-Friday</option>
+                                <option value="Weekdays">Weekdays</option>
+                                <option value="Weekends">Weekends</option>
+                                <option value="Daily">Daily</option>
+                                <option value="Custom">Custom</option>
+                            </select>
+                            <span asp-validation-for="Service.DayRange" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="Service.Description" class="form-label"></label>
+                            <textarea asp-for="Service.Description" class="form-control" rows="5" placeholder="Enter service description" required></textarea>
+                            <span asp-validation-for="Service.Description" class="text-danger small"></span>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Service.AvailableTimeStart" class="form-label">Start Time</label>
+                                    <input asp-for="Service.AvailableTimeStart" class="form-control" type="time" required />
+                                    <span asp-validation-for="Service.AvailableTimeStart" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Service.AvailableTimeEnd" class="form-label">End Time</label>
+                                    <input asp-for="Service.AvailableTimeEnd" class="form-control" type="time" required />
+                                    <span asp-validation-for="Service.AvailableTimeEnd" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-end border-top pt-3 gap-2">
+                    <a asp-page="./Index" class="btn btn-secondary">
+                        <i class="bi bi-x-circle me-1"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="bi bi-save me-1"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
-
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

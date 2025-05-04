@@ -1,76 +1,271 @@
 @page
+@using HomeownersMS.Models
 @model HomeownersMS.Pages.Profile.ProfileStaffModel
-@{
-    Layout = "_StaffLayout";
-    ViewData["HeaderTitle"] = "Profile";
-    ViewData["Title"] = "Edit Profile";
-}
+@using System.Security.Claims
+@using Microsoft.EntityFrameworkCore
+@using HomeownersMS.Data
+@inject HomeownersContext context
 
-<div class="container">
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success">
-            @TempData["SuccessMessage"]
-        </div>
+@{
+    Layout = "_StaffLayout"; 
+    ViewData["HeaderTitle"] = "Profile";
+    ViewData["Title"] = "Profile";
+    var (profileImagePath, staffName) = await Task.Run(async () => {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId != null && int.TryParse(userId, out int staffId))
+            {
+                var staff = await context.Staffs.FirstOrDefaultAsync(r => r.UserId == staffId);
+                if (staff != null)
+                {
+                    var name = $"{staff.FName} {staff.LName}".Trim();
+                    return (staff.ProfileImage ?? "", name);
+                }
+            }
+            return ("", "Staff");
+        });
+        
+        var profileImageUrl = !string.IsNullOrEmpty(profileImagePath?.ToString()) 
+            ? Url.Content($"~/{profileImagePath}")
+            : Url.Content("~/images/default-profile.jpg");
+        ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
+}
+<style>
+    .ProfileContainer {
+        position: relative; /* make banner + profile picture positioning relative */
+        text-align: center;
     }
 
-    <form method="post" enctype="multipart/form-data">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    .profile-banner {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+        opacity: 0.8; /* make it slightly transparent */
+    }
 
-        <!-- Profile Image -->
-        <div class="form-group mb-3">
-            <label asp-for="ProfileImage" class="control-label">Profile Image</label>
-            <input type="file" class="form-control" asp-for="ProfileImage">
-            <span asp-validation-for="ProfileImage" class="text-danger"></span>
-        </div>
+    .profile_container {
+        position: relative; /* make banner + profile picture positioning relative */
+        margin-bottom: 30px;
+    }
+    .pic_container {
+        position: absolute; /* position it relative to the banner */
+        transform: translate(-50%, -50%); /* center it */
+        bottom: -80px; /* move it halfway outside the banner */
+        left: 50%;
 
-        <!-- First Name -->
-        <div class="form-group mb-3">
-            <label asp-for="Staff.FName" class="control-label">First Name</label>
-            <input type="text" class="form-control" asp-for="Staff.FName">
-            <span asp-validation-for="Staff.FName" class="text-danger"></span>
-        </div>
+        width: 120px;
+        height: 120px;
+    }
 
-        <!-- Last Name -->
-        <div class="form-group mb-3">
-            <label asp-for="Staff.LName" class="control-label">Last Name</label>
-            <input type="text" class="form-control" asp-for="Staff.LName">
-            <span asp-validation-for="Staff.LName" class="text-danger"></span>
-        </div>
+    #profilePicture {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid white;
+        box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    }
+</style>
 
-        <!-- Email -->
-        <div class="form-group mb-3">
-            <label asp-for="Staff.Email" class="control-label">Email</label>
-            <input type="email" class="form-control" asp-for="Staff.Email">
-            <span asp-validation-for="Staff.Email" class="text-danger"></span>
-        </div>
+<div class="container">
 
-        <!-- Contact Number -->
-        <div class="form-group mb-3">
-            <label asp-for="Staff.ContactNo" class="control-label">Contact Number</label>
-            <input type="tel" class="form-control" asp-for="Staff.ContactNo">
-            <span asp-validation-for="Staff.ContactNo" class="text-danger"></span>
-        </div>
+    <div id="toastContainer" aria-live="polite" aria-atomic="true"></div>
 
-        <!-- Job Title (Readonly) -->
-        <div class="form-group mb-3">
-            <label class="control-label">Job Title</label>
-            <input type="text" class="form-control" value="@Model.Staff.Job" readonly>
-        </div>
+    <div class="card">
+        <div class="card-body">
+            <div class ="profile_container">
+                <!---Profile Banner-->
+                <img src="~/images/subdivision_banner2.jpg" alt="Profile Banner" class="img-fluid profile-banner" />
+                
+                <!---User Profile Picture-->
+                <div class="pic_container">
+                    <img src="@profileImageUrl" alt="Profile Picture" id="profilePicture" />
+                </div>
+            </div>
 
-        <!-- Hire Date (Readonly) -->
-        <div class="form-group mb-3">
-            <label class="control-label">Hire Date</label>
-            <input type="text" class="form-control" value="@Model.Staff.HireDate.ToShortDateString()" readonly>
-        </div>
+            <form method="post" enctype="multipart/form-data" id="profileForm">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                
+                <!-- Profile Picture Upload (Hidden Initially) -->
+                <div class="form-group mb-3 d-none" id="profileImageUpload">
+                    <label asp-for="ProfileImage" class="control-label">Change Profile Picture</label>
+                    <input type="file" class="form-control" asp-for="ProfileImage">
+                    <span asp-validation-for="ProfileImage" class="text-danger"></span>
+                </div>
 
-        <!-- Submit Button -->
-        <div class="form-group">
-            <input type="submit" value="Save Changes" class="btn btn-primary" />
+                <!-- Other Details -->
+                <div class="form-group mb-3">
+                    <label asp-for="Staff.FName" class="control-label">First Name</label>
+                    <input type="text" class="form-control" asp-for="Staff.FName" readonly required>
+                    <span asp-validation-for="Staff.FName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Staff.LName" class="control-label">Last Name</label>
+                    <input type="text" class="form-control" asp-for="Staff.LName" readonly required>
+                    <span asp-validation-for="Staff.LName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Staff.Email" class="control-label">Email</label>
+                    <input type="email" class="form-control" asp-for="Staff.Email" readonly required>
+                    <span asp-validation-for="Staff.Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Staff.ContactNo" class="control-label">Contact Number</label>
+                    <input type="tel" class="form-control" asp-for="Staff.ContactNo" readonly required>
+                    <span asp-validation-for="Staff.ContactNo" class="text-danger"></span>
+                </div>
+
+                <!-- Job Title (Readonly) -->
+                <div class="form-group mb-3">
+                    <label class="control-label">Job Title</label>
+                    <input type="text" class="form-control" value="@Model.Staff.Job" readonly>
+                </div>
+
+                <!-- Hire Date (Readonly) -->
+                <div class="form-group mb-3">
+                    <label class="control-label">Hire Date</label>
+                    <input type="text" class="form-control" value="@Model.Staff.HireDate.ToShortDateString()" readonly>
+                </div>
+
+                <div class="form-group">
+                    <button type="button" id="editButton" class="btn btn-secondary mb-3">
+                        <i class="bi bi-pencil-square pe-2"></i>Edit
+                    </button>
+
+                    <!-- Save Changes and Cancel Buttons (Initially Hidden) -->
+                    <button type="submit" id="saveButton" class="btn btn-primary mb-3 d-none">Save Changes</button>
+                    <button type="button" id="cancelButton" class="btn btn-danger mb-3 d-none">Cancel</button>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 </div>
 
 @section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const editButton = document.getElementById("editButton");
+            const saveButton = document.getElementById("saveButton");
+            const cancelButton = document.getElementById("cancelButton");
+
+            const profileForm = document.getElementById("profileForm");
+
+            const formFields = profileForm.querySelectorAll("input:not([readonly])");
+            const profileImageUpload = document.getElementById("profileImageUpload");
+
+            const toastContainer = document.getElementById("toastContainer");
+            const successMessage = '@(TempData["SuccessMessage"] ?? "")';
+            const errorMessage = '@(TempData["ErrorMessage"] ?? "")';
+
+            // Function to show toast notifications
+            function showToast(message, type = "primary", icon = null) {
+                // Check if a toast with the same message already exists
+                const existingToast = Array.from(toastContainer.children).find(
+                    (toast) => toast.querySelector(".toast-body").textContent === message
+                );
+
+                if (existingToast) {
+                    // If a toast with the same message exists, do nothing
+                    return;
+                }
+
+                // Create a new toast element
+                const toast = document.createElement("div");
+                toast.className = `toast align-items-center text-bg-${type} border-0`;
+                toast.setAttribute("role", "alert");
+                toast.setAttribute("aria-live", "assertive");
+                toast.setAttribute("aria-atomic", "true");
+
+                // Add the toast content
+                toast.innerHTML = `
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${icon ? `<i class="${icon} me-2"></i>` : ""} ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                `;
+
+                // Append the toast to the container
+                toastContainer.appendChild(toast);
+
+                // Initialize and show the toast using Bootstrap's Toast API
+                const bootstrapToast = new bootstrap.Toast(toast);
+                bootstrapToast.show();
+
+                // Remove the toast from the DOM after it hides
+                toast.addEventListener("hidden.bs.toast", () => {
+                    toast.remove();
+                });
+            }
+
+            if (successMessage) {
+                showToast(successMessage, "success", "bi bi-check-circle");
+            }
+
+            if (errorMessage) {
+                showToast(errorMessage, "danger", "bi bi-exclamation-triangle");
+            }
+
+            // Add click event listener to the Edit button
+            editButton.addEventListener("click", function () {
+                // Enable all editable form fields
+                formFields.forEach(field => {
+                    field.removeAttribute("readonly");
+                    field.removeAttribute("disabled");
+                });
+
+                // Show the profile image upload input
+                profileImageUpload.classList.remove("d-none");
+
+                // Show Save Changes and Cancel buttons
+                saveButton.classList.remove("d-none");
+                cancelButton.classList.remove("d-none");
+
+                // Hide the Edit button
+                editButton.classList.add("d-none");
+
+                // Show toast notification for entering editing mode
+                showToast("Editing Mode", "info", "bi bi-pencil-square");
+            });
+
+            // Add click event listener to the Cancel button
+            cancelButton.addEventListener("click", function () {
+                // Reset the form fields to their original state
+                formFields.forEach(field => {
+                    field.setAttribute("readonly", "true");
+                    field.setAttribute("disabled", "true");
+                });
+
+                // Hide the profile image upload input
+                profileImageUpload.classList.add("d-none");
+
+                // Hide Save Changes and Cancel buttons
+                saveButton.classList.add("d-none");
+                cancelButton.classList.add("d-none");
+
+                // Show the Edit button
+                editButton.classList.remove("d-none");
+
+                // Show toast notification for entering editing mode
+                showToast("Exit Editing Mode", "warning", "bi bi-box-arrow-left");
+            });
+
+            // Add click event listener to the Save Changes button
+            saveButton.addEventListener("click", function () {
+                // Show toast notification for saving changes
+                if (!profileForm.checkValidity()) {
+                    event.preventDefault(); // Prevent form submission
+                    showToast("Please fill out all required fields.", "danger");
+                }
+                else{
+                    showToast("Changes Saved Successfully!", "success");
+                }
+            });
+        });
+    </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

@@ -2,53 +2,101 @@
 @model HomeownersMS.Pages_Admin_Facilities.EditModel
 
 @{
-    Layout = "_AdminLayout"; // Use the Admin layout
+    Layout = "_AdminLayout";
     ViewData["HeaderTitle"] = "Facilities Management";
     ViewData["Title"] = "Edit Facility";
 }
-
-<h1>Edit</h1>
-
-<h4>Facility</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Facility.FacilityId" />
-            <div class="form-group">
-                <label asp-for="Facility.Name" class="control-label"></label>
-                <input asp-for="Facility.Name" class="form-control" />
-                <span asp-validation-for="Facility.Name" class="text-danger"></span>
+<style>
+    .card-header {
+        background-color: var(--cta-color);
+    }
+</style>
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 text-white">
+                <i class="bi bi-pencil-square me-2"></i>Edit Facility
+            </h5>
+            <a asp-page="./Index" class="btn btn-sm btn-outline-light">
+                <i class="bi bi-arrow-left me-1"></i> Back to List
+            </a>
+        </div>
+        
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-4 text-center">
+                    @if (!string.IsNullOrEmpty(Model.Facility.FacilityImage))
+                    {
+                        <img src="@Model.Facility.FacilityImage" 
+                             class="img-fluid rounded shadow mb-3" 
+                             style="max-height: 250px; object-fit: cover;" 
+                             alt="Current facility image" />
+                    }
+                    else
+                    {
+                        <div class="bg-light rounded d-flex align-items-center justify-content-center mb-3" 
+                             style="height: 200px;">
+                            <i class="bi bi-building text-muted" style="font-size: 3rem;"></i>
+                        </div>
+                    }
+                </div>
+                
+                <div class="col-md-8">
+                    <form method="post" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        <input type="hidden" asp-for="Facility.FacilityId" />
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Facility.Name" class="form-label"></label>
+                                    <input asp-for="Facility.Name" class="form-control" />
+                                    <span asp-validation-for="Facility.Name" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Facility.PricePerHour" class="form-label"></label>
+                                    <input asp-for="Facility.PricePerHour" class="form-control" />
+                                    <span asp-validation-for="Facility.PricePerHour" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="Facility.Description" class="form-label"></label>
+                            <textarea asp-for="Facility.Description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Facility.Description" class="text-danger small"></span>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="Facility.Address" class="form-label"></label>
+                            <input asp-for="Facility.Address" class="form-control" />
+                            <span asp-validation-for="Facility.Address" class="text-danger small"></span>
+                        </div>
+                        
+                        <div class="form-group mb-4">
+                            <label asp-for="FacilityImage" class="form-label">Facility Image</label>
+                            <input type="file" asp-for="FacilityImage" class="form-control" />
+                            <span asp-validation-for="FacilityImage" class="text-danger small"></span>
+                            <small class="form-text text-muted">Upload a new image (JPG, PNG, max 5MB)</small>
+                        </div>
+                        
+                        <div class="d-flex justify-content-end border-top pt-3 gap-2">
+                            <a asp-page="./Details" asp-route-id="@Model.Facility.FacilityId" class="btn btn-secondary">
+                                <i class="bi bi-x-circle me-1"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="bi bi-save me-1"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Facility.Description" class="control-label"></label>
-                <input asp-for="Facility.Description" class="form-control" />
-                <span asp-validation-for="Facility.Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Facility.PricePerHour" class="control-label"></label>
-                <input asp-for="Facility.PricePerHour" class="form-control" />
-                <span asp-validation-for="Facility.PricePerHour" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Facility.Address" class="control-label"></label>
-                <input asp-for="Facility.Address" class="form-control" />
-                <span asp-validation-for="Facility.Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FacilityImage" class="control-label"></label>
-                <input type="file" asp-for="FacilityImage" class="form-control" /> <!-- File input -->
-                <span asp-validation-for="FacilityImage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
-
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

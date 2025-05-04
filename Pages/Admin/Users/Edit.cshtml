@@ -9,46 +9,70 @@
     var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
     ViewData["CurrentPage"] = ViewContext.RouteData.Values["page"]?.ToString();
 }
+<style>
+    .card-header {
+        background-color: var(--cta-color);
+    }
+</style>
+<div class="container py-4">
+    <div class="card shadow-sm rounded-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 text-white">Edit User Account</h5>
+            <div>
+                <a class="btn btn-sm btn-outline-light" asp-page="./Index">
+                    <i class="bi bi-arrow-left"></i> Back to List
+                </a>
+            </div>
+        </div>
 
-<h1>Edit</h1>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        <input type="hidden" asp-for="UserList.UserId" />
+                        
+                        <div class="form-group mb-4">
+                            <label class="form-label required-field" asp-for="UserList.Username"></label>
+                            <input asp-for="UserList.Username" class="form-control" readonly />
+                            <span asp-validation-for="UserList.Username" class="text-danger small"></span>
+                        </div>
 
-<h4>User</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="UserList.UserId" />
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="UserList.Username" class="control-label"></label>
-                <input asp-for="UserList.Username" class="form-control" for-value="UserList.Username" readonly/>
-                <span asp-validation-for="UserList.Username" class="text-danger"></span>
+                        <div class="form-group mb-4">
+                            <label class="form-label required-field">Change Password</label>
+                            <input type="password" asp-for="UserList.PasswordHash" value="" class="form-control" placeholder="Enter new password" />
+                            <span asp-validation-for="UserList.PasswordHash" class="text-danger small"></span>
+                            <small class="form-text text-muted">Password must be at least 6 characters</small>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label class="form-label required-field">Confirm Password</label>
+                            <input type="password" asp-for="ConfirmPassword" class="form-control" placeholder="Confirm new password" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-group d-flex justify-content-end gap-2">
+                            <a asp-page="./Details" asp-route-id="@Model.UserList.UserId" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="bi bi-save"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label class="control-label">Change Password</label>
-                <input type="password" asp-for="UserList.PasswordHash" value="" class="form-control" />
-                <span asp-validation-for="UserList.PasswordHash" class="text-danger"></span>
-            </div>
-            @* Confirm password *@
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label class="control-label">Confirm Password</label>
-                <input type="password" asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group mt-4">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-page="./Index">Back to List</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<style>
+    .required-field::after {
+        content: " *";
+        color: #dc3545;
+    }
+</style>

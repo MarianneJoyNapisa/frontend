@@ -50,7 +50,7 @@ namespace HomeownersMS.Pages.Profile
                 var residentToUpdate = await _context.Residents
                     .FirstOrDefaultAsync(r => r.UserId == residentId);
 
-                if (residentToUpdate == null)
+                if (residentToUpdate == null || Resident == null)
                 {
                     return NotFound();
                 }

@@ -39,25 +39,39 @@
     <!-- Card Container -->
     <div class="bg-white rounded-4 p-4 shadow-sm">
         <!-- Actions -->
-        <div class="mb-4 d-flex gap-2 flex-wrap">
-            <a class="btn btn-primary" asp-page="/Account/RegisterResident">Register Resident</a>
-            <a class="btn btn-primary" asp-page="/Account/RegisterStaff">Register Staff</a>
-            <a class="btn btn-primary" asp-page="/Account/RegisterAdmin">Register Admin</a>
+        <div class="mb-3 d-flex gap-2 flex-wrap">
+            <a class="btn btn-primary" asp-page="/Account/RegisterResident"><i class="bi bi-plus-lg me-2"></i>Register Resident</a>
+            <!-- <a class="btn btn-primary" asp-page="/Account/RegisterStaff">Register Staff</a>
+            <a class="btn btn-primary" asp-page="/Account/RegisterAdmin">Register Admin</a> -->
         </div>
+        <div class="row mb-4">
+            <!-- Search Bar -->
+            <div class="col-10">
+                <div class="input-group">
+                    <input type="text" class="form-control border-end-0" placeholder="Search..." aria-label="Search">
+                    <button class="btn btn-input-icon" type="button"><i class="bi bi-search"></i></button>
+                </div>
+            </div>
 
+            <!-- Filter and Sort Buttons -->
+            <div class="col-2 d-flex align-items-center justify-content-end">
+                <button class="btn btn-sm btn-primary me-2"><i class="bi bi-filter"></i></button>
+                <button class="btn btn-sm btn-secondary"><i class="bi bi-sort-down"></i></button>
+            </div>
+        </div>
         <!-- Table -->
         <div class="table-responsive">
-            <table class="table table-borderless align-middle">
+            <table class="table table-borderless align-middle fixed-table">
                 <thead>
                     <tr class="bg-primary text-white">
+                        <th>@Html.DisplayNameFor(model => model.Resident[0].User) ID</th>
                         <th>@Html.DisplayNameFor(model => model.Resident[0].LName)</th>
                         <th>@Html.DisplayNameFor(model => model.Resident[0].FName)</th>
                         <th>@Html.DisplayNameFor(model => model.Resident[0].Email)</th>
                         <th>@Html.DisplayNameFor(model => model.Resident[0].ContactNo)</th>
                         <th>@Html.DisplayNameFor(model => model.Resident[0].Address)</th>
                         <th>@Html.DisplayNameFor(model => model.Resident[0].MoveInDate)</th>
-                        <th>@Html.DisplayNameFor(model => model.Resident[0].User) ID</th>
-                        <th>Profile Image</th>
+                        <!-- <th>Profile Image</th> -->
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -65,13 +79,14 @@
                     @foreach (var item in Model.Resident)
                     {
                         <tr class="border-bottom">
+                            <td>@(item.User != null ? item.User.UserId : "")</td>
                             <td>@Html.DisplayFor(modelItem => item.LName)</td>
                             <td>@Html.DisplayFor(modelItem => item.FName)</td>
                             <td>@Html.DisplayFor(modelItem => item.Email)</td>
                             <td>@Html.DisplayFor(modelItem => item.ContactNo)</td>
                             <td>@Html.DisplayFor(modelItem => item.Address)</td>
                             <td>@Html.DisplayFor(modelItem => item.MoveInDate)</td>
-                            <td>@(item.User != null ? item.User.UserId : "")</td>
+                            @*
                             <td>
                                 @if (!string.IsNullOrEmpty(item.ProfileImage))
                                 {
@@ -82,15 +97,30 @@
                                     <span>No Image</span>
                                 }
                             </td>
+                            *@
                             <td>
                                 <a asp-page="./Edit" asp-route-id="@item.UserId" title="Edit"><i class="bi bi-pencil-square text-primary me-2"></i></a>
-                                <a asp-page="./Details" asp-route-id="@item.UserId" title="Details"><i class="bi bi-eye text-primary me-2"></i></a>
-                                <a asp-page="./Delete" asp-route-id="@item.UserId" title="Delete"><i class="bi bi-trash text-primary"></i></a>
+                                <a asp-page="./Details" asp-route-id="@item.UserId" title="Details"><i class="bi bi-eye text-success me-2"></i></a>
+                                <a asp-page="./Delete" asp-route-id="@item.UserId" title="Delete"><i class="bi bi-trash text-danger"></i></a>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
+            <!-- Pagination -->
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <a href="#" class="text-decoration-none text-muted">
+                    <i class="bi bi-arrow-left me-1"></i>Previous
+                </a>
+                <div>
+                    <span class="text-muted me-2">...</span>
+                    <span class="bg-primary text-white px-3 py-1 rounded-pill">1</span>
+                    <span class="text-muted ms-2">10</span>
+                </div>
+                <a href="#" class="text-decoration-none text-muted">
+                    Next<i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
         </div>
     </div>
 </div>
@@ -111,7 +141,7 @@
     }
 
     .table th {
-        background-color: #2f5b9c !important;
+        background-color: var(--cta-color) !important;
         color: white !important;
     }
 
@@ -137,6 +167,22 @@
     }
 
     .table thead tr {
+        overflow: hidden;
+    }
+    .fixed-table {
+    table-layout: fixed;
+    width: 100%;
+    }
+
+    .fixed-table th,
+    .fixed-table td {
+        width: 11%; /* 100% divided by ~9 columns */
+        min-width: 120px;
+        max-width: 150px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         overflow: hidden;
     }
 </style>
